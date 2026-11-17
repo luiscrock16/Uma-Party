@@ -1,0 +1,1742 @@
+[gd_scene format=3 uid="uid://bbsxmvgmy5k3a"]
+
+[ext_resource type="Script" uid="uid://bjgc5v0s7i7o1" path="res://scripts/lobby.gd" id="1_0dntb"]
+[ext_resource type="SpriteFrames" uid="uid://b5yur8naotbj6" path="res://recursos/personajes_frames.tres" id="2_frames"]
+[ext_resource type="Texture2D" uid="uid://dxbt03a8ap6ed" path="res://assets/previews/preview_garra.png" id="3_garra"]
+[ext_resource type="Texture2D" uid="uid://ch6u3uwmwvlt4" path="res://assets/previews/preview_plataformas.png" id="4_cinta"]
+[ext_resource type="Texture2D" uid="uid://d3ip2c2cx18vy" path="res://assets/previews/preview_ruleta.png" id="5_ruleta"]
+[ext_resource type="Texture2D" uid="uid://2t1nbh3q246j" path="res://assets/previews/preview_canones.png" id="6_canones"]
+[ext_resource type="Texture2D" uid="uid://brk2pbecenrae" path="res://assets/previews/preview_pista.png" id="7_pista"]
+[ext_resource type="Texture2D" uid="uid://bmhtx5q4htrdk" path="res://assets/previews/preview_templo.png" id="8_templo"]
+[ext_resource type="Texture2D" uid="uid://bauutqed0qv4n" path="res://assets/previews/preview_globos.png" id="9_globos"]
+[ext_resource type="Texture2D" uid="uid://b6xdrjgmae1dj" path="res://assets/previews/preview_janken.png" id="10_janken"]
+[ext_resource type="Texture2D" uid="uid://xhs1swp5mkyf" path="res://assets/previews/preview_trivia.png" id="11_trivia"]
+[ext_resource type="Texture2D" uid="uid://cq68bore3oxlv" path="res://assets/previews/preview_atrapacolas.png" id="12_atrapacolas"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxFlat_menu_card"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_host"]
+bg_color = Color(0.4, 0.76, 0.12, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_unirse"]
+bg_color = Color(0.18, 0.58, 0.92, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_volver_menu"]
+bg_color = Color(0.38, 0.42, 0.52, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.8)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header_lobby"]
+bg_color = Color(1, 1, 1, 0.98)
+border_width_bottom = 3
+border_color = Color(0.44, 0.76, 0.12, 1)
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.08)
+shadow_size = 5
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ip_badge"]
+bg_color = Color(0.12, 0.16, 0.25, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.75, 1, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_roster_dock"]
+bg_color = Color(1, 1, 1, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.44, 0.76, 0.12, 0.9)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0, 0, 0, 0.1)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_token_roster"]
+bg_color = Color(0.1, 0.13, 0.22, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.65, 0.9, 0.85)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 5
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_token_roster_hover"]
+bg_color = Color(0.18, 0.24, 0.38, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.88, 0.25, 1)
+corner_radius_top_left = 35
+corner_radius_top_right = 35
+corner_radius_bottom_right = 35
+corner_radius_bottom_left = 35
+shadow_color = Color(1, 0.85, 0.2, 0.4)
+shadow_size = 8
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_iniciar_partida"]
+bg_color = Color(0.44, 0.76, 0.12, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.75, 0.98, 0.4, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0.2, 0.45, 0.05, 0.3)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pizarra_pergamino"]
+bg_color = Color(0.98, 0.99, 0.98, 0.98)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.44, 0.76, 0.12, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.15)
+shadow_size = 14
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_al_azar"]
+bg_color = Color(0.88, 0.83, 0.72, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.65, 0.55, 0.42, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.15)
+shadow_size = 3
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile_minijuego"]
+bg_color = Color(0.16, 0.18, 0.22, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.75, 0.68, 0.55, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile_minijuego_hover"]
+bg_color = Color(0.2, 0.22, 0.28, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.88, 0.98, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.88, 0.98, 0.22, 0.5)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tile_mystery"]
+bg_color = Color(0.24, 0.22, 0.26, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.35, 0.42, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bocadillo_titulo"]
+bg_color = Color(1, 1, 1, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.9, 0.92, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_atras"]
+bg_color = Color(0.12, 0.14, 0.2, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.9, 0.95, 0.7)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
+
+[node name="Lobby" type="CanvasLayer" unique_id=1379053873]
+script = ExtResource("1_0dntb")
+
+[node name="MenuPrincipal" type="Control" parent="." unique_id=1001611625]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FondoMenu" type="Control" parent="MenuPrincipal" unique_id=300000001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="PanelCentral" type="PanelContainer" parent="MenuPrincipal" unique_id=300000002]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -230.0
+offset_right = 220.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_menu_card")
+
+[node name="VBox" type="VBoxContainer" parent="MenuPrincipal/PanelCentral" unique_id=300000003]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="LabelTitulo" type="Label" parent="MenuPrincipal/PanelCentral/VBox" unique_id=300000004]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.8, 0.3, 0.1, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 32
+text = "UMA PARTY"
+horizontal_alignment = 1
+
+[node name="LabelSubtitulo" type="Label" parent="MenuPrincipal/PanelCentral/VBox" unique_id=300000005]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "From Crockatanga? no puede ser"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MenuPrincipal/PanelCentral/VBox" unique_id=300000006]
+layout_mode = 2
+
+[node name="EditNombre" type="LineEdit" parent="MenuPrincipal/PanelCentral/VBox" unique_id=1481389241]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+placeholder_text = "Tu Nickname"
+alignment = 1
+
+[node name="IPInput" type="LineEdit" parent="MenuPrincipal/PanelCentral/VBox" unique_id=1132739526]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+placeholder_text = "127.0.0.1 (IP para unirse)"
+alignment = 1
+
+[node name="BotonHost" type="Button" parent="MenuPrincipal/PanelCentral/VBox" unique_id=529242560]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_host")
+text = "CREAR SALA (HOST)"
+
+[node name="BotonUnirse" type="Button" parent="MenuPrincipal/PanelCentral/VBox" unique_id=1675825702]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_unirse")
+text = "UNIRSE A SALA"
+
+[node name="LabelEstado" type="Label" parent="MenuPrincipal/PanelCentral/VBox" unique_id=1675825704]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="BotonVolverMenu" type="Button" parent="MenuPrincipal/PanelCentral/VBox" unique_id=1675825703]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_volver_menu")
+text = "← VOLVER AL MENÚ"
+
+[node name="VistaLobby" type="Control" parent="." unique_id=993778181]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FondoLobby" type="Control" parent="VistaLobby" unique_id=300000007]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HeaderLobby" type="PanelContainer" parent="VistaLobby" unique_id=300000008]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 48.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header_lobby")
+
+[node name="LabelHeader" type="Label" parent="VistaLobby/HeaderLobby" unique_id=300000009]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "SELECCIÓN DE PERSONAJES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnSalirSala" type="Button" parent="VistaLobby" unique_id=300000070]
+z_index = 10
+layout_mode = 0
+offset_left = 16.0
+offset_top = 8.0
+offset_right = 160.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_volver_menu")
+text = "← SALIR DE SALA"
+
+[node name="PanelIPHost" type="HBoxContainer" parent="VistaLobby" unique_id=300000071]
+z_index = 10
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -340.0
+offset_top = 8.0
+offset_right = -16.0
+offset_bottom = 40.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="BadgeIP" type="PanelContainer" parent="VistaLobby/PanelIPHost" unique_id=300000072]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ip_badge")
+
+[node name="MarginIP" type="MarginContainer" parent="VistaLobby/PanelIPHost/BadgeIP" unique_id=300000073]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="LabelIP" type="Label" parent="VistaLobby/PanelIPHost/BadgeIP/MarginIP" unique_id=300000074]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "IP: 127.0.0.1"
+vertical_alignment = 1
+
+[node name="BtnCopiarIP" type="Button" parent="VistaLobby/PanelIPHost" unique_id=300000075]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_unirse")
+text = "Copiar 📋"
+
+[node name="ContenedorRanuras" type="HBoxContainer" parent="VistaLobby" unique_id=2080944018]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -546.0
+offset_top = -260.0
+offset_right = 546.0
+offset_bottom = 170.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="BandejaRoster" type="PanelContainer" parent="VistaLobby" unique_id=300000010]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = -142.0
+offset_right = 440.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_roster_dock")
+
+[node name="Margen" type="MarginContainer" parent="VistaLobby/BandejaRoster" unique_id=300000011]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxRoster" type="HBoxContainer" parent="VistaLobby/BandejaRoster/Margen" unique_id=300000012]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="BtnRandom" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000013]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Aleatorio"
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+text = "?"
+
+[node name="BtnSeiun" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000014]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Seiun Sky"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnSeiun" unique_id=300000057]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"SEIK_idle"
+
+[node name="BtnGold" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000015]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Gold Ship"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnGold" unique_id=300000058]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"GLSH_idle"
+
+[node name="BtnOguri" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000016]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Oguri Cap"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnOguri" unique_id=300000059]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"OGRC_idle"
+
+[node name="BtnStill" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000017]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Still in Love"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnStill" unique_id=300000060]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"STIL_idle"
+
+[node name="BtnCafe" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000018]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Manhattan Cafe"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnCafe" unique_id=300000061]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"MACA_idle"
+
+[node name="BtnAgnes" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000019]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Agnes Tachyon"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnAgnes" unique_id=300000062]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"AGTC_idle"
+
+[node name="BtnDantsu" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000020]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Dantsu Flame"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnDantsu" unique_id=300000063]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"DAFL_idle"
+
+[node name="BtnJungle" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000021]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Jungle Pocket"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnJungle" unique_id=300000064]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"JUPC_idle"
+
+[node name="BtnSamson" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000022]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Samson Big"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnSamson" unique_id=300000065]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"SABG_idle"
+
+[node name="BtnSpecial" type="Button" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster" unique_id=300000023]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+tooltip_text = "Special Week"
+theme_override_styles/normal = SubResource("StyleBoxFlat_token_roster")
+theme_override_styles/hover = SubResource("StyleBoxFlat_token_roster_hover")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="VistaLobby/BandejaRoster/Margen/HBoxRoster/BtnSpecial" unique_id=300000066]
+position = Vector2(32, 36)
+scale = Vector2(1.85, 1.85)
+sprite_frames = ExtResource("2_frames")
+animation = &"SPWE_idle"
+
+[node name="BotonIniciar" type="Button" parent="VistaLobby" unique_id=1609201145]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -54.0
+offset_right = 160.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_iniciar_partida")
+text = "ELEGIR MINIJUEGO"
+
+[node name="PanelMinijuegos" type="Control" parent="." unique_id=203996775]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CieloMar" type="ColorRect" parent="PanelMinijuegos" unique_id=691959713]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.52, 0.72, 1)
+
+[node name="MarFondo" type="ColorRect" parent="PanelMinijuegos/CieloMar" unique_id=615347552]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -240.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.12, 0.38, 0.55, 1)
+
+[node name="BalconVisual" type="Node2D" parent="PanelMinijuegos" unique_id=1924634053]
+
+[node name="TerrazaMadera" type="ColorRect" parent="PanelMinijuegos/BalconVisual" unique_id=311196082]
+offset_top = 515.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.55, 0.28, 0.16, 1)
+
+[node name="Baranda" type="ColorRect" parent="PanelMinijuegos/BalconVisual" unique_id=708005199]
+offset_top = 508.0
+offset_right = 1152.0
+offset_bottom = 518.0
+color = Color(0.85, 0.72, 0.55, 1)
+
+[node name="AvataresBalcon" type="Node2D" parent="PanelMinijuegos/BalconVisual" unique_id=539106407]
+
+[node name="Avatar1" type="AnimatedSprite2D" parent="PanelMinijuegos/BalconVisual/AvataresBalcon" unique_id=942879864]
+position = Vector2(420, 560)
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("2_frames")
+animation = &"SEIK_idle"
+
+[node name="Avatar2" type="AnimatedSprite2D" parent="PanelMinijuegos/BalconVisual/AvataresBalcon" unique_id=300000024]
+position = Vector2(520, 560)
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("2_frames")
+animation = &"GLSH_idle"
+
+[node name="Avatar3" type="AnimatedSprite2D" parent="PanelMinijuegos/BalconVisual/AvataresBalcon" unique_id=300000025]
+position = Vector2(620, 560)
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("2_frames")
+animation = &"OGRC_idle"
+
+[node name="Avatar4" type="AnimatedSprite2D" parent="PanelMinijuegos/BalconVisual/AvataresBalcon" unique_id=300000026]
+position = Vector2(720, 560)
+scale = Vector2(2.5, 2.5)
+sprite_frames = ExtResource("2_frames")
+animation = &"STIL_idle"
+
+[node name="PizarraMinijuegos" type="PanelContainer" parent="PanelMinijuegos" unique_id=300000027]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -305.0
+offset_right = 540.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pizarra_pergamino")
+
+[node name="VBox" type="VBoxContainer" parent="PanelMinijuegos/PizarraMinijuegos" unique_id=300000028]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Header" type="HBoxContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox" unique_id=300000029]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnAlAzar" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/Header" unique_id=300000030]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.18, 0.12, 1)
+theme_override_colors/font_focus_color = Color(0.12, 0.08, 0.04, 1)
+theme_override_colors/font_hover_color = Color(0.12, 0.08, 0.04, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_al_azar")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_al_azar")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_al_azar")
+text = "Al azar"
+
+[node name="LabelColeccion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/Header" unique_id=1794139400]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.24, 0.18, 0.12, 1)
+theme_override_font_sizes/font_size = 18
+text = "◂ L     Colección completa     R ▸"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelStats" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/Header" unique_id=300000031]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.38, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "Victorias / Derrotas"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="GridMinijuegos" type="GridContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox" unique_id=1126470659]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 7
+theme_override_constants/v_separation = 6
+columns = 10
+
+[node name="BtnGarra" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=2008801708]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnGarra" unique_id=58622254]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_garra")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnGarra" unique_id=300000300]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnCinta" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=1418857467]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnCinta" unique_id=1124654340]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_cinta")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnCinta" unique_id=300000301]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnRuletaJuego" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000048]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnRuletaJuego" unique_id=1963373333]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_ruleta")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnRuletaJuego" unique_id=300000302]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnCanones" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=673798464]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnCanones" unique_id=1844915844]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("6_canones")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnCanones" unique_id=300000303]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnPista" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=1351616890]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnPista" unique_id=2068779815]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("7_pista")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnPista" unique_id=300000304]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnTemplo" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=24429990]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnTemplo" unique_id=2041268443]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("8_templo")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnTemplo" unique_id=300000305]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnGlobos" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000076]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnGlobos" unique_id=300000077]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("9_globos")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnGlobos" unique_id=300000306]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BtnJanken" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000078]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnJanken" unique_id=300000079]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_janken")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnJanken" unique_id=300000307]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "â™¡"
+
+[node name="BtnTrivia" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000080]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnTrivia" unique_id=300000081]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("11_trivia")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnTrivia" unique_id=300000308]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "â™¡"
+
+[node name="BtnAtrapaColas" type="Button" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000090]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_tile_minijuego")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tile_minijuego_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_tile_minijuego_hover")
+
+[node name="ImagenPreview" type="TextureRect" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnAtrapaColas" unique_id=300000091]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("12_atrapacolas")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/BtnAtrapaColas" unique_id=300000309]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 3.0
+offset_right = 20.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q10" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000110]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q10" unique_id=300000210]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q10" unique_id=300000310]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q11" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000111]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q11" unique_id=300000211]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q11" unique_id=300000311]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q12" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000112]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q12" unique_id=300000212]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q12" unique_id=300000312]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q13" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000113]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q13" unique_id=300000213]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q13" unique_id=300000313]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q14" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000114]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q14" unique_id=300000214]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q14" unique_id=300000314]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q15" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000115]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q15" unique_id=300000215]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q15" unique_id=300000315]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q16" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000116]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q16" unique_id=300000216]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q16" unique_id=300000316]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q17" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000117]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q17" unique_id=300000217]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q17" unique_id=300000317]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q18" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000118]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q18" unique_id=300000218]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q18" unique_id=300000318]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q19" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000119]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q19" unique_id=300000219]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q19" unique_id=300000319]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q20" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000120]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q20" unique_id=300000220]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q20" unique_id=300000320]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q21" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000121]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q21" unique_id=300000221]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q21" unique_id=300000321]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q22" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000122]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q22" unique_id=300000222]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q22" unique_id=300000322]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q23" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000123]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q23" unique_id=300000223]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q23" unique_id=300000323]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q24" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000124]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q24" unique_id=300000224]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q24" unique_id=300000324]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q25" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000125]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q25" unique_id=300000225]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q25" unique_id=300000325]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q26" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000126]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q26" unique_id=300000226]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q26" unique_id=300000326]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q27" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000127]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q27" unique_id=300000227]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q27" unique_id=300000327]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q28" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000128]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q28" unique_id=300000228]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q28" unique_id=300000328]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q29" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000129]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q29" unique_id=300000229]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q29" unique_id=300000329]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q30" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000130]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q30" unique_id=300000230]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q30" unique_id=300000330]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q31" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000131]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q31" unique_id=300000231]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q31" unique_id=300000331]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q32" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000132]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q32" unique_id=300000232]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q32" unique_id=300000332]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q33" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000133]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q33" unique_id=300000233]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q33" unique_id=300000333]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q34" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000134]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q34" unique_id=300000234]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q34" unique_id=300000334]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q35" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000135]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q35" unique_id=300000235]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q35" unique_id=300000335]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q36" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000136]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q36" unique_id=300000236]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q36" unique_id=300000336]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q37" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000137]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q37" unique_id=300000237]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q37" unique_id=300000337]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q38" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000138]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q38" unique_id=300000238]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q38" unique_id=300000338]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="Q39" type="PanelContainer" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos" unique_id=300000139]
+custom_minimum_size = Vector2(100, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tile_mystery")
+
+[node name="Interrogacion" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q39" unique_id=300000239]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.65, 0.72, 1)
+theme_override_font_sizes/font_size = 24
+text = "?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Corazon" type="Label" parent="PanelMinijuegos/PizarraMinijuegos/VBox/GridMinijuegos/Q39" unique_id=300000339]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.44, 1)
+theme_override_font_sizes/font_size = 11
+text = "?"
+
+[node name="BocadilloTitulo" type="PanelContainer" parent="PanelMinijuegos" unique_id=755188235]
+custom_minimum_size = Vector2(170, 36)
+layout_mode = 0
+offset_left = 130.0
+offset_top = 160.0
+offset_right = 320.0
+offset_bottom = 196.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bocadillo_titulo")
+
+[node name="Margen" type="MarginContainer" parent="PanelMinijuegos/BocadilloTitulo" unique_id=720238335]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 4
+
+[node name="LabelTitulo" type="Label" parent="PanelMinijuegos/BocadilloTitulo/Margen" unique_id=300000082]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.14, 0.18, 1)
+theme_override_font_sizes/font_size = 15
+text = "La Garra de Premios"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnVolverLobby" type="Button" parent="PanelMinijuegos" unique_id=1538967684]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -54.0
+offset_right = -24.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_atras")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_atras")
+theme_override_styles/focus = SubResource("StyleBoxFlat_btn_atras")
+text = "◀ Atrás"

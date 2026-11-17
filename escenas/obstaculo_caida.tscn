@@ -1,0 +1,167 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/obstaculo_caida.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_impacto"]
+radius = 45.0
+
+[node name="ObstaculoCaida" type="Node2D" unique_id=710000001]
+script = ExtResource("1_script")
+
+[node name="Sombra" type="Node2D" parent="." unique_id=710000002]
+z_index = -2
+z_as_relative = false
+
+[node name="SombraCirculo" type="Polygon2D" parent="Sombra" unique_id=710000003]
+color = Color(0.08, 0.08, 0.12, 0.85)
+polygon = PackedVector2Array(48, 0, 44, 18, 34, 34, 18, 44, 0, 48, -18, 44, -34, 34, -44, 18, -48, 0, -44, -18, -34, -34, -18, -44, 0, -48, 18, -44, 34, -34, 44, -18)
+
+[node name="SombraPiano" type="Polygon2D" parent="Sombra" unique_id=710000004]
+visible = false
+color = Color(0.08, 0.08, 0.12, 0.85)
+polygon = PackedVector2Array(-52, -32, 46, -34, 60, -10, 56, 30, 22, 40, -28, 38, -54, 22, -58, -10)
+
+[node name="SombraValla" type="Polygon2D" parent="Sombra" unique_id=710000030]
+visible = false
+color = Color(0.08, 0.08, 0.12, 0.85)
+polygon = PackedVector2Array(-74, -18, 74, -18, 74, 18, -74, 18)
+
+[node name="ObjetoVisual" type="Node2D" parent="." unique_id=710000005]
+z_index = 4
+z_as_relative = false
+
+[node name="Piano" type="Node2D" parent="ObjetoVisual" unique_id=710000006]
+
+[node name="Cuerpo" type="Polygon2D" parent="ObjetoVisual/Piano" unique_id=710000007]
+color = Color(0.12, 0.12, 0.16, 1)
+polygon = PackedVector2Array(-48, -30, 42, -32, 56, -10, 52, 28, 20, 38, -26, 36, -50, 20, -54, -10)
+
+[node name="BordeDorado" type="Line2D" parent="ObjetoVisual/Piano" unique_id=710000008]
+points = PackedVector2Array(-48, -30, 42, -32, 56, -10, 52, 28, 20, 38, -26, 36, -50, 20, -54, -10, -48, -30)
+width = 2.5
+default_color = Color(0.85, 0.72, 0.35, 1)
+
+[node name="TapaInterior" type="Polygon2D" parent="ObjetoVisual/Piano" unique_id=710000009]
+color = Color(0.2, 0.15, 0.1, 1)
+polygon = PackedVector2Array(-40, -24, 32, -26, 44, -8, 40, 20, 14, 28, -22, 26, -40, 14)
+
+[node name="TecladoFondo" type="Polygon2D" parent="ObjetoVisual/Piano" unique_id=710000010]
+color = Color(0.95, 0.95, 0.95, 1)
+polygon = PackedVector2Array(-38, 14, 38, 14, 38, 30, -38, 30)
+
+[node name="TeclasNegras" type="Line2D" parent="ObjetoVisual/Piano" unique_id=710000011]
+points = PackedVector2Array(-32, 14, -32, 22, -24, 14, -24, 22, -16, 14, -16, 22, -4, 14, -4, 22, 4, 14, 4, 22, 16, 14, 16, 22, 24, 14, 24, 22)
+width = 2.0
+default_color = Color(0.1, 0.1, 0.12, 1)
+
+[node name="Pesa" type="Node2D" parent="ObjetoVisual" unique_id=710000012]
+visible = false
+
+[node name="Argolla" type="Line2D" parent="ObjetoVisual/Pesa" unique_id=710000013]
+points = PackedVector2Array(-12, -28, 0, -42, 12, -28)
+width = 5.0
+default_color = Color(0.45, 0.48, 0.55, 1)
+
+[node name="CuerpoPesa" type="Polygon2D" parent="ObjetoVisual/Pesa" unique_id=710000014]
+color = Color(0.22, 0.24, 0.28, 1)
+polygon = PackedVector2Array(-24, -26, 24, -26, 42, 26, -42, 26)
+
+[node name="BordePesa" type="Line2D" parent="ObjetoVisual/Pesa" unique_id=710000015]
+points = PackedVector2Array(-24, -26, 24, -26, 42, 26, -42, 26, -24, -26)
+width = 3.0
+default_color = Color(0.5, 0.55, 0.62, 1)
+
+[node name="Texto1000t" type="Label" parent="ObjetoVisual/Pesa" unique_id=710000016]
+offset_left = -30.0
+offset_top = -6.0
+offset_right = 30.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 14
+text = "1000t"
+horizontal_alignment = 1
+
+[node name="Barril" type="Node2D" parent="ObjetoVisual" unique_id=710000017]
+visible = false
+
+[node name="CuerpoBarril" type="Polygon2D" parent="ObjetoVisual/Barril" unique_id=710000018]
+color = Color(0.55, 0.32, 0.16, 1)
+polygon = PackedVector2Array(-22, -28, 22, -28, 36, 0, 22, 28, -22, 28, -36, 0)
+
+[node name="ArosMetal" type="Line2D" parent="ObjetoVisual/Barril" unique_id=710000019]
+points = PackedVector2Array(-26, -14, 26, -14, -34, 0, 34, 0, -26, 14, 26, 14)
+width = 3.0
+default_color = Color(0.35, 0.38, 0.45, 1)
+
+[node name="Valla" type="Node2D" parent="ObjetoVisual" unique_id=710000031]
+visible = false
+
+[node name="BarraSuperior" type="ColorRect" parent="ObjetoVisual/Valla" unique_id=710000032]
+offset_left = -72.0
+offset_top = -16.0
+offset_right = 72.0
+offset_bottom = -6.0
+color = Color(0.95, 0.95, 0.95, 1)
+
+[node name="FranjasPeligro" type="Line2D" parent="ObjetoVisual/Valla" unique_id=710000033]
+points = PackedVector2Array(-60, -11, -45, -11, -30, -11, -15, -11, 0, -11, 15, -11, 30, -11, 45, -11, 60, -11)
+width = 8.0
+default_color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="PosteIzq" type="ColorRect" parent="ObjetoVisual/Valla" unique_id=710000034]
+offset_left = -66.0
+offset_top = -6.0
+offset_right = -56.0
+offset_bottom = 18.0
+color = Color(0.3, 0.35, 0.4, 1)
+
+[node name="PosteDer" type="ColorRect" parent="ObjetoVisual/Valla" unique_id=710000035]
+offset_left = 56.0
+offset_top = -6.0
+offset_right = 66.0
+offset_bottom = 18.0
+color = Color(0.3, 0.35, 0.4, 1)
+
+[node name="PatasBase" type="Line2D" parent="ObjetoVisual/Valla" unique_id=710000036]
+points = PackedVector2Array(-74, 18, -48, 18, 48, 18, 74, 18)
+width = 4.0
+default_color = Color(0.2, 0.22, 0.25, 1)
+
+[node name="AreaImpacto" type="Area2D" parent="." unique_id=710000020]
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaImpacto" unique_id=710000021]
+shape = SubResource("CircleShape2D_impacto")
+
+[node name="ParticulasPolvo" type="CPUParticles2D" parent="." unique_id=710000022]
+emitting = false
+one_shot = true
+explosiveness = 0.9
+amount = 28
+lifetime = 0.6
+emission_shape = 1
+emission_sphere_radius = 20.0
+direction = Vector2(0, -1)
+spread = 80.0
+gravity = Vector2(0, 150)
+initial_velocity_min = 80.0
+initial_velocity_max = 160.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color = Color(0.78, 0.72, 0.62, 0.85)
+
+[node name="ParticulasNotas" type="CPUParticles2D" parent="." unique_id=710000023]
+emitting = false
+one_shot = true
+explosiveness = 0.85
+amount = 16
+lifetime = 0.7
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, -40)
+initial_velocity_min = 60.0
+initial_velocity_max = 130.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color = Color(1, 0.85, 0.25, 0.9)

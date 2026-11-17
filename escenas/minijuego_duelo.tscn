@@ -1,0 +1,151 @@
+[gd_scene format=3 uid="uid://duelo717000001"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_duelo.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/fondo_cielo_atardecer.png" id="2_cielo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/montanas_canyon.png" id="3_canyon"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/edificios_oeste.png" id="4_edificios"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/suelo_calle_tierra.png" id="5_suelo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/farol_poste_oeste.png" id="6_farol"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/estepicursor.png" id="7_estepicursor"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/fogata_campamento.png" id="8_fogata"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/duelo/luz_fogata_radial.png" id="9_luz"]
+
+[node name="MinijuegoDuelo" type="Node2D" unique_id=717000001]
+script = ExtResource("1_script")
+
+[node name="FondoCielo" type="TextureRect" parent="." unique_id=717000002]
+z_index = -30
+offset_right = 1152.0
+offset_bottom = 420.0
+texture = ExtResource("2_cielo")
+
+[node name="SolPoniente" type="Polygon2D" parent="." unique_id=717000003]
+z_index = -28
+position = Vector2(576, 250)
+color = Color(1, 0.45, 0.15, 0.95)
+polygon = PackedVector2Array(60, 0, 42, 42, 0, 60, -42, 42, -60, 0, -42, -42, 0, -60, 42, -42)
+
+[node name="MontanasCanyon" type="TextureRect" parent="." unique_id=717000004]
+z_index = -25
+offset_top = 150.0
+offset_right = 1152.0
+offset_bottom = 410.0
+texture = ExtResource("3_canyon")
+
+[node name="EdificiosOeste" type="TextureRect" parent="." unique_id=717000005]
+z_index = -20
+offset_top = 90.0
+offset_right = 1152.0
+offset_bottom = 430.0
+texture = ExtResource("4_edificios")
+
+[node name="SueloCalle" type="TextureRect" parent="." unique_id=717000006]
+z_index = -15
+offset_top = 368.0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("5_suelo")
+
+[node name="FarolPoste" type="Sprite2D" parent="." unique_id=717000007]
+z_index = -10
+position = Vector2(576, 320)
+texture = ExtResource("6_farol")
+
+[node name="LuzFarolSuave" type="Sprite2D" parent="FarolPoste" unique_id=717000008]
+modulate = Color(1, 0.85, 0.4, 0.25)
+position = Vector2(12, -8)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("9_luz")
+
+[node name="DestelloSenal" type="Sprite2D" parent="FarolPoste" unique_id=717000009]
+modulate = Color(1, 1, 0.8, 0)
+z_index = 30
+position = Vector2(12, -8)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("9_luz")
+
+[node name="ContenedorEstepicursores" type="Node2D" parent="." unique_id=717000010]
+z_index = 5
+
+[node name="Spawns" type="Node2D" parent="." unique_id=717000020]
+
+[node name="Duelo0" type="Marker2D" parent="Spawns" unique_id=717000021]
+position = Vector2(360, 480)
+
+[node name="Duelo1" type="Marker2D" parent="Spawns" unique_id=717000022]
+position = Vector2(792, 480)
+
+[node name="Espectador0" type="Marker2D" parent="Spawns" unique_id=717000023]
+position = Vector2(190, 425)
+
+[node name="Espectador1" type="Marker2D" parent="Spawns" unique_id=717000024]
+position = Vector2(960, 425)
+
+[node name="FogataCentro" type="Node2D" parent="." unique_id=717000040]
+visible = false
+z_index = 12
+position = Vector2(576, 490)
+
+[node name="LuzFogata" type="Sprite2D" parent="FogataCentro" unique_id=717000043]
+modulate = Color(1, 0.72, 0.28, 0)
+z_index = 11
+position = Vector2(0, -10)
+scale = Vector2(1.8, 1.4)
+texture = ExtResource("9_luz")
+
+[node name="SpriteFogata" type="Sprite2D" parent="FogataCentro" unique_id=717000041]
+z_index = 13
+texture = ExtResource("8_fogata")
+
+[node name="Chispas" type="CPUParticles2D" parent="FogataCentro" unique_id=717000042]
+z_index = 14
+position = Vector2(0, -6)
+amount = 32
+lifetime = 1.3
+speed_scale = 1.2
+spread = 35.0
+gravity = Vector2(0, -50)
+initial_velocity_min = 35.0
+initial_velocity_max = 75.0
+scale_amount_min = 2.5
+scale_amount_max = 5.0
+color = Color(1, 0.8, 0.2, 0.95)
+
+[node name="FiltroNoche" type="ColorRect" parent="." unique_id=717000050]
+z_index = 9
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.04, 0.03, 0.08, 0)
+
+[node name="EfectoDestelloDisparo" type="ColorRect" parent="." unique_id=717000051]
+z_index = 35
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=717000060]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=717000070]
+layer = 50
+
+[node name="BarraCineSuperior" type="ColorRect" parent="HUD" unique_id=717000071]
+offset_left = -524.0
+offset_top = -600.0
+offset_right = 1676.0
+offset_bottom = 0.0
+pivot_offset = Vector2(1100, 600)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="BarraCineInferior" type="ColorRect" parent="HUD" unique_id=717000072]
+offset_left = -524.0
+offset_top = 0.0
+offset_right = 1676.0
+offset_bottom = 600.0
+position = Vector2(0, 648)
+pivot_offset = Vector2(1100, 0)
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

@@ -1,0 +1,403 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_canones.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://escenas/plataforma_canon.tscn" id="2_plat"]
+[ext_resource type="PackedScene" path="res://escenas/plataforma_directora.tscn" id="3_directora"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_corner"]
+bg_color = Color(0.12, 0.14, 0.22, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.25, 0.8)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner_alerta"]
+bg_color = Color(0.1, 0.12, 0.18, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.85, 0.25, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+shadow_offset = Vector2(0, 3)
+
+[node name="MinijuegoCanones" type="Node2D" unique_id=620000001]
+script = ExtResource("1_script")
+
+[node name="FondoCielo" type="Node2D" parent="." unique_id=620000002]
+
+[node name="CieloAzul" type="ColorRect" parent="FondoCielo" unique_id=620000003]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.32, 0.62, 0.92, 1)
+
+[node name="NubesContenedor" type="Node2D" parent="FondoCielo" unique_id=620000004]
+
+[node name="Nube1" type="Polygon2D" parent="FondoCielo/NubesContenedor" unique_id=620000005]
+position = Vector2(80, 80)
+color = Color(1, 1, 1, 0.75)
+polygon = PackedVector2Array(-50, 0, -35, -20, 0, -30, 35, -25, 60, -10, 70, 10, 50, 25, 0, 30, -40, 20)
+
+[node name="Nube2" type="Polygon2D" parent="FondoCielo/NubesContenedor" unique_id=620000006]
+position = Vector2(480, 50)
+color = Color(1, 1, 1, 0.65)
+polygon = PackedVector2Array(-60, 0, -40, -25, 10, -35, 50, -20, 80, 5, 60, 25, -10, 30, -50, 18)
+
+[node name="Nube3" type="Polygon2D" parent="FondoCielo/NubesContenedor" unique_id=620000007]
+position = Vector2(920, 95)
+color = Color(1, 1, 1, 0.7)
+polygon = PackedVector2Array(-45, 0, -30, -18, 5, -28, 40, -18, 55, 10, 35, 22, -20, 25, -40, 15)
+
+[node name="TorreCastillo" type="Node2D" parent="." unique_id=620000008]
+position = Vector2(576, 330)
+
+[node name="MuroExterior" type="Polygon2D" parent="TorreCastillo" unique_id=620000009]
+color = Color(0.76, 0.64, 0.48, 1)
+polygon = PackedVector2Array(320, 0, 295, 122, 226, 226, 122, 295, 0, 320, -122, 295, -226, 226, -295, 122, -320, 0, -295, -122, -226, -226, -122, -295, 0, -320, 122, -295, 226, -226, 295, -122)
+
+[node name="AlmenasBorde" type="Line2D" parent="TorreCastillo" unique_id=620000010]
+points = PackedVector2Array(320, 0, 295, 122, 226, 226, 122, 295, 0, 320, -122, 295, -226, 226, -295, 122, -320, 0, -295, -122, -226, -226, -122, -295, 0, -320, 122, -295, 226, -226, 295, -122, 320, 0)
+width = 8.0
+default_color = Color(0.55, 0.42, 0.28, 1)
+
+[node name="PasoRonda" type="Polygon2D" parent="TorreCastillo" unique_id=620000011]
+color = Color(0.85, 0.72, 0.55, 1)
+polygon = PackedVector2Array(270, 0, 250, 103, 191, 191, 103, 250, 0, 270, -103, 250, -191, 191, -250, 103, -270, 0, -250, -103, -191, -191, -103, -250, 0, -270, 103, -250, 191, -191, 250, -103)
+
+[node name="RielesConectores" type="Line2D" parent="TorreCastillo" unique_id=620000012]
+points = PackedVector2Array(-226, -130, 226, -130, 226, 130, -226, 130, -226, -130)
+width = 14.0
+default_color = Color(0.68, 0.22, 0.22, 1)
+
+[node name="FosoCentral" type="Node2D" parent="TorreCastillo" unique_id=620000013]
+
+[node name="FondoFoso" type="Polygon2D" parent="TorreCastillo/FosoCentral" unique_id=620000014]
+color = Color(0.16, 0.14, 0.18, 1)
+polygon = PackedVector2Array(175, 0, 161, 67, 124, 124, 67, 161, 0, 175, -67, 161, -124, 124, -161, 67, -175, 0, -161, -67, -124, -124, -67, -161, 0, -175, 67, -161, 124, -124, 161, -67)
+
+[node name="BordeFoso" type="Line2D" parent="TorreCastillo/FosoCentral" unique_id=620000015]
+points = PackedVector2Array(175, 0, 161, 67, 124, 124, 67, 161, 0, 175, -67, 161, -124, 124, -161, 67, -175, 0, -161, -67, -124, -124, -67, -161, 0, -175, 67, -161, 124, -124, 161, -67, 175, 0)
+width = 6.0
+default_color = Color(0.35, 0.26, 0.18, 1)
+
+[node name="EngranajeCentral" type="Node2D" parent="TorreCastillo/FosoCentral" unique_id=620000016]
+
+[node name="DientesCentro" type="Polygon2D" parent="TorreCastillo/FosoCentral/EngranajeCentral" unique_id=620000017]
+color = Color(0.32, 0.35, 0.42, 1)
+polygon = PackedVector2Array(130, -18, 130, 18, 115, 28, 110, 65, 88, 88, 65, 110, 28, 115, 18, 130, -18, 130, -28, 115, -65, 110, -88, 88, -110, 65, -115, 28, -130, 18, -130, -18, -115, -28, -110, -65, -88, -88, -65, -110, -28, -115, -18, -130, 18, -130, 28, -115, 65, -110, 88, -88, 110, -65, 115, -28)
+
+[node name="DiscoCentro" type="Polygon2D" parent="TorreCastillo/FosoCentral/EngranajeCentral" unique_id=620000018]
+color = Color(0.24, 0.26, 0.32, 1)
+polygon = PackedVector2Array(95, 0, 87, 36, 67, 67, 36, 87, 0, 95, -36, 87, -67, 67, -87, 36, -95, 0, -87, -36, -67, -67, -36, -87, 0, -95, 36, -87, 67, -67, 87, -36)
+
+[node name="EstatuaCentro" type="Node2D" parent="TorreCastillo/FosoCentral" unique_id=620000019]
+
+[node name="BalaDorada" type="Polygon2D" parent="TorreCastillo/FosoCentral/EstatuaCentro" unique_id=620000020]
+color = Color(0.85, 0.7, 0.25, 1)
+polygon = PackedVector2Array(40, -15, 35, 20, 15, 38, -15, 38, -35, 20, -40, -15, -32, -38, 0, -48, 32, -38)
+
+[node name="BrilloDorado" type="Polygon2D" parent="TorreCastillo/FosoCentral/EstatuaCentro" unique_id=620000021]
+color = Color(1, 0.88, 0.45, 1)
+polygon = PackedVector2Array(25, -10, 22, 15, 10, 28, 0, 28, 8, 10, 15, -12, 18, -30)
+
+[node name="MurosRebote" type="Area2D" parent="." unique_id=620000070]
+position = Vector2(576, 330)
+collision_layer = 32
+collision_mask = 8
+visible = false
+
+[node name="BordeDorado" type="Line2D" parent="MurosRebote" unique_id=620000071]
+points = PackedVector2Array(346, 0, 320, 132, 245, 245, 132, 320, 0, 346, -132, 320, -245, 245, -320, 132, -346, 0, -320, -132, -245, -245, -132, -320, 0, -346, 132, -320, 245, -245, 320, -132, 346, 0)
+width = 8.0
+default_color = Color(0.92, 0.78, 0.35, 1)
+
+[node name="LuzPeligro" type="Line2D" parent="MurosRebote" unique_id=620000072]
+points = PackedVector2Array(334, 0, 309, 128, 236, 236, 128, 309, 0, 334, -128, 309, -236, 236, -309, 128, -334, 0, -309, -128, -236, -236, -128, -309, 0, -334, 128, -309, 236, -236, 309, -128, 334, 0)
+width = 4.0
+default_color = Color(1, 0.42, 0.1, 0.95)
+
+[node name="ContenedorPlataformas" type="Node2D" parent="." unique_id=620000022]
+
+[node name="Plataforma0" parent="ContenedorPlataformas" instance=ExtResource("2_plat")]
+position = Vector2(350, 200)
+
+[node name="Plataforma1" parent="ContenedorPlataformas" instance=ExtResource("2_plat")]
+position = Vector2(802, 200)
+
+[node name="Plataforma2" parent="ContenedorPlataformas" instance=ExtResource("2_plat")]
+position = Vector2(350, 460)
+
+[node name="Plataforma3" parent="ContenedorPlataformas" instance=ExtResource("2_plat")]
+position = Vector2(802, 460)
+
+[node name="PlataformaDirectora" parent="." instance=ExtResource("3_directora")]
+position = Vector2(576, 60)
+
+[node name="ContenedorProyectiles" type="Node2D" parent="." unique_id=620000023]
+
+[node name="Spawns" type="Node2D" parent="." unique_id=620000024]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=620000025]
+position = Vector2(350, 200)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=620000026]
+position = Vector2(802, 200)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=620000027]
+position = Vector2(350, 460)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=620000028]
+position = Vector2(802, 460)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=620000029]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=620000030]
+
+[node name="PanelTL" type="PanelContainer" parent="HUD" unique_id=620000031]
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 238.0
+offset_bottom = 74.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_corner")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelTL" unique_id=620000032]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelTL/Margen" unique_id=620000033]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelTL/Margen/HBox" unique_id=620000034]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNombre" type="Label" parent="HUD/PanelTL/Margen/HBox/VBox" unique_id=620000035]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "P1"
+
+[node name="HBoxVidas" type="HBoxContainer" parent="HUD/PanelTL/Margen/HBox/VBox" unique_id=620000036]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="V1" type="ColorRect" parent="HUD/PanelTL/Margen/HBox/VBox/HBoxVidas" unique_id=620000037]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V2" type="ColorRect" parent="HUD/PanelTL/Margen/HBox/VBox/HBoxVidas" unique_id=620000038]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V3" type="ColorRect" parent="HUD/PanelTL/Margen/HBox/VBox/HBoxVidas" unique_id=620000039]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PanelTR" type="PanelContainer" parent="HUD" unique_id=620000040]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -238.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 74.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_corner")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelTR" unique_id=620000041]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelTR/Margen" unique_id=620000042]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelTR/Margen/HBox" unique_id=620000043]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNombre" type="Label" parent="HUD/PanelTR/Margen/HBox/VBox" unique_id=620000044]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "P2"
+horizontal_alignment = 2
+
+[node name="HBoxVidas" type="HBoxContainer" parent="HUD/PanelTR/Margen/HBox/VBox" unique_id=620000045]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="V1" type="ColorRect" parent="HUD/PanelTR/Margen/HBox/VBox/HBoxVidas" unique_id=620000046]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V2" type="ColorRect" parent="HUD/PanelTR/Margen/HBox/VBox/HBoxVidas" unique_id=620000047]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V3" type="ColorRect" parent="HUD/PanelTR/Margen/HBox/VBox/HBoxVidas" unique_id=620000048]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PanelBL" type="PanelContainer" parent="HUD" unique_id=620000049]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -74.0
+offset_right = 238.0
+offset_bottom = -18.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_corner")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelBL" unique_id=620000050]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelBL/Margen" unique_id=620000051]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelBL/Margen/HBox" unique_id=620000052]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNombre" type="Label" parent="HUD/PanelBL/Margen/HBox/VBox" unique_id=620000053]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "P3"
+
+[node name="HBoxVidas" type="HBoxContainer" parent="HUD/PanelBL/Margen/HBox/VBox" unique_id=620000054]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="V1" type="ColorRect" parent="HUD/PanelBL/Margen/HBox/VBox/HBoxVidas" unique_id=620000055]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V2" type="ColorRect" parent="HUD/PanelBL/Margen/HBox/VBox/HBoxVidas" unique_id=620000056]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V3" type="ColorRect" parent="HUD/PanelBL/Margen/HBox/VBox/HBoxVidas" unique_id=620000057]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PanelBR" type="PanelContainer" parent="HUD" unique_id=620000058]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -238.0
+offset_top = -74.0
+offset_right = -18.0
+offset_bottom = -18.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_corner")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelBR" unique_id=620000059]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelBR/Margen" unique_id=620000060]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelBR/Margen/HBox" unique_id=620000061]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelNombre" type="Label" parent="HUD/PanelBR/Margen/HBox/VBox" unique_id=620000062]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "P4"
+horizontal_alignment = 2
+
+[node name="HBoxVidas" type="HBoxContainer" parent="HUD/PanelBR/Margen/HBox/VBox" unique_id=620000063]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="V1" type="ColorRect" parent="HUD/PanelBR/Margen/HBox/VBox/HBoxVidas" unique_id=620000064]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V2" type="ColorRect" parent="HUD/PanelBR/Margen/HBox/VBox/HBoxVidas" unique_id=620000065]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="V3" type="ColorRect" parent="HUD/PanelBR/Margen/HBox/VBox/HBoxVidas" unique_id=620000066]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PanelAlerta" type="PanelContainer" parent="HUD" unique_id=620000091]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -140.0
+offset_right = 280.0
+offset_bottom = -86.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(280, 27)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_banner_alerta")
+
+[node name="LabelAlerta" type="Label" parent="HUD/PanelAlerta" unique_id=620000092]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.3, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 21
+text = "⚡ ¡VELOCIDAD AUMENTADA! ⚡"
+horizontal_alignment = 1
+vertical_alignment = 1

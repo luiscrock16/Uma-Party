@@ -1,0 +1,296 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_snowboard.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/snowboard/cp_star.png" id="2_star"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.06, 0.18, 0.36, 0.9)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.1, 0.12, 0.16, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.18, 0.6, 0.92, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rebufo_bg"]
+bg_color = Color(0.06, 0.12, 0.2, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.16, 0.22, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rebufo_fill"]
+bg_color = Color(0.15, 0.88, 1.0, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_salida"]
+bg_color = Color(0.06, 0.16, 0.32, 0.92)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.12, 0.14, 0.18, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+
+[node name="MinijuegoSnowboard" type="Node2D" unique_id=715000001]
+script = ExtResource("1_script")
+
+[node name="CieloLayer" type="CanvasLayer" parent="." unique_id=715000002]
+layer = -100
+
+[node name="CieloGradiente" type="ColorRect" parent="CieloLayer" unique_id=715000003]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.06, 0.42, 0.76, 1)
+
+[node name="FondoMontana" type="Node2D" parent="." unique_id=715000004]
+z_index = -20
+
+[node name="Spawns" type="Node2D" parent="." unique_id=715000020]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=715000021]
+position = Vector2(400, 220)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=715000022]
+position = Vector2(400, 285)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=715000023]
+position = Vector2(400, 355)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=715000024]
+position = Vector2(400, 420)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=715000030]
+position = Vector2(400, 320)
+limit_left = -2000
+limit_top = -3000
+limit_right = 36000
+limit_bottom = 22000
+position_smoothing_enabled = true
+position_smoothing_speed = 7.0
+
+[node name="ContenedorObstaculos" type="Node2D" parent="." unique_id=715000040]
+
+[node name="ContenedorEfectos" type="Node2D" parent="." unique_id=715000050]
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=715000060]
+layer = 50
+
+[node name="PanelProgreso" type="PanelContainer" parent="HUD" unique_id=715000065]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 14.0
+offset_right = 300.0
+offset_bottom = 46.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_progress_bg")
+
+[node name="Barra" type="ProgressBar" parent="HUD/PanelProgreso" unique_id=715000066]
+layout_mode = 2
+size_flags_vertical = 1
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+show_percentage = false
+
+[node name="ContenedorAvatares" type="Control" parent="HUD/PanelProgreso" unique_id=715000067]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="EstrellaMeta" type="TextureRect" parent="HUD/PanelProgreso" unique_id=715000068]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("2_star")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelRebufo" type="PanelContainer" parent="HUD" unique_id=715000070]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -45.0
+offset_right = 140.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rebufo_bg")
+
+[node name="BarraRebufo" type="ProgressBar" parent="HUD/PanelRebufo" unique_id=715000071]
+custom_minimum_size = Vector2(270, 18)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_rebufo_fill")
+value = 0.0
+show_percentage = false
+
+[node name="PanelSalida" type="PanelContainer" parent="HUD" unique_id=715000080]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -140.0
+offset_right = 220.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_salida")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelSalida" unique_id=715000081]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="LabelNumeroConteo" type="Label" parent="HUD/PanelSalida/VBox" unique_id=715000082]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 46
+text = "3"
+horizontal_alignment = 1
+
+[node name="MarcoBarra" type="Control" parent="HUD/PanelSalida/VBox" unique_id=715000083]
+custom_minimum_size = Vector2(360, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="SegRojoIzq" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000084]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 70.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.9, 0.22, 0.22, 1)
+
+[node name="SegNaranjaIzq" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000085]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 70.0
+offset_right = 125.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.55, 0.15, 1)
+
+[node name="SegAmarilloIzq" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000086]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 125.0
+offset_right = 160.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.96, 0.88, 0.2, 1)
+
+[node name="SegVerdeCentro" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000087]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_right = 200.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.18, 0.9, 0.42, 1)
+
+[node name="SegAmarilloDer" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000088]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_right = 235.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.96, 0.88, 0.2, 1)
+
+[node name="SegNaranjaDer" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000089]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 235.0
+offset_right = 290.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.98, 0.55, 0.15, 1)
+
+[node name="SegRojoDer" type="ColorRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000090]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 290.0
+offset_right = 360.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.9, 0.22, 0.22, 1)
+
+[node name="BordeMarco" type="ReferenceRect" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000091]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+border_color = Color(0.1, 0.12, 0.15, 1)
+border_width = 3.0
+editor_only = false
+
+[node name="Aguja" type="Polygon2D" parent="HUD/PanelSalida/VBox/MarcoBarra" unique_id=715000092]
+position = Vector2(180, 0)
+color = Color(1, 1, 1, 1)
+polygon = PackedVector2Array(-7, -8, 7, -8, 0, 18, 7, 44, -7, 44, 0, 18)
+
+[node name="LabelIndicacion" type="Label" parent="HUD/PanelSalida/VBox" unique_id=715000093]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 13
+text = "¡Presiona ESPACIO, W/S o Toca para bloquear la aguja en el CENTRO!"
+horizontal_alignment = 1

@@ -1,0 +1,346 @@
+[gd_scene format=3 uid="uid://boyivbedwl1m0"]
+
+[ext_resource type="Script" uid="uid://bbw1p0ihfvsko" path="res://scripts/minijuego_garra.gd" id="1_g4oew"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/bg_pretty_catch_wall.png" id="2_bg_wall"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/bg_arcade_exterior.png" id="3_bg_exterior"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/chute_premios.png" id="4_chute"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/suelo_plataforma.png" id="5_suelo"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/piscina_nubes.png" id="6_piscina"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/arcade_cabinet_frame.png" id="7_frame"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/cristal_reflejos.png" id="8_cristal"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/mira_arcade.png" id="9_mira"]
+[ext_resource type="Texture2D" uid="uid://hqnj8a3hmfev" path="res://assets/Sprites/objetos/Base.png" id="10_base"]
+[ext_resource type="Texture2D" uid="uid://bvrrsqsmwv8xt" path="res://assets/Sprites/objetos/tubo.png" id="11_tubo"]
+[ext_resource type="Texture2D" uid="uid://cg087o63a8me" path="res://assets/Sprites/objetos/Pinza_open.png" id="12_pinza"]
+[ext_resource type="Texture2D" uid="uid://b1lqnrsenp1oj" path="res://assets/Sprites/objetos/objeto.png" id="13_modulo"]
+[ext_resource type="PackedScene" uid="uid://cf83kmp2q78w1" path="res://escenas/peluche.tscn" id="14_peluche"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wn5q7"]
+size = Vector2(65, 52)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g8u72"]
+size = Vector2(160, 460)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a7v8m"]
+size = Vector2(330, 420)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_muro_v"]
+size = Vector2(10, 420)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_muro_h"]
+size = Vector2(540, 10)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(1, 0.95, 0.98, 0.92)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.45, 0.72, 1)
+shadow_color = Color(0, 0, 0, 0.12)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_victoria"]
+bg_color = Color(1, 0.96, 0.98, 0.96)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.4, 0.7, 1)
+shadow_color = Color(0, 0, 0, 0.18)
+shadow_size = 8
+shadow_offset = Vector2(0, 4)
+
+[node name="MinijuegoGarra" type="Node2D" unique_id=1172077845]
+script = ExtResource("1_g4oew")
+modo_actual = 2
+
+[node name="EscenarioVisual" type="Node2D" parent="." unique_id=200000001]
+z_index = -10
+
+[node name="FondoPrettyCatch" type="TextureRect" parent="EscenarioVisual" unique_id=200000002]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("2_bg_wall")
+expand_mode = 1
+
+[node name="VentanalExterior" type="Node2D" parent="EscenarioVisual"]
+position = Vector2(0, 0)
+
+[node name="FondoArcadeExterior" type="TextureRect" parent="EscenarioVisual/VentanalExterior"]
+offset_right = 1152.0
+offset_bottom = 172.0
+mouse_filter = 2
+texture = ExtResource("3_bg_exterior")
+expand_mode = 1
+
+[node name="CapaPersonajesFondo" type="Node2D" parent="EscenarioVisual/VentanalExterior"]
+position = Vector2(0, 0)
+
+[node name="CristalSuperiorOverlay" type="ColorRect" parent="EscenarioVisual/VentanalExterior"]
+offset_top = 26.0
+offset_right = 1152.0
+offset_bottom = 168.0
+mouse_filter = 2
+color = Color(0.85, 0.94, 1, 0.14)
+
+[node name="ZonaPremiosVisual" type="Node2D" parent="EscenarioVisual" unique_id=200000004]
+
+[node name="SpriteChute" type="TextureRect" parent="EscenarioVisual/ZonaPremiosVisual"]
+offset_left = 45.0
+offset_top = 135.0
+offset_right = 215.0
+offset_bottom = 605.0
+mouse_filter = 2
+texture = ExtResource("4_chute")
+expand_mode = 1
+
+[node name="PlataformaVisual" type="Node2D" parent="EscenarioVisual" unique_id=200000008]
+
+[node name="SpriteSuelo" type="TextureRect" parent="EscenarioVisual/PlataformaVisual"]
+offset_left = 235.0
+offset_top = 165.0
+offset_right = 765.0
+offset_bottom = 595.0
+mouse_filter = 2
+texture = ExtResource("5_suelo")
+expand_mode = 1
+
+[node name="PiscinaVisual" type="Node2D" parent="EscenarioVisual" unique_id=200000017]
+
+[node name="SpritePiscina" type="TextureRect" parent="EscenarioVisual/PiscinaVisual"]
+offset_left = 775.0
+offset_top = 165.0
+offset_right = 1115.0
+offset_bottom = 595.0
+mouse_filter = 2
+texture = ExtResource("6_piscina")
+expand_mode = 1
+
+[node name="MarcoCabina" type="TextureRect" parent="EscenarioVisual"]
+z_index = 5
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("7_frame")
+expand_mode = 1
+
+[node name="BandejaPremios" type="Node2D" parent="." unique_id=200000050]
+z_index = 6
+position = Vector2(135, 618)
+
+[node name="MurosPlataforma" type="StaticBody2D" parent="." unique_id=200000021]
+
+[node name="MuroIzq" type="CollisionShape2D" parent="MurosPlataforma" unique_id=200000022]
+position = Vector2(235, 380)
+shape = SubResource("RectangleShape2D_muro_v")
+
+[node name="MuroDer" type="CollisionShape2D" parent="MurosPlataforma" unique_id=200000023]
+position = Vector2(765, 380)
+shape = SubResource("RectangleShape2D_muro_v")
+
+[node name="MuroArriba" type="CollisionShape2D" parent="MurosPlataforma" unique_id=200000024]
+position = Vector2(500, 165)
+shape = SubResource("RectangleShape2D_muro_h")
+
+[node name="MuroAbajo" type="CollisionShape2D" parent="MurosPlataforma" unique_id=200000025]
+position = Vector2(500, 595)
+shape = SubResource("RectangleShape2D_muro_h")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=1089478819]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=1535715666]
+position = Vector2(360, 380)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=1716587281]
+position = Vector2(500, 270)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=1339801953]
+position = Vector2(640, 380)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=1437528846]
+position = Vector2(548, -1345)
+
+[node name="ZonaEliminacion" type="Area2D" parent="." unique_id=1342432305 groups=["ZonaEliminacion"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaEliminacion" unique_id=1717119927]
+position = Vector2(130, 370)
+shape = SubResource("RectangleShape2D_g8u72")
+
+[node name="ZonaPiscina" type="Area2D" parent="." unique_id=619563542]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaPiscina" unique_id=1984420756]
+position = Vector2(945, 380)
+shape = SubResource("RectangleShape2D_a7v8m")
+
+[node name="ContenedorPeluches" type="Node2D" parent="." unique_id=1705798816]
+
+[node name="Peluche1" parent="ContenedorPeluches" instance=ExtResource("14_peluche")]
+position = Vector2(850, 320)
+tipo_peluche = 0
+
+[node name="Peluche2" parent="ContenedorPeluches" instance=ExtResource("14_peluche")]
+position = Vector2(930, 400)
+tipo_peluche = 1
+
+[node name="Peluche3" parent="ContenedorPeluches" instance=ExtResource("14_peluche")]
+position = Vector2(1010, 310)
+tipo_peluche = 2
+
+[node name="Peluche4" parent="ContenedorPeluches" instance=ExtResource("14_peluche")]
+position = Vector2(960, 480)
+tipo_peluche = 0
+
+[node name="Peluche5" parent="ContenedorPeluches" instance=ExtResource("14_peluche")]
+position = Vector2(870, 500)
+tipo_peluche = 1
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=200000026]
+_spawnable_scenes = PackedStringArray("res://escenas/peluche.tscn")
+spawn_path = NodePath("../ContenedorPeluches")
+
+[node name="GarraObjeto" type="Node2D" parent="." unique_id=882472238]
+z_index = 10
+
+[node name="BaseGarra" type="Sprite2D" parent="GarraObjeto" unique_id=359758001]
+position = Vector2(0, 9)
+rotation = -3.1415927
+scale = Vector2(0.32, 0.38)
+texture = ExtResource("10_base")
+
+[node name="PinzasContenedor" type="Node2D" parent="GarraObjeto" unique_id=455299190]
+position = Vector2(0, 110)
+
+[node name="TuboCadena" type="Sprite2D" parent="GarraObjeto/PinzasContenedor" unique_id=1037640377]
+z_index = -1
+texture_filter = 1
+position = Vector2(0, -265)
+scale = Vector2(0.3, 1.79)
+texture = ExtResource("11_tubo")
+
+[node name="PinzaIzquierda" type="Sprite2D" parent="GarraObjeto/PinzasContenedor" unique_id=879131323]
+position = Vector2(41, 23)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_pinza")
+
+[node name="PinzaDerecha" type="Sprite2D" parent="GarraObjeto/PinzasContenedor" unique_id=1382010118]
+position = Vector2(-41, 23)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("12_pinza")
+flip_h = true
+
+[node name="ModuloCentral" type="Sprite2D" parent="GarraObjeto/PinzasContenedor" unique_id=1167546098]
+position = Vector2(3, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_modulo")
+
+[node name="AreaDetector" type="Area2D" parent="GarraObjeto/PinzasContenedor" unique_id=827665498]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GarraObjeto/PinzasContenedor/AreaDetector" unique_id=1593005153]
+position = Vector2(-0.5, 69)
+shape = SubResource("RectangleShape2D_wn5q7")
+
+[node name="IndicadorSuelo" type="Sprite2D" parent="GarraObjeto" unique_id=1017517664]
+position = Vector2(0, 450)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("9_mira")
+
+[node name="PuntoSuelo" type="Marker2D" parent="GarraObjeto/IndicadorSuelo" unique_id=1088225225]
+
+[node name="CristalFrontal" type="TextureRect" parent="." unique_id=200000040]
+z_index = 15
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("8_cristal")
+expand_mode = 1
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=200000027]
+
+[node name="PanelTiempo" type="Panel" parent="HUD" unique_id=200000028]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 8.0
+offset_right = 110.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="LabelTiempo" type="Label" parent="HUD/PanelTiempo" unique_id=200000029]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.62, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.85, 0.9, 0.6)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 22
+text = "TIEMPO: 45"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelSupervivientes" type="Label" parent="HUD" unique_id=200000030]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 58.0
+offset_right = 160.0
+offset_bottom = 84.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.2, 0.25, 0.35, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 15
+text = "Supervivientes: 3"
+horizontal_alignment = 1
+
+[node name="PanelVictoria" type="Panel" parent="HUD" unique_id=200000031]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -90.0
+offset_right = 300.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_victoria")
+
+[node name="LabelVictoria" type="Label" parent="HUD/PanelVictoria" unique_id=200000032]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.65, 1)
+theme_override_colors/font_shadow_color = Color(1, 0.85, 0.2, 0.5)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 26
+text = "¡TIEMPO AGOTADO!
+¡LOS SUPERVIVIENTES GANAN!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="ZonaEliminacion" to="." method="_on_zona_eliminacion_body_entered"]
+[connection signal="body_exited" from="ZonaEliminacion" to="." method="_on_zona_eliminacion_body_exited"]

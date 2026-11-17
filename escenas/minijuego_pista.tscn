@@ -1,0 +1,409 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_pista.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horizontal"]
+size = Vector2(920, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vertical"]
+size = Vector2(40, 390)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_marcador"]
+bg_color = Color(0.12, 0.13, 0.16, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.85, 0.68, 0.35, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ronda"]
+bg_color = Color(0.18, 0.14, 0.22, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.75, 0.3, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_equipo0"]
+bg_color = Color(0.12, 0.1, 0.15, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.3, 0.4, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_equipo1"]
+bg_color = Color(0.1, 0.12, 0.18, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.6, 1, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 4
+
+[node name="MinijuegoPista" type="Node2D" unique_id=700000001]
+script = ExtResource("1_script")
+
+[node name="FondoPista" type="Node2D" parent="." unique_id=700000002]
+z_index = -10
+z_as_relative = false
+
+[node name="CieloEstadio" type="ColorRect" parent="FondoPista" unique_id=700000003]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.14, 0.12, 0.18, 1)
+
+[node name="GradasSuperior" type="ColorRect" parent="FondoPista" unique_id=700000004]
+offset_right = 1152.0
+offset_bottom = 195.0
+color = Color(0.24, 0.2, 0.3, 1)
+
+[node name="GradaEscalon1" type="ColorRect" parent="FondoPista/GradasSuperior" unique_id=700000005]
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 120.0
+color = Color(0.2, 0.17, 0.26, 1)
+
+[node name="GradaEscalon2" type="ColorRect" parent="FondoPista/GradasSuperior" unique_id=700000006]
+offset_top = 120.0
+offset_right = 1152.0
+offset_bottom = 185.0
+color = Color(0.16, 0.14, 0.22, 1)
+
+[node name="BanderasEstadio" type="Node2D" parent="FondoPista" unique_id=700000007]
+
+[node name="Bandera1" type="Polygon2D" parent="FondoPista/BanderasEstadio" unique_id=700000008]
+color = Color(0.75, 0.2, 0.35, 1)
+polygon = PackedVector2Array(40, 20, 140, 20, 140, 65, 90, 80, 40, 65)
+
+[node name="Bandera2" type="Polygon2D" parent="FondoPista/BanderasEstadio" unique_id=700000009]
+color = Color(0.2, 0.4, 0.75, 1)
+polygon = PackedVector2Array(180, 20, 280, 20, 280, 65, 230, 80, 180, 65)
+
+[node name="Bandera3" type="Polygon2D" parent="FondoPista/BanderasEstadio" unique_id=700000010]
+color = Color(0.65, 0.2, 0.6, 1)
+polygon = PackedVector2Array(870, 20, 970, 20, 970, 65, 920, 80, 870, 65)
+
+[node name="Bandera4" type="Polygon2D" parent="FondoPista/BanderasEstadio" unique_id=700000011]
+color = Color(0.85, 0.5, 0.15, 1)
+polygon = PackedVector2Array(1010, 20, 1110, 20, 1110, 65, 1060, 80, 1010, 65)
+
+[node name="ZonaLateralIzquierda" type="Node2D" parent="FondoPista" unique_id=700000012]
+
+[node name="ParedIzq" type="ColorRect" parent="FondoPista/ZonaLateralIzquierda" unique_id=700000013]
+offset_left = 0.0
+offset_top = 195.0
+offset_right = 135.0
+offset_bottom = 600.0
+color = Color(0.28, 0.22, 0.2, 1)
+
+[node name="FranjaMaderaIzq" type="ColorRect" parent="FondoPista/ZonaLateralIzquierda" unique_id=700000014]
+offset_left = 120.0
+offset_top = 195.0
+offset_right = 135.0
+offset_bottom = 600.0
+color = Color(0.45, 0.32, 0.22, 1)
+
+[node name="ZonaLateralDerecha" type="Node2D" parent="FondoPista" unique_id=700000015]
+
+[node name="ParedDer" type="ColorRect" parent="FondoPista/ZonaLateralDerecha" unique_id=700000016]
+offset_left = 1017.0
+offset_top = 195.0
+offset_right = 1152.0
+offset_bottom = 600.0
+color = Color(0.28, 0.22, 0.2, 1)
+
+[node name="FranjaMaderaDer" type="ColorRect" parent="FondoPista/ZonaLateralDerecha" unique_id=700000017]
+offset_left = 1017.0
+offset_top = 195.0
+offset_right = 1032.0
+offset_bottom = 600.0
+color = Color(0.45, 0.32, 0.22, 1)
+
+[node name="SueloCanchaDuela" type="ColorRect" parent="FondoPista" unique_id=700000018]
+offset_left = 135.0
+offset_top = 195.0
+offset_right = 1017.0
+offset_bottom = 600.0
+color = Color(0.88, 0.65, 0.4, 1)
+
+[node name="TablonesMadera" type="Node2D" parent="FondoPista" unique_id=700000019]
+
+[node name="Tablon1" type="ColorRect" parent="FondoPista/TablonesMadera" unique_id=700000020]
+offset_left = 135.0
+offset_top = 235.0
+offset_right = 1017.0
+offset_bottom = 275.0
+color = Color(0.85, 0.61, 0.37, 0.7)
+
+[node name="Tablon2" type="ColorRect" parent="FondoPista/TablonesMadera" unique_id=700000021]
+offset_left = 135.0
+offset_top = 315.0
+offset_right = 1017.0
+offset_bottom = 355.0
+color = Color(0.85, 0.61, 0.37, 0.7)
+
+[node name="Tablon3" type="ColorRect" parent="FondoPista/TablonesMadera" unique_id=700000022]
+offset_left = 135.0
+offset_top = 395.0
+offset_right = 1017.0
+offset_bottom = 435.0
+color = Color(0.85, 0.61, 0.37, 0.7)
+
+[node name="Tablon4" type="ColorRect" parent="FondoPista/TablonesMadera" unique_id=700000023]
+offset_left = 135.0
+offset_top = 475.0
+offset_right = 1017.0
+offset_bottom = 515.0
+color = Color(0.85, 0.61, 0.37, 0.7)
+
+[node name="Tablon5" type="ColorRect" parent="FondoPista/TablonesMadera" unique_id=700000024]
+offset_left = 135.0
+offset_top = 555.0
+offset_right = 1017.0
+offset_bottom = 595.0
+color = Color(0.85, 0.61, 0.37, 0.7)
+
+[node name="LineasCancha" type="Node2D" parent="FondoPista" unique_id=700000025]
+
+[node name="RectanguloExterior" type="Line2D" parent="FondoPista/LineasCancha" unique_id=700000026]
+points = PackedVector2Array(160, 245, 992, 245, 992, 575, 160, 575, 160, 245)
+width = 3.5
+default_color = Color(1, 1, 1, 0.8)
+
+[node name="LineaCentral" type="Line2D" parent="FondoPista/LineasCancha" unique_id=700000027]
+points = PackedVector2Array(576, 245, 576, 575)
+width = 3.0
+default_color = Color(1, 1, 1, 0.7)
+
+[node name="CirculoCentral" type="Line2D" parent="FondoPista/LineasCancha" unique_id=700000028]
+position = Vector2(576, 410)
+points = PackedVector2Array(50, 0, 46, 19, 35, 35, 19, 46, 0, 50, -19, 46, -35, 35, -46, 19, -50, 0, -46, -19, -35, -35, -19, -46, 0, -50, 19, -46, 35, -35, 46, -19, 50, 0)
+width = 2.5
+default_color = Color(0.2, 0.7, 1, 0.5)
+
+[node name="CirculoCentralInterior" type="Polygon2D" parent="FondoPista/LineasCancha" unique_id=700000029]
+position = Vector2(576, 410)
+color = Color(0.18, 0.65, 0.95, 0.15)
+polygon = PackedVector2Array(50, 0, 46, 19, 35, 35, 19, 46, 0, 50, -19, 46, -35, 35, -46, 19, -50, 0, -46, -19, -35, -35, -19, -46, 0, -50, 19, -46, 35, -35, 46, -19)
+
+[node name="VallaFondoSuperior" type="Node2D" parent="FondoPista" unique_id=700000030]
+
+[node name="PanelVallaBlanco" type="ColorRect" parent="FondoPista/VallaFondoSuperior" unique_id=700000031]
+offset_top = 185.0
+offset_right = 1152.0
+offset_bottom = 220.0
+color = Color(0.95, 0.95, 0.97, 1)
+
+[node name="BarandillaAmarilla" type="ColorRect" parent="FondoPista/VallaFondoSuperior" unique_id=700000032]
+offset_top = 175.0
+offset_right = 1152.0
+offset_bottom = 187.0
+color = Color(0.96, 0.82, 0.22, 1)
+
+[node name="PostesMetalicos" type="Line2D" parent="FondoPista/VallaFondoSuperior" unique_id=700000033]
+points = PackedVector2Array(150, 130, 150, 185, 300, 130, 300, 185, 450, 130, 450, 185, 700, 130, 700, 185, 850, 130, 850, 185, 1000, 130, 1000, 185)
+width = 4.0
+default_color = Color(0.4, 0.45, 0.52, 0.85)
+
+[node name="VallaInferior" type="Node2D" parent="FondoPista" unique_id=700000034]
+
+[node name="BarandillaInferiorAmarilla" type="ColorRect" parent="FondoPista/VallaInferior" unique_id=700000035]
+offset_top = 600.0
+offset_right = 1152.0
+offset_bottom = 612.0
+color = Color(0.96, 0.82, 0.22, 1)
+
+[node name="PanelInferior" type="ColorRect" parent="FondoPista/VallaInferior" unique_id=700000036]
+offset_top = 612.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.92, 0.92, 0.95, 1)
+
+[node name="LimitesCampo" type="StaticBody2D" parent="." unique_id=700000040]
+collision_layer = 1
+collision_mask = 1
+
+[node name="ColArriba" type="CollisionShape2D" parent="LimitesCampo" unique_id=700000041]
+position = Vector2(576, 210)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="ColAbajo" type="CollisionShape2D" parent="LimitesCampo" unique_id=700000042]
+position = Vector2(576, 615)
+shape = SubResource("RectangleShape2D_horizontal")
+
+[node name="ColIzquierda" type="CollisionShape2D" parent="LimitesCampo" unique_id=700000043]
+position = Vector2(120, 410)
+shape = SubResource("RectangleShape2D_vertical")
+
+[node name="ColDerecha" type="CollisionShape2D" parent="LimitesCampo" unique_id=700000044]
+position = Vector2(1032, 410)
+shape = SubResource("RectangleShape2D_vertical")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=700000050]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=700000051]
+position = Vector2(290, 330)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=700000052]
+position = Vector2(290, 480)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=700000053]
+position = Vector2(862, 330)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=700000054]
+position = Vector2(862, 480)
+
+[node name="ContenedorSombras" type="Node2D" parent="." unique_id=700000060]
+
+[node name="ContenedorBarrera" type="Node2D" parent="." unique_id=700000061]
+
+[node name="ContenedorObstaculos" type="Node2D" parent="." unique_id=700000062]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=700000070]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=700000080]
+
+[node name="MarcadorCentral" type="PanelContainer" parent="HUD" unique_id=700000081]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 10.0
+offset_right = 110.0
+offset_bottom = 85.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_marcador")
+
+[node name="Margen" type="MarginContainer" parent="HUD/MarcadorCentral" unique_id=700000082]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="HUD/MarcadorCentral/Margen" unique_id=700000083]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="LabelReloj" type="Label" parent="HUD/MarcadorCentral/Margen/VBox" unique_id=700000084]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.98, 0.95, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 28
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="PanelRonda" type="PanelContainer" parent="HUD/MarcadorCentral/Margen/VBox" unique_id=700000085]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ronda")
+
+[node name="LabelFase" type="Label" parent="HUD/MarcadorCentral/Margen/VBox/PanelRonda" unique_id=700000086]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.35, 1)
+theme_override_font_sizes/font_size = 11
+text = "FASE 1 / 3"
+horizontal_alignment = 1
+
+[node name="PanelEquipo0" type="PanelContainer" parent="HUD" unique_id=700000087]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 320.0
+offset_bottom = 72.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_equipo0")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelEquipo0" unique_id=700000088]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelEquipo0/Margen" unique_id=700000089]
+layout_mode = 2
+
+[node name="LabelTitulo" type="Label" parent="HUD/PanelEquipo0/Margen/VBox" unique_id=700000090]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = "★ EQUIPO ROJO"
+
+[node name="LabelIntegrantes" type="Label" parent="HUD/PanelEquipo0/Margen/VBox" unique_id=700000091]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 12
+text = "P1 [✓]  •  P2 [✓]"
+
+[node name="PanelEquipo1" type="PanelContainer" parent="HUD" unique_id=700000092]
+offset_left = 832.0
+offset_top = 16.0
+offset_right = 1132.0
+offset_bottom = 72.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_equipo1")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelEquipo1" unique_id=700000093]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelEquipo1/Margen" unique_id=700000094]
+layout_mode = 2
+
+[node name="LabelTitulo" type="Label" parent="HUD/PanelEquipo1/Margen/VBox" unique_id=700000095]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.75, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "★ EQUIPO AZUL"
+horizontal_alignment = 2
+
+[node name="LabelIntegrantes" type="Label" parent="HUD/PanelEquipo1/Margen/VBox" unique_id=700000096]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 12
+text = "P3 [✓]  •  P4 [✓]"
+horizontal_alignment = 2
+
+[node name="LabelModoTest" type="Label" parent="HUD" unique_id=700000097]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -28.0
+offset_right = 160.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 0.85)
+theme_override_font_sizes/font_size = 12
+text = "MODO DE PRUEBA CONTINUO (F6)"
+horizontal_alignment = 1

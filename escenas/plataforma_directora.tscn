@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://cb41vdrt73xkp"]
+
+[ext_resource type="Script" path="res://scripts/plataforma_directora.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST01_00.png" id="2_akyy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bocadillo"]
+bg_color = Color(1, 1, 1, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.92, 0.25, 0.55, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[node name="PlataformaDirectora" type="Node2D" unique_id=990000001]
+z_index = 20
+script = ExtResource("1_script")
+
+[node name="Visual" type="Node2D" parent="." unique_id=990000002]
+
+[node name="Sombra" type="Polygon2D" parent="Visual" unique_id=990000003]
+position = Vector2(0, 24)
+color = Color(0, 0, 0, 0.22)
+polygon = PackedVector2Array(-65, 0, -48, 11, 0, 16, 48, 11, 65, 0, 48, -11, 0, -16, -48, -11)
+
+[node name="PropulsorLuz" type="Polygon2D" parent="Visual" unique_id=990000004]
+position = Vector2(0, 16)
+color = Color(0, 0.9, 1, 0.75)
+polygon = PackedVector2Array(-24, 0, -14, 16, 0, 24, 14, 16, 24, 0, 0, 5)
+
+[node name="BaseHover" type="Polygon2D" parent="Visual" unique_id=990000005]
+color = Color(0.98, 0.98, 0.99, 1)
+polygon = PackedVector2Array(-75, 0, -58, 15, 0, 23, 58, 15, 75, 0, 58, -15, 0, -23, -58, -15)
+
+[node name="BordeHover" type="Line2D" parent="Visual" unique_id=990000006]
+points = PackedVector2Array(-75, 0, -58, 15, 0, 23, 58, 15, 75, 0, 58, -15, 0, -23, -58, -15, -75, 0)
+width = 3.5
+default_color = Color(0.96, 0.78, 0.2, 1)
+
+[node name="Podio" type="Node2D" parent="Visual" unique_id=990000007]
+position = Vector2(32, -4)
+
+[node name="BasePodio" type="Polygon2D" parent="Visual/Podio" unique_id=990000008]
+color = Color(0.24, 0.28, 0.38, 1)
+polygon = PackedVector2Array(-9, 8, 9, 8, 7, -12, -7, -12)
+
+[node name="BotonRojo" type="Polygon2D" parent="Visual/Podio" unique_id=990000009]
+position = Vector2(0, -12)
+color = Color(0.92, 0.2, 0.24, 1)
+polygon = PackedVector2Array(-5, 0, -4, -4, 0, -6, 4, -4, 5, 0)
+
+[node name="DirectoraSprite" type="Sprite2D" parent="Visual" unique_id=990000010]
+position = Vector2(-12, -26)
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_akyy")
+
+[node name="Bocadillo" type="PanelContainer" parent="Visual" unique_id=990000011]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -115.0
+offset_top = -98.0
+offset_right = 115.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(115, 34)
+theme_override_styles/panel = SubResource("StyleBoxFlat_bocadillo")
+
+[node name="Margen" type="MarginContainer" parent="Visual/Bocadillo" unique_id=990000012]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="LabelTexto" type="Label" parent="Visual/Bocadillo/Margen" unique_id=990000013]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.16, 0.2, 1)
+theme_override_font_sizes/font_size = 11
+text = "¡ACELERACIÓN DE PLATAFORMAS!"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,34 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://dquoyrgdbvy0"]
+
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_0.png" id="1_t0"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_1.png" id="2_t1"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_2.png" id="3_t2"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_3.png" id="4_t3"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_4.png" id="5_t4"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/tormenta/tornado_cartoon_5.png" id="6_t5"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_t0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_t1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_t2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_t3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_t4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_t5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]

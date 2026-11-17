@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://b8wq8p5mye31b"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_martillo.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/martillo/fondo_puesto_feria.png" id="2_fondo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/martillo/mira_martillo_reticula.png" id="3_mira"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/martillo/martillo_gigante_feria.png" id="4_martillo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/martillo/plataforma_operador.png" id="5_plataforma"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.2, 0.12, 0.08, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.8, 0.25, 0.95)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MinijuegoMartillo" type="Node2D" unique_id=714000001]
+script = ExtResource("1_script")
+
+[node name="FondoPuestoFeria" type="Sprite2D" parent="." unique_id=714000002]
+z_index = -20
+position = Vector2(576, 324)
+texture = ExtResource("2_fondo")
+
+[node name="ContenedorHoyos" type="Node2D" parent="." unique_id=714000003]
+z_index = -10
+
+[node name="ContenedorTopos" type="Node2D" parent="." unique_id=714000004]
+z_index = 0
+
+[node name="ContenedorSelectores" type="Node2D" parent="." unique_id=714000005]
+z_index = 10
+
+[node name="OperadorJefe" type="Marker2D" parent="." unique_id=714000006]
+position = Vector2(576, 125)
+
+[node name="SpritePlataforma" type="Sprite2D" parent="." unique_id=714000007]
+z_index = -5
+position = Vector2(576, 142)
+texture = ExtResource("5_plataforma")
+
+[node name="MiraMartillo" type="Node2D" parent="." unique_id=714000010]
+z_index = 15
+position = Vector2(576, 395)
+
+[node name="Reticula" type="Sprite2D" parent="MiraMartillo" unique_id=714000011]
+texture = ExtResource("3_mira")
+
+[node name="VisualMartillo" type="Node2D" parent="MiraMartillo" unique_id=714000012]
+visible = false
+z_index = 25
+
+[node name="SpriteMartillo" type="Sprite2D" parent="MiraMartillo/VisualMartillo" unique_id=714000013]
+position = Vector2(0, -50)
+texture = ExtResource("4_martillo")
+
+[node name="ParticulasImpacto" type="CPUParticles2D" parent="." unique_id=714000020]
+emitting = false
+amount = 40
+lifetime = 0.65
+one_shot = true
+explosiveness = 0.92
+spread = 180.0
+gravity = Vector2(0, 160)
+initial_velocity_min = 140.0
+initial_velocity_max = 280.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color = Color(1, 0.9, 0.3, 0.95)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=714000030]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=714000040]
+
+[node name="PanelInfo" type="PanelContainer" parent="HUD" unique_id=714000041]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 16.0
+offset_right = 110.0
+offset_bottom = 54.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelInfo" unique_id=714000042]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelRonda" type="Label" parent="HUD/PanelInfo/HBox" unique_id=714000043]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "RONDA: 1 / 8"

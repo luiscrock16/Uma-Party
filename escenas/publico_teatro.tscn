@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/publico_teatro.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Tazuna Hayakawa/nmd_npc_hayakawataduna00.png" id="2_tazuna"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/Manhattan Cafe/maca001A_00.png.png" id="3_cafe"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/Still in Love/stil001A_00.png.png" id="4_still"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/Oguri Cap/ogcp001A_00.png.png" id="5_oguri"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/Gold Ship/gosp001A_00.png.png" id="6_goldship"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_trivia/penlight_green.png" id="7_pl_green"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_trivia/penlight_pink.png" id="8_pl_pink"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_trivia/penlight_gold.png" id="9_pl_gold"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_trivia/penlight_blue.png" id="10_pl_blue"]
+
+[node name="PublicoTeatro" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="EspectadorTazuna" type="Node2D" parent="."]
+position = Vector2(1025, 96)
+
+[node name="Sprite" type="Sprite2D" parent="EspectadorTazuna"]
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("2_tazuna")
+
+[node name="EspectadorCafe" type="Node2D" parent="."]
+position = Vector2(1098, 96)
+
+[node name="Sprite" type="Sprite2D" parent="EspectadorCafe"]
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("3_cafe")
+flip_h = true
+
+[node name="Penlight" type="Sprite2D" parent="EspectadorCafe"]
+position = Vector2(-16, -4)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("7_pl_green")
+offset = Vector2(0, -10)
+
+[node name="EspectadorStill" type="Node2D" parent="."]
+position = Vector2(1025, 230)
+
+[node name="Sprite" type="Sprite2D" parent="EspectadorStill"]
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("4_still")
+
+[node name="Penlight" type="Sprite2D" parent="EspectadorStill"]
+position = Vector2(16, -4)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("8_pl_pink")
+offset = Vector2(0, -10)
+
+[node name="EspectadorOguri" type="Node2D" parent="."]
+position = Vector2(1098, 230)
+
+[node name="Sprite" type="Sprite2D" parent="EspectadorOguri"]
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("5_oguri")
+flip_h = true
+
+[node name="Penlight" type="Sprite2D" parent="EspectadorOguri"]
+position = Vector2(-16, -4)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("9_pl_gold")
+offset = Vector2(0, -10)
+
+[node name="EspectadorGoldShip" type="Node2D" parent="."]
+position = Vector2(90, 80)
+
+[node name="Sprite" type="Sprite2D" parent="EspectadorGoldShip"]
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("6_goldship")
+
+[node name="Penlight" type="Sprite2D" parent="EspectadorGoldShip"]
+position = Vector2(16, -4)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("10_pl_blue")
+offset = Vector2(0, -10)

@@ -1,0 +1,86 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/controles_tactiles.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_accion"]
+bg_color = Color(0.12, 0.55, 0.28, 0.85)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.85, 0.25, 0.95)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_accion_p"]
+bg_color = Color(0.08, 0.42, 0.2, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.5, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="ControlesTactiles" type="CanvasLayer"]
+layer = 120
+script = ExtResource("1_script")
+
+[node name="JoystickContainer" type="Node2D" parent="."]
+position = Vector2(130, 520)
+
+[node name="Base" type="Node2D" parent="JoystickContainer"]
+
+[node name="CirculoBase" type="Polygon2D" parent="JoystickContainer/Base"]
+color = Color(0.1, 0.12, 0.16, 0.55)
+polygon = PackedVector2Array(60, 0, 55, 23, 42, 42, 23, 55, 0, 60, -23, 55, -42, 42, -55, 23, -60, 0, -55, -23, -42, -42, -23, -55, 0, -60, 23, -55, 42, -42, 55, -23)
+
+[node name="BordeBase" type="Line2D" parent="JoystickContainer/Base"]
+points = PackedVector2Array(60, 0, 55, 23, 42, 42, 23, 55, 0, 60, -23, 55, -42, 42, -55, 23, -60, 0, -55, -23, -42, -42, -23, -55, 0, -60, 23, -55, 42, -42, 55, -23, 60, 0)
+width = 2.5
+default_color = Color(0.95, 0.8, 0.25, 0.75)
+
+[node name="GuiaCruceta" type="Line2D" parent="JoystickContainer/Base"]
+points = PackedVector2Array(-35, 0, 35, 0)
+width = 2.0
+default_color = Color(1, 1, 1, 0.2)
+
+[node name="GuiaCrucetaV" type="Line2D" parent="JoystickContainer/Base"]
+points = PackedVector2Array(0, -35, 0, 35)
+width = 2.0
+default_color = Color(1, 1, 1, 0.2)
+
+[node name="Pomo" type="Node2D" parent="JoystickContainer/Base"]
+
+[node name="CirculoPomo" type="Polygon2D" parent="JoystickContainer/Base/Pomo"]
+color = Color(0.95, 0.95, 0.95, 0.85)
+polygon = PackedVector2Array(26, 0, 24, 10, 18, 18, 10, 24, 0, 26, -10, 24, -18, 18, -24, 10, -26, 0, -24, -10, -18, -18, -10, -24, 0, -26, 10, -24, 18, -18, 24, -10)
+
+[node name="BordePomo" type="Line2D" parent="JoystickContainer/Base/Pomo"]
+points = PackedVector2Array(26, 0, 24, 10, 18, 18, 10, 24, 0, 26, -10, 24, -18, 18, -24, 10, -26, 0, -24, -10, -18, -18, -10, -24, 0, -26, 10, -24, 18, -18, 24, -10, 26, 0)
+width = 2.0
+default_color = Color(0.95, 0.78, 0.2, 0.9)
+
+[node name="IconoCentro" type="Polygon2D" parent="JoystickContainer/Base/Pomo"]
+color = Color(0.2, 0.5, 0.8, 0.8)
+polygon = PackedVector2Array(8, 0, 0, 8, -8, 0, 0, -8)
+
+[node name="BotonAccion" type="Button" parent="."]
+custom_minimum_size = Vector2(80, 80)
+offset_left = 980.0
+offset_top = 480.0
+offset_right = 1060.0
+offset_bottom = 560.0
+pivot_offset = Vector2(40, 40)
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 0.95, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_accion")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_accion_p")
+text = ""

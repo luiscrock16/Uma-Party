@@ -1,0 +1,262 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_templo.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://escenas/pivote_templo.tscn" id="2_pivote"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_templo/bg_pinball_tracen.png" id="3_bg_pinball"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_paredes"]
+friction = 0.05
+bounce = 0.85
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_pared_izq"]
+a = Vector2(320, 50)
+b = Vector2(250, 510)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_pared_der"]
+a = Vector2(832, 50)
+b = Vector2(902, 510)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lim_horiz"]
+size = Vector2(630, 30)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lim_vert"]
+size = Vector2(30, 110)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_templo"]
+bg_color = Color(0.1, 0.32, 0.18, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.25, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+
+[node name="MinijuegoTemplo" type="Node2D" unique_id=770000001]
+script = ExtResource("1_script")
+
+[node name="FondoTemplo" type="Node2D" parent="." unique_id=770000002]
+z_index = -10
+z_as_relative = false
+
+[node name="FondoPinball" type="Sprite2D" parent="FondoTemplo" unique_id=770000003]
+texture = ExtResource("3_bg_pinball")
+centered = false
+
+[node name="ParedesPinball" type="StaticBody2D" parent="." unique_id=770000030]
+collision_layer = 4
+collision_mask = 4
+physics_material_override = SubResource("PhysicsMaterial_paredes")
+
+[node name="ColParedIzq" type="CollisionShape2D" parent="ParedesPinball" unique_id=770000031]
+shape = SubResource("SegmentShape2D_pared_izq")
+
+[node name="ColParedDer" type="CollisionShape2D" parent="ParedesPinball" unique_id=770000032]
+shape = SubResource("SegmentShape2D_pared_der")
+
+[node name="VisualParedIzq" type="Line2D" parent="ParedesPinball" unique_id=770000033]
+points = PackedVector2Array(320, 50, 250, 510)
+width = 8.0
+default_color = Color(0, 0, 0, 0)
+
+[node name="VisualParedDer" type="Line2D" parent="ParedesPinball" unique_id=770000034]
+points = PackedVector2Array(832, 50, 902, 510)
+width = 8.0
+default_color = Color(0, 0, 0, 0)
+
+[node name="LimitesJugadores" type="StaticBody2D" parent="." unique_id=770000040]
+collision_layer = 1
+collision_mask = 1
+
+[node name="ColArriba" type="CollisionShape2D" parent="LimitesJugadores" unique_id=770000041]
+position = Vector2(576, 510)
+shape = SubResource("RectangleShape2D_lim_horiz")
+
+[node name="ColAbajo" type="CollisionShape2D" parent="LimitesJugadores" unique_id=770000042]
+position = Vector2(576, 610)
+shape = SubResource("RectangleShape2D_lim_horiz")
+
+[node name="ColIzq" type="CollisionShape2D" parent="LimitesJugadores" unique_id=770000043]
+position = Vector2(250, 560)
+shape = SubResource("RectangleShape2D_lim_vert")
+
+[node name="ColDer" type="CollisionShape2D" parent="LimitesJugadores" unique_id=770000044]
+position = Vector2(902, 560)
+shape = SubResource("RectangleShape2D_lim_vert")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=770000050]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=770000051]
+position = Vector2(380, 560)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=770000052]
+position = Vector2(490, 560)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=770000053]
+position = Vector2(660, 560)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=770000054]
+position = Vector2(770, 560)
+
+[node name="ContenedorPivotes" type="Node2D" parent="." unique_id=770000060]
+
+[node name="Pivote_F1_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(450, 130)
+
+[node name="Pivote_F1_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(535, 130)
+
+[node name="Pivote_F1_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(615, 130)
+
+[node name="Pivote_F1_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(700, 130)
+
+[node name="Pivote_F2_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(405, 190)
+
+[node name="Pivote_F2_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(490, 190)
+
+[node name="Pivote_F2_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(576, 190)
+
+[node name="Pivote_F2_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(660, 190)
+
+[node name="Pivote_F2_5" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(745, 190)
+
+[node name="Pivote_F3_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(360, 250)
+
+[node name="Pivote_F3_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(445, 250)
+
+[node name="Pivote_F3_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(530, 250)
+
+[node name="Pivote_F3_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(620, 250)
+
+[node name="Pivote_F3_5" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(705, 250)
+
+[node name="Pivote_F3_6" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(790, 250)
+
+[node name="Pivote_F4_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(405, 310)
+
+[node name="Pivote_F4_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(490, 310)
+
+[node name="Pivote_F4_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(576, 310)
+
+[node name="Pivote_F4_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(660, 310)
+
+[node name="Pivote_F4_5" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(745, 310)
+
+[node name="Pivote_F5_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(360, 370)
+
+[node name="Pivote_F5_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(445, 370)
+
+[node name="Pivote_F5_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(530, 370)
+
+[node name="Pivote_F5_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(620, 370)
+
+[node name="Pivote_F5_5" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(705, 370)
+
+[node name="Pivote_F5_6" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(790, 370)
+
+[node name="Pivote_F6_1" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(405, 430)
+
+[node name="Pivote_F6_2" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(490, 430)
+
+[node name="Pivote_F6_3" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(576, 430)
+
+[node name="Pivote_F6_4" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(660, 430)
+
+[node name="Pivote_F6_5" parent="ContenedorPivotes" instance=ExtResource("2_pivote")]
+position = Vector2(745, 430)
+
+[node name="ContenedorBolas" type="Node2D" parent="." unique_id=770000070]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=770000080]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=770000090]
+
+[node name="PanelSuperior" type="PanelContainer" parent="HUD" unique_id=770000091]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 14.0
+offset_right = 160.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_templo")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelSuperior" unique_id=770000092]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_right = 14
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelSuperior/Margen" unique_id=770000093]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LabelTitulo" type="Label" parent="HUD/PanelSuperior/Margen/HBox" unique_id=770000094]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+text = "★ PINBALL TRACEN ★"
+
+[node name="LabelTiempo" type="Label" parent="HUD/PanelSuperior/Margen/HBox" unique_id=770000095]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 15
+text = "00:00"
+
+[node name="LabelSupervivientes" type="Label" parent="HUD/PanelSuperior/Margen/HBox" unique_id=770000096]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+text = "VIVOS: 4 / 4"
+
+[node name="LabelModoF6" type="Label" parent="HUD" unique_id=770000097]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -28.0
+offset_right = 160.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.85, 0.35, 0.85)
+theme_override_font_sizes/font_size = 12
+text = "MODO DE PRUEBA CONTINUO (F6)"
+horizontal_alignment = 1

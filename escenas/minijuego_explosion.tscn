@@ -1,0 +1,277 @@
+[gd_scene format=3 uid="uid://dg0s1v8b2rae3"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_explosion.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/sunday_silence.png" id="2_sunday"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/sunday_silence_channel.png" id="3_channel"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/sunday_silence_cast.png" id="4_cast"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_turno"]
+bg_color = Color(0.12, 0.1, 0.18, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.82, 0.22, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[node name="MinijuegoExplosion" type="Node2D" unique_id=500000001]
+script = ExtResource("1_script")
+
+[node name="FondoPared" type="ColorRect" parent="." unique_id=500000002]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.11, 0.09, 0.16, 1)
+
+[node name="PapelTapizOccult" type="Node2D" parent="." unique_id=500000050]
+
+[node name="PanelPared1" type="ColorRect" parent="PapelTapizOccult" unique_id=500000051]
+offset_left = 180.0
+offset_top = 30.0
+offset_right = 360.0
+offset_bottom = 270.0
+color = Color(0.15, 0.12, 0.22, 0.6)
+
+[node name="PanelPared2" type="ColorRect" parent="PapelTapizOccult" unique_id=500000052]
+offset_left = 390.0
+offset_top = 30.0
+offset_right = 762.0
+offset_bottom = 270.0
+color = Color(0.14, 0.11, 0.2, 0.5)
+
+[node name="PanelPared3" type="ColorRect" parent="PapelTapizOccult" unique_id=500000053]
+offset_left = 792.0
+offset_top = 30.0
+offset_right = 972.0
+offset_bottom = 270.0
+color = Color(0.15, 0.12, 0.22, 0.6)
+
+[node name="VigaIzquierda" type="ColorRect" parent="." unique_id=500000003]
+offset_left = 50.0
+offset_right = 160.0
+offset_bottom = 648.0
+color = Color(0.2, 0.14, 0.12, 1)
+
+[node name="BordeVigaIzq" type="Line2D" parent="VigaIzquierda" unique_id=500000054]
+points = PackedVector2Array(110, 0, 110, 648)
+width = 3.0
+default_color = Color(0.7, 0.52, 0.25, 0.8)
+
+[node name="FarolIzq" type="Polygon2D" parent="VigaIzquierda" unique_id=500000055]
+position = Vector2(55, 140)
+color = Color(1, 0.85, 0.35, 0.9)
+polygon = PackedVector2Array(-10, -15, 10, -15, 6, 15, -6, 15)
+
+[node name="HaloFarolIzq" type="Polygon2D" parent="VigaIzquierda/FarolIzq" unique_id=500000056]
+color = Color(1, 0.8, 0.3, 0.2)
+polygon = PackedVector2Array(-25, -25, 25, -25, 20, 25, -20, 25)
+
+[node name="VigaDerecha" type="ColorRect" parent="." unique_id=500000004]
+offset_left = 992.0
+offset_right = 1102.0
+offset_bottom = 648.0
+color = Color(0.2, 0.14, 0.12, 1)
+
+[node name="BordeVigaDer" type="Line2D" parent="VigaDerecha" unique_id=500000057]
+points = PackedVector2Array(0, 0, 0, 648)
+width = 3.0
+default_color = Color(0.7, 0.52, 0.25, 0.8)
+
+[node name="FarolDer" type="Polygon2D" parent="VigaDerecha" unique_id=500000058]
+position = Vector2(55, 140)
+color = Color(1, 0.85, 0.35, 0.9)
+polygon = PackedVector2Array(-10, -15, 10, -15, 6, 15, -6, 15)
+
+[node name="HaloFarolDer" type="Polygon2D" parent="VigaDerecha/FarolDer" unique_id=500000059]
+color = Color(1, 0.8, 0.3, 0.2)
+polygon = PackedVector2Array(-25, -25, 25, -25, 20, 25, -20, 25)
+
+[node name="EscenarioVisual" type="Node2D" parent="." unique_id=500000005]
+
+[node name="FiltroOscuridad" type="ColorRect" parent="EscenarioVisual" unique_id=500000065]
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(0.04, 0.02, 0.09, 0)
+
+[node name="CapaNiebla" type="Node2D" parent="EscenarioVisual" unique_id=500000070]
+
+[node name="CabezaBomba" type="Node2D" parent="EscenarioVisual" unique_id=500000006]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(576, 175)
+
+[node name="AuraFantasma" type="Polygon2D" parent="EscenarioVisual/CabezaBomba" unique_id=500000060]
+color = Color(0.28, 0.12, 0.42, 0.35)
+polygon = PackedVector2Array(-110, -80, -90, -120, 0, -135, 90, -120, 110, -80, 120, 40, 70, 95, -70, 95, -120, 40)
+
+[node name="SpriteSundaySilence" type="Sprite2D" parent="EscenarioVisual/CabezaBomba" unique_id=500000061]
+texture = ExtResource("2_sunday")
+
+[node name="LabelCuentaBomba" type="Label" parent="EscenarioVisual/CabezaBomba" unique_id=500000045]
+offset_left = -70.0
+offset_top = -120.0
+offset_right = 70.0
+offset_bottom = -70.0
+pivot_offset = Vector2(70, 25)
+theme_override_colors/font_color = Color(1, 0.2, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlataformaElevada" type="ColorRect" parent="EscenarioVisual" unique_id=500000015]
+offset_left = 250.0
+offset_top = 290.0
+offset_right = 902.0
+offset_bottom = 430.0
+color = Color(0.24, 0.17, 0.26, 1)
+
+[node name="BordePlataforma" type="Line2D" parent="EscenarioVisual" unique_id=500000016]
+points = PackedVector2Array(250, 290, 902, 290, 902, 430, 250, 430, 250, 290)
+width = 3.5
+default_color = Color(0.85, 0.7, 0.3, 1)
+
+[node name="MolduraPlataforma" type="ColorRect" parent="EscenarioVisual" unique_id=500000064]
+offset_left = 250.0
+offset_top = 290.0
+offset_right = 902.0
+offset_bottom = 302.0
+color = Color(0.82, 0.65, 0.28, 0.9)
+
+[node name="MesaPalancas" type="ColorRect" parent="EscenarioVisual" unique_id=500000017]
+offset_left = 310.0
+offset_top = 310.0
+offset_right = 842.0
+offset_bottom = 328.0
+color = Color(0.38, 0.26, 0.22, 1)
+
+[node name="BordeMesa" type="Line2D" parent="EscenarioVisual/MesaPalancas" unique_id=500000065]
+points = PackedVector2Array(0, 0, 532, 0, 532, 18, 0, 18, 0, 0)
+width = 2.0
+default_color = Color(0.75, 0.6, 0.3, 0.85)
+
+[node name="EscaleraIzq" type="ColorRect" parent="EscenarioVisual" unique_id=500000018]
+offset_left = 210.0
+offset_top = 340.0
+offset_right = 250.0
+offset_bottom = 430.0
+color = Color(0.42, 0.3, 0.25, 1)
+
+[node name="BordeEscaleraIzq" type="Line2D" parent="EscenarioVisual/EscaleraIzq" unique_id=500000066]
+points = PackedVector2Array(0, 0, 40, 0, 40, 90, 0, 90, 0, 0)
+width = 2.0
+default_color = Color(0.75, 0.6, 0.3, 0.8)
+
+[node name="EscaleraDer" type="ColorRect" parent="EscenarioVisual" unique_id=500000019]
+offset_left = 902.0
+offset_top = 340.0
+offset_right = 942.0
+offset_bottom = 430.0
+color = Color(0.42, 0.3, 0.25, 1)
+
+[node name="BordeEscaleraDer" type="Line2D" parent="EscenarioVisual/EscaleraDer" unique_id=500000067]
+points = PackedVector2Array(0, 0, 40, 0, 40, 90, 0, 90, 0, 0)
+width = 2.0
+default_color = Color(0.75, 0.6, 0.3, 0.8)
+
+[node name="PisoInferior" type="ColorRect" parent="EscenarioVisual" unique_id=500000020]
+offset_top = 430.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.13, 0.11, 0.17, 1)
+
+[node name="BordePisoInferior" type="ColorRect" parent="EscenarioVisual/PisoInferior" unique_id=500000068]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 6.0
+color = Color(0.65, 0.5, 0.25, 0.75)
+
+[node name="LineaEsperaCola" type="ColorRect" parent="EscenarioVisual" unique_id=500000021]
+offset_left = 360.0
+offset_top = 585.0
+offset_right = 792.0
+offset_bottom = 590.0
+color = Color(1, 0.85, 0.25, 0.75)
+
+[node name="ContenedorPalancas" type="Node2D" parent="EscenarioVisual" unique_id=500000022]
+
+[node name="PuntosCola" type="Node2D" parent="." unique_id=500000023]
+
+[node name="0" type="Marker2D" parent="PuntosCola" unique_id=500000024]
+position = Vector2(460, 530)
+
+[node name="1" type="Marker2D" parent="PuntosCola" unique_id=500000025]
+position = Vector2(520, 530)
+
+[node name="2" type="Marker2D" parent="PuntosCola" unique_id=500000026]
+position = Vector2(580, 530)
+
+[node name="3" type="Marker2D" parent="PuntosCola" unique_id=500000027]
+position = Vector2(640, 530)
+
+[node name="PuntoEscenario" type="Marker2D" parent="." unique_id=500000028]
+position = Vector2(576, 355)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=500000029]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=500000030]
+position = Vector2(460, 530)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=500000031]
+position = Vector2(520, 530)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=500000032]
+position = Vector2(580, 530)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=500000033]
+position = Vector2(640, 530)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=500000034]
+
+[node name="FlashExplosion" type="ColorRect" parent="HUD" unique_id=500000038]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 1)
+
+[node name="PanelTurno" type="PanelContainer" parent="HUD" unique_id=500000035]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -210.0
+offset_top = 14.0
+offset_right = 210.0
+offset_bottom = 76.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_turno")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelTurno" unique_id=500000036]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelTurno/VBox" unique_id=500000037]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="LabelJugador" type="Label" parent="HUD/PanelTurno/VBox/HBox" unique_id=500000039]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 17
+text = "TURNO: JUGADOR"
+
+[node name="LabelTimer" type="Label" parent="HUD/PanelTurno/VBox/HBox" unique_id=500000040]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.25, 1)
+theme_override_font_sizes/font_size = 20
+text = "10"

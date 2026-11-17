@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://cxex1gr5ruplo"]
+
+[ext_resource type="Script" uid="uid://bkc6yq2rhildl" path="res://scripts/minijuego_cojines.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://besr80k71fdsv" path="res://assets/minijuegos/cojines/fondo_dormitorio_tracen.png" id="2_fondo"]
+[ext_resource type="Texture2D" uid="uid://cjt8knn1ksefn" path="res://assets/minijuegos/cojines/tatami_ring_base.png" id="3_base"]
+[ext_resource type="Texture2D" uid="uid://dq87e6hf64bgv" path="res://assets/minijuegos/cojines/tatami_ring_alerta.png" id="4_alerta"]
+[ext_resource type="Texture2D" uid="uid://dedkcpiqjhk5b" path="res://assets/imagenes/8.jpeg" id="5_5smy3"]
+
+[node name="MinijuegoCojines" type="Node2D" unique_id=713000001]
+script = ExtResource("1_script")
+
+[node name="FondoDormitorio" type="Sprite2D" parent="." unique_id=713000002]
+z_index = -20
+position = Vector2(576, 324)
+texture = ExtResource("2_fondo")
+
+[node name="RingTatami" type="Node2D" parent="." unique_id=713000003]
+position = Vector2(576, 360)
+
+[node name="BaseTatami" type="Sprite2D" parent="RingTatami" unique_id=713000004]
+z_index = -5
+texture = ExtResource("3_base")
+
+[node name="AlertaReduccion" type="Sprite2D" parent="RingTatami" unique_id=713000005]
+z_index = -2
+texture = ExtResource("4_alerta")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=713000010]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=713000011]
+position = Vector2(741, 360)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=713000012]
+position = Vector2(576, 515)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=713000013]
+position = Vector2(411, 360)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=713000014]
+position = Vector2(576, 205)
+
+[node name="ParticulasPlumas" type="CPUParticles2D" parent="." unique_id=713000020]
+emitting = false
+amount = 45
+lifetime = 0.85
+one_shot = true
+explosiveness = 0.9
+spread = 180.0
+gravity = Vector2(0, 90)
+initial_velocity_min = 130.0
+initial_velocity_max = 260.0
+angular_velocity_min = 180.0
+angular_velocity_max = 540.0
+scale_amount_min = 3.5
+scale_amount_max = 7.0
+color = Color(1, 0.98, 0.95, 0.95)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=713000030]
+position = Vector2(576, 324)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1804876524]
+position = Vector2(855.49994, 94.50001)
+scale = Vector2(0.11527782, 0.12605044)
+texture = ExtResource("5_5smy3")

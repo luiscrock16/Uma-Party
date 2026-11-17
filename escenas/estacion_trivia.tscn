@@ -1,0 +1,127 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/estacion_trivia.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_podio"]
+bg_color = Color(0.08, 0.07, 0.12, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.75, 0.25, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 4
+
+[node name="EstacionTrivia" type="Node2D" unique_id=793000001]
+script = ExtResource("1_script")
+
+[node name="FocoLuz" type="Polygon2D" parent="." unique_id=793000002]
+z_index = -2
+modulate = Color(1, 0.95, 0.75, 0.25)
+color = Color(1, 1, 0.85, 0.35)
+polygon = PackedVector2Array(-25, -280, 25, -280, 80, 35, -80, 35)
+
+[node name="CapaBack" type="Node2D" parent="." unique_id=793000003]
+z_index = -1
+
+[node name="PanelFondoNeon" type="Polygon2D" parent="CapaBack" unique_id=793000004]
+color = Color(0.08, 0.07, 0.13, 0.8)
+polygon = PackedVector2Array(-54, -45, -54, -130, 54, -130, 54, -45)
+
+[node name="ArcoNeon" type="Line2D" parent="CapaBack" unique_id=793000005]
+points = PackedVector2Array(-54, -45, -54, -130, 54, -130, 54, -45)
+width = 3.0
+default_color = Color(0.95, 0.3, 0.35, 0.95)
+
+[node name="BadgeP" type="Label" parent="CapaBack" unique_id=793000006]
+offset_left = -30.0
+offset_top = -126.0
+offset_right = 30.0
+offset_bottom = -102.0
+theme_override_colors/font_color = Color(1, 1, 1, 0.9)
+theme_override_font_sizes/font_size = 13
+text = "P1"
+horizontal_alignment = 1
+
+[node name="PuntoAvatar" type="Marker2D" parent="." unique_id=793000007]
+position = Vector2(0, -45)
+
+[node name="CapaFront" type="Node2D" parent="." unique_id=793000020]
+z_index = 1
+
+[node name="PodioCuerpo" type="Polygon2D" parent="CapaFront" unique_id=793000021]
+color = Color(0.1, 0.09, 0.16, 0.98)
+polygon = PackedVector2Array(-65, -35, 65, -35, 50, 22, -50, 22)
+
+[node name="PodioBorde" type="Line2D" parent="CapaFront" unique_id=793000022]
+points = PackedVector2Array(-65, -35, 65, -35, 50, 22, -50, 22, -65, -35)
+width = 2.5
+default_color = Color(0.95, 0.8, 0.25, 0.95)
+
+[node name="LineaNeonFrontal" type="Line2D" parent="CapaFront" unique_id=793000023]
+points = PackedVector2Array(-42, 5, 42, 5)
+width = 3.0
+default_color = Color(0.95, 0.3, 0.35, 0.9)
+
+[node name="PodioMesa" type="Polygon2D" parent="CapaFront" unique_id=793000024]
+color = Color(0.16, 0.14, 0.23, 1)
+polygon = PackedVector2Array(-72, -45, 72, -45, 65, -35, -65, -35)
+
+[node name="PodioMesaBorde" type="Line2D" parent="CapaFront" unique_id=793000025]
+points = PackedVector2Array(-72, -45, 72, -45, 65, -35, -65, -35, -72, -45)
+width = 2.0
+default_color = Color(0.95, 0.8, 0.25, 0.95)
+
+[node name="BotonPulsador" type="Polygon2D" parent="CapaFront" unique_id=793000026]
+position = Vector2(0, -45)
+color = Color(0.9, 0.22, 0.28, 1)
+polygon = PackedVector2Array(-14, -6, 14, -6, 12, 0, -12, 0)
+
+[node name="BotonPulsadorLuz" type="Polygon2D" parent="CapaFront/BotonPulsador" unique_id=793000027]
+color = Color(1, 0.75, 0.75, 0.85)
+polygon = PackedVector2Array(-10, -5, 10, -5, 8, -2, -8, -2)
+
+[node name="PanelInfo" type="PanelContainer" parent="." unique_id=793000008]
+z_index = 5
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = 26.0
+offset_right = 70.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_podio")
+
+[node name="VBox" type="VBoxContainer" parent="PanelInfo" unique_id=793000009]
+layout_mode = 2
+theme_override_constants/separation = 2
+alignment = 1
+
+[node name="LabelVidas" type="Label" parent="PanelInfo/VBox" unique_id=793000010]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.3, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+text = "❤️ ❤️ ❤️"
+horizontal_alignment = 1
+
+[node name="LabelNombre" type="Label" parent="PanelInfo/VBox" unique_id=793000011]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "Jugador 1"
+horizontal_alignment = 1
+
+[node name="BadgeEstado" type="Label" parent="PanelInfo/VBox" unique_id=793000012]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 11
+text = "🔒 LISTO"
+horizontal_alignment = 1

@@ -1,0 +1,113 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_carritos.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.1, 0.12, 0.18, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.25, 0.95)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MinijuegoCarritos" type="Node2D" unique_id=710000001]
+script = ExtResource("1_script")
+
+[node name="FondoPista" type="Node2D" parent="." unique_id=710000002]
+z_index = -10
+
+[node name="SueloSupermercado" type="ColorRect" parent="FondoPista" unique_id=710000003]
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 2800.0
+offset_bottom = 800.0
+color = Color(0.88, 0.9, 0.92, 1)
+
+[node name="PasilloCintas" type="ColorRect" parent="FondoPista" unique_id=710000004]
+offset_left = -200.0
+offset_top = 210.0
+offset_right = 2800.0
+offset_bottom = 575.0
+color = Color(0.78, 0.82, 0.85, 1)
+
+[node name="EstanteriasTop" type="ColorRect" parent="FondoPista" unique_id=710000005]
+offset_left = -200.0
+offset_top = 130.0
+offset_right = 2800.0
+offset_bottom = 210.0
+color = Color(0.25, 0.35, 0.5, 1)
+
+[node name="EstanteriasBot" type="ColorRect" parent="FondoPista" unique_id=710000006]
+offset_left = -200.0
+offset_top = 575.0
+offset_right = 2800.0
+offset_bottom = 650.0
+color = Color(0.25, 0.35, 0.5, 1)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=710000010]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=710000011]
+position = Vector2(180, 260)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=710000012]
+position = Vector2(180, 350)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=710000013]
+position = Vector2(180, 440)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=710000014]
+position = Vector2(180, 530)
+
+[node name="LineaMeta" type="Node2D" parent="." unique_id=710000020]
+position = Vector2(2200, 210)
+
+[node name="PosteMeta" type="ColorRect" parent="LineaMeta" unique_id=710000021]
+offset_right = 16.0
+offset_bottom = 365.0
+color = Color(0.9, 0.2, 0.25, 1)
+
+[node name="LabelMeta" type="Label" parent="LineaMeta" unique_id=710000022]
+offset_left = -30.0
+offset_top = -35.0
+offset_right = 50.0
+text = "¡META!"
+horizontal_alignment = 1
+
+[node name="ContenedorObstaculos" type="Node2D" parent="." unique_id=710000030]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=710000040]
+position = Vector2(576, 324)
+limit_left = 0
+limit_top = 0
+limit_right = 2400
+limit_bottom = 648
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=710000050]
+
+[node name="PanelInfo" type="PanelContainer" parent="HUD" unique_id=710000051]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 16.0
+offset_right = 160.0
+offset_bottom = 76.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelInfo" unique_id=710000052]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelReloj" type="Label" parent="HUD/PanelInfo/VBox" unique_id=710000053]
+layout_mode = 2
+text = "00:40"
+horizontal_alignment = 1
+
+[node name="LabelPosicion" type="Label" parent="HUD/PanelInfo/VBox" unique_id=710000054]
+layout_mode = 2
+text = "LÍDER: Esperando..."
+horizontal_alignment = 1

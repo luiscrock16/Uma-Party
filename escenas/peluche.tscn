@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://cf83kmp2q78w1"]
+
+[ext_resource type="Script" uid="uid://c6y7g8bnp01xq" path="res://scripts/peluche.gd" id="1_peluche"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_garra/peluche_0_suzuka.png" id="2_suzuka"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_peluche"]
+size = Vector2(44, 44)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_peluche"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:tipo_peluche")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:esta_atrapado")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[node name="Peluche" type="CharacterBody2D" groups=["Peluche"]]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_peluche")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -2)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("2_suzuka")
+
+[node name="VisualRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -18.0
+offset_top = -18.0
+offset_right = 18.0
+offset_bottom = 18.0
+color = Color(1, 0.85, 0.1, 1)
+
+[node name="LabelIcono" type="Label" parent="VisualRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "★"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_peluche")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_peluche")

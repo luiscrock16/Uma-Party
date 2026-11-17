@@ -1,0 +1,182 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_laberinto.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/laberinto/grava_textura.png" id="2_grava"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/laberinto/plaza_centro.png" id="3_plaza"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/laberinto/campana_pedestal.png" id="4_campana"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.1, 0.2, 0.12, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.95, 0.8, 0.25, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
+bg_color = Color(0.08, 0.16, 0.1, 0.92)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.85, 0.2, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_campana"]
+radius = 36.0
+
+[node name="MinijuegoLaberinto" type="Node2D" unique_id=711000001]
+script = ExtResource("1_script")
+
+[node name="FondoCesped" type="ColorRect" parent="." unique_id=711000002]
+z_index = -20
+offset_right = 3370.0
+offset_bottom = 3370.0
+color = Color(0.13, 0.32, 0.16, 1)
+
+[node name="TerrenoGrava" type="TextureRect" parent="." unique_id=711000003]
+z_index = -15
+offset_left = 200.0
+offset_top = 200.0
+offset_right = 3170.0
+offset_bottom = 3170.0
+texture = ExtResource("2_grava")
+stretch_mode = 1
+
+[node name="ContenedorBosquePerimetro" type="Node2D" parent="." unique_id=711000010]
+z_index = -5
+
+[node name="ContenedorSombras" type="Node2D" parent="." unique_id=711000015]
+z_index = -2
+
+[node name="ContenedorSetos" type="Node2D" parent="." unique_id=711000020]
+z_index = 0
+
+[node name="ContenedorPuestosFestival" type="Node2D" parent="." unique_id=711000022]
+z_index = 1
+
+[node name="ContenedorPuertas" type="Node2D" parent="." unique_id=711000023]
+z_index = 2
+
+[node name="ContenedorLlaves" type="Node2D" parent="." unique_id=711000024]
+z_index = 4
+
+[node name="PlazaCentroVisual" type="Sprite2D" parent="." unique_id=711000025]
+z_index = -1
+position = Vector2(1685, 1685)
+texture = ExtResource("3_plaza")
+
+[node name="ContenedorNPCsCentro" type="Node2D" parent="." unique_id=711000028]
+z_index = 2
+
+[node name="CampanaDorada" type="Area2D" parent="." unique_id=711000030]
+z_index = 3
+position = Vector2(1685, 1685)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CampanaDorada" unique_id=711000031]
+shape = SubResource("CircleShape2D_campana")
+
+[node name="VisualCampana" type="Sprite2D" parent="CampanaDorada" unique_id=711000032]
+texture = ExtResource("4_campana")
+
+[node name="ParticulasBrillo" type="CPUParticles2D" parent="CampanaDorada" unique_id=711000033]
+amount = 12
+lifetime = 1.4
+emission_shape = 1
+emission_sphere_radius = 32.0
+gravity = Vector2(0, -25)
+scale_amount_min = 2.0
+scale_amount_max = 4.5
+color = Color(1, 0.9, 0.35, 0.8)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=711000040]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=711000041]
+position = Vector2(281, 281)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=711000042]
+position = Vector2(3089, 281)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=711000043]
+position = Vector2(281, 3089)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=711000044]
+position = Vector2(3089, 3089)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=711000050]
+position = Vector2(1685, 1685)
+zoom = Vector2(1.35, 1.35)
+limit_left = 0
+limit_top = 0
+limit_right = 3370
+limit_bottom = 3370
+position_smoothing_enabled = true
+position_smoothing_speed = 9.0
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=711000060]
+
+[node name="PanelInfo" type="PanelContainer" parent="HUD" unique_id=711000061]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 16.0
+offset_right = 110.0
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="LabelReloj" type="Label" parent="HUD/PanelInfo" unique_id=711000062]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 20
+text = "02:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BannerIntro" type="PanelContainer" parent="HUD" unique_id=711000080]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -65.0
+offset_right = 260.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_banner")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/BannerIntro" unique_id=711000081]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelTitulo" type="Label" parent="HUD/BannerIntro/VBox" unique_id=711000082]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "★ GRAN FESTIVAL DE TRACEN ★"
+horizontal_alignment = 1
+
+[node name="LabelDesc" type="Label" parent="HUD/BannerIntro/VBox" unique_id=711000083]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "¡Cruza los puestos del festival y haz sonar la Campana Dorada!"
+horizontal_alignment = 1

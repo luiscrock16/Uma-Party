@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://dfp502bl6l66m"]
+
+[ext_resource type="SpriteFrames" uid="uid://b5yur8naotbj6" path="res://recursos/personajes_frames.tres" id="1_5voos"]
+[ext_resource type="Script" uid="uid://biffrs3el423y" path="res://scripts/personaje_jugable.gd" id="1_cf66l"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cf66l"]
+radius = 6.3245554
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_86vap"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:estado_actual")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Sprite:animation")
+properties/2/spawn = false
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Sprite:frame")
+properties/3/spawn = false
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:fuerza_knockback")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("Sprite:flip_h")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cf66l"]
+size = Vector2(20, 40)
+
+[node name="personaje_jugable" type="CharacterBody2D" unique_id=1217936866 groups=["Jugador"]]
+script = ExtResource("1_cf66l")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=925014087]
+sprite_frames = ExtResource("1_5voos")
+animation = &"STIL_atrapado"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=138546596]
+position = Vector2(0, 27)
+shape = SubResource("CircleShape2D_cf66l")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=277639713]
+replication_config = SubResource("SceneReplicationConfig_86vap")
+
+[node name="LabelNick" type="Label" parent="." unique_id=1154665689]
+offset_left = -22.0
+offset_top = -47.0
+offset_right = 18.0
+offset_bottom = -24.0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=1242924434]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=1810454977]
+position = Vector2(0, 13)
+shape = SubResource("RectangleShape2D_cf66l")
+
+[node name="PunteroJefe" type="ColorRect" parent="." unique_id=679335361]
+offset_right = 10.0
+offset_bottom = 7.0
+color = Color(0.84313726, 0, 0.15686275, 1)
+
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

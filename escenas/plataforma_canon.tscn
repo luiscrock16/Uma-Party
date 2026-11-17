@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://c7m0y6h8u3lq2"]
+
+[ext_resource type="Script" path="res://scripts/plataforma_canon.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_escudo_centro"]
+radius = 26.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_personaje"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_escudo_canon"]
+size = Vector2(44, 30)
+
+[node name="PlataformaCanon" type="Node2D" unique_id=600000001]
+script = ExtResource("1_script")
+
+[node name="BaseVisual" type="Node2D" parent="." unique_id=600000002]
+
+[node name="DientesEngranaje" type="Polygon2D" parent="BaseVisual" unique_id=600000003]
+color = Color(0.72, 0.58, 0.32, 1)
+polygon = PackedVector2Array(72, -12, 72, 12, 64, 20, 60, 40, 48, 54, 40, 60, 20, 64, 12, 72, -12, 72, -20, 64, -40, 60, -54, 48, -60, 40, -64, 20, -72, 12, -72, -12, -64, -20, -60, -40, -48, -54, -40, -60, -20, -64, -12, -72, 12, -72, 20, -64, 40, -60, 54, -48, 60, -40, 64, -20)
+
+[node name="DiscoBase" type="Polygon2D" parent="BaseVisual" unique_id=600000004]
+color = Color(0.85, 0.55, 0.28, 1)
+polygon = PackedVector2Array(62, 0, 57, 24, 44, 44, 24, 57, 0, 62, -24, 57, -44, 44, -57, 24, -62, 0, -57, -24, -44, -44, -24, -57, 0, -62, 24, -57, 44, -44, 57, -24)
+
+[node name="BordeDisco" type="Line2D" parent="BaseVisual" unique_id=600000005]
+points = PackedVector2Array(62, 0, 57, 24, 44, 44, 24, 57, 0, 62, -24, 57, -44, 44, -57, 24, -62, 0, -57, -24, -44, -44, -24, -57, 0, -62, 24, -57, 44, -44, 57, -24, 62, 0)
+width = 3.0
+default_color = Color(0.45, 0.25, 0.1, 1)
+
+[node name="AroColor" type="Line2D" parent="BaseVisual" unique_id=600000006]
+points = PackedVector2Array(52, 0, 48, 20, 37, 37, 20, 48, 0, 52, -20, 48, -37, 37, -48, 20, -52, 0, -48, -20, -37, -37, -20, -48, 0, -52, 20, -48, 37, -37, 48, -20, 52, 0)
+width = 5.0
+default_color = Color(0.2, 0.9, 0.4, 1)
+
+[node name="AreaEscudoCentro" type="Area2D" parent="BaseVisual" unique_id=600000022]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BaseVisual/AreaEscudoCentro" unique_id=600000023]
+shape = SubResource("CircleShape2D_escudo_centro")
+
+[node name="Montura" type="Node2D" parent="." unique_id=600000007]
+
+[node name="SoportePersonaje" type="ColorRect" parent="Montura" unique_id=600000008]
+offset_left = -54.0
+offset_top = -20.0
+offset_right = -24.0
+offset_bottom = 20.0
+color = Color(0.2, 0.25, 0.35, 1)
+
+[node name="BordeSoporte" type="Line2D" parent="Montura/SoportePersonaje" unique_id=600000009]
+points = PackedVector2Array(0, 0, 30, 0, 30, 40, 0, 40, 0, 0)
+width = 2.0
+default_color = Color(0.1, 0.12, 0.18, 1)
+
+[node name="PuntoPersonaje" type="Marker2D" parent="Montura" unique_id=600000010]
+position = Vector2(-39, 0)
+
+[node name="AreaPersonaje" type="Area2D" parent="Montura/PuntoPersonaje" unique_id=600000024]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Montura/PuntoPersonaje/AreaPersonaje" unique_id=600000025]
+shape = SubResource("CircleShape2D_personaje")
+
+[node name="CanonVisual" type="Node2D" parent="Montura" unique_id=600000011]
+
+[node name="PedestalCanon" type="ColorRect" parent="Montura/CanonVisual" unique_id=600000012]
+offset_left = -6.0
+offset_top = -14.0
+offset_right = 16.0
+offset_bottom = 14.0
+color = Color(0.18, 0.2, 0.25, 1)
+
+[node name="TuboCanon" type="Node2D" parent="Montura/CanonVisual" unique_id=600000013]
+
+[node name="CuerpoTubo" type="Polygon2D" parent="Montura/CanonVisual/TuboCanon" unique_id=600000014]
+color = Color(0.22, 0.24, 0.3, 1)
+polygon = PackedVector2Array(2, -16, 42, -15, 42, 15, 2, 16)
+
+[node name="BocaTubo" type="Polygon2D" parent="Montura/CanonVisual/TuboCanon" unique_id=600000015]
+color = Color(0.35, 0.38, 0.45, 1)
+polygon = PackedVector2Array(40, -18, 48, -17, 48, 17, 40, 18)
+
+[node name="BocaInterior" type="Polygon2D" parent="Montura/CanonVisual/TuboCanon" unique_id=600000016]
+color = Color(0.08, 0.08, 0.1, 1)
+polygon = PackedVector2Array(47, -13, 50, -13, 50, 13, 47, 13)
+
+[node name="PuntoDisparo" type="Marker2D" parent="Montura/CanonVisual" unique_id=600000017]
+position = Vector2(52, 0)
+
+[node name="FlashDisparo" type="Polygon2D" parent="Montura/CanonVisual" unique_id=600000018]
+visible = false
+position = Vector2(54, 0)
+color = Color(1, 0.85, 0.2, 1)
+polygon = PackedVector2Array(0, -6, 12, -14, 8, -4, 20, 0, 8, 4, 12, 14, 0, 6, -4, 0)
+
+[node name="AreaEscudoCanon" type="Area2D" parent="Montura/CanonVisual" unique_id=600000026]
+position = Vector2(24, 0)
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Montura/CanonVisual/AreaEscudoCanon" unique_id=600000027]
+shape = SubResource("RectangleShape2D_escudo_canon")
+
+[node name="ExplosionFlash" type="Polygon2D" parent="." unique_id=600000028]
+visible = false
+color = Color(1, 0.9, 0.3, 0.95)
+polygon = PackedVector2Array(0, -32, 12, -12, 32, 0, 12, 12, 0, 32, -12, 12, -32, 0, -12, -12)
+
+[node name="ExplosionParticulas" type="CPUParticles2D" parent="." unique_id=600000029]
+emitting = false
+amount = 36
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.95
+emission_shape = 1
+emission_sphere_radius = 20.0
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 120)
+initial_velocity_min = 80.0
+initial_velocity_max = 180.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color = Color(1, 0.55, 0.1, 1)
+
+[node name="HumoEliminado" type="CPUParticles2D" parent="." unique_id=600000021]
+emitting = false
+amount = 24
+lifetime = 1.2
+emission_shape = 1
+emission_sphere_radius = 25.0
+direction = Vector2(0, -1)
+spread = 40.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 30.0
+initial_velocity_max = 70.0
+scale_amount_min = 5.0
+scale_amount_max = 10.0
+color = Color(0.2, 0.2, 0.2, 0.8)

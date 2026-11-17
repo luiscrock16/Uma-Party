@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/proyectil_balon.gd" id="1_script"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_balon"]
+radius = 18.0
+
+[node name="ProyectilBalon" type="Node2D" unique_id=730000001]
+script = ExtResource("1_script")
+
+[node name="Rastro" type="CPUParticles2D" parent="." unique_id=730000002]
+amount = 8
+lifetime = 0.22
+speed_scale = 1.0
+emission_shape = 1
+emission_sphere_radius = 8.0
+gravity = Vector2(0, 0)
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(1, 1, 1, 0.35)
+
+[node name="Visual" type="Node2D" parent="." unique_id=730000003]
+z_index = 2
+z_as_relative = false
+
+[node name="SombraSuelo" type="Polygon2D" parent="Visual" unique_id=730000004]
+position = Vector2(0, 10)
+scale = Vector2(1, 0.4)
+color = Color(0.1, 0.1, 0.15, 0.35)
+polygon = PackedVector2Array(18, 0, 15, 7, 9, 13, 0, 16, -9, 13, -15, 7, -18, 0, -15, -7, -9, -13, 0, -16, 9, -13, 15, -7)
+
+[node name="SpriteBalon" type="Sprite2D" parent="Visual" unique_id=730000005]
+texture_filter = 1
+
+[node name="AreaColision" type="Area2D" parent="." unique_id=730000011]
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaColision" unique_id=730000012]
+shape = SubResource("CircleShape2D_balon")

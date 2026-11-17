@@ -1,0 +1,107 @@
+[gd_resource type="SpriteFrames" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST01_00.png" id="1_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST01_01.png" id="2_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST01_02.png" id="3_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST01_03.png" id="4_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST02_00.png" id="5_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST02_01.png" id="6_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST02_02.png" id="7_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST03_00.png" id="8_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST03_01.png" id="9_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST03_02.png" id="10_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST04_00.png" id="11_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST04_01.png" id="12_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST05_00.png" id="13_res"]
+[ext_resource type="Texture2D" path="res://assets/Sprites/NPCS/Yayoi Akikawa/akyy_ST05_01.png" id="14_res"]
+
+[resource]
+animations = [
+{
+"frames": [
+{
+"duration": 1.0,
+"texture": ExtResource("1_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("2_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("3_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("4_res")
+}
+],
+"loop": true,
+"name": &"presentar",
+"speed": 8.0
+}, {
+"frames": [
+{
+"duration": 1.0,
+"texture": ExtResource("5_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("6_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("7_res")
+}
+],
+"loop": true,
+"name": &"hablar",
+"speed": 8.0
+}, {
+"frames": [
+{
+"duration": 1.0,
+"texture": ExtResource("8_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("9_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("10_res")
+}
+],
+"loop": true,
+"name": &"animar",
+"speed": 8.0
+}, {
+"frames": [
+{
+"duration": 1.0,
+"texture": ExtResource("11_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("12_res")
+}
+],
+"loop": true,
+"name": &"sonreir",
+"speed": 6.0
+}, {
+"frames": [
+{
+"duration": 1.0,
+"texture": ExtResource("13_res")
+},
+{
+"duration": 1.0,
+"texture": ExtResource("14_res")
+}
+],
+"loop": true,
+"name": &"sorpresa",
+"speed": 6.0
+}
+]

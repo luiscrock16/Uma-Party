@@ -1,0 +1,692 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/minijuego_globos.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_horiz"]
+size = Vector2(814, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vert"]
+size = Vector2(24, 412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_equipo0"]
+bg_color = Color(0.12, 0.1, 0.16, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.28, 0.38, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_equipo1"]
+bg_color = Color(0.08, 0.12, 0.2, 0.94)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.18, 0.6, 1, 0.95)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.18, 0.17, 0.23, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill_0"]
+bg_color = Color(1, 0.28, 0.38, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill_1"]
+bg_color = Color(0.18, 0.6, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_central"]
+bg_color = Color(0.09, 0.11, 0.18, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.78, 0.25, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 4
+
+[node name="MinijuegoGlobos" type="Node2D" unique_id=790000001]
+script = ExtResource("1_script")
+
+[node name="FondoTracen" type="Node2D" parent="." unique_id=790000002]
+z_index = -10
+z_as_relative = false
+
+[node name="Cielo" type="ColorRect" parent="FondoTracen" unique_id=790000003]
+offset_right = 1152.0
+offset_bottom = 150.0
+color = Color(0.55, 0.76, 0.95, 1)
+
+[node name="Nube1" type="Line2D" parent="FondoTracen" unique_id=790000004]
+points = PackedVector2Array(180, 42, 220, 36, 260, 42, 290, 48)
+width = 16.0
+default_color = Color(1, 1, 1, 0.75)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Nube2" type="Line2D" parent="FondoTracen" unique_id=790000005]
+points = PackedVector2Array(840, 50, 880, 44, 930, 46, 970, 52)
+width = 14.0
+default_color = Color(1, 1, 1, 0.7)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="EdificioAcademia" type="Node2D" parent="FondoTracen" unique_id=790000010]
+
+[node name="FachadaPrincipal" type="ColorRect" parent="FondoTracen/EdificioAcademia" unique_id=790000011]
+offset_left = 110.0
+offset_top = 45.0
+offset_right = 1042.0
+offset_bottom = 148.0
+color = Color(0.72, 0.38, 0.3, 1)
+
+[node name="MolduraSuperior" type="ColorRect" parent="FondoTracen/EdificioAcademia" unique_id=790000012]
+offset_left = 100.0
+offset_top = 40.0
+offset_right = 1052.0
+offset_bottom = 47.0
+color = Color(0.9, 0.88, 0.82, 1)
+
+[node name="TejadoPrincipal" type="ColorRect" parent="FondoTracen/EdificioAcademia" unique_id=790000013]
+offset_left = 90.0
+offset_top = 34.0
+offset_right = 1062.0
+offset_bottom = 40.0
+color = Color(0.24, 0.42, 0.36, 1)
+
+[node name="CornisaMedia" type="ColorRect" parent="FondoTracen/EdificioAcademia" unique_id=790000014]
+offset_left = 110.0
+offset_top = 96.0
+offset_right = 1042.0
+offset_bottom = 100.0
+color = Color(0.85, 0.82, 0.76, 1)
+
+[node name="ZocaloInferior" type="ColorRect" parent="FondoTracen/EdificioAcademia" unique_id=790000015]
+offset_left = 100.0
+offset_top = 144.0
+offset_right = 1052.0
+offset_bottom = 150.0
+color = Color(0.88, 0.86, 0.8, 1)
+
+[node name="VentanasAlaIzq" type="Node2D" parent="FondoTracen/EdificioAcademia" unique_id=790000016]
+
+[node name="V1" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaIzq" unique_id=790000017]
+offset_left = 150.0
+offset_top = 56.0
+offset_right = 176.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V2" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaIzq" unique_id=790000018]
+offset_left = 220.0
+offset_top = 56.0
+offset_right = 246.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V3" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaIzq" unique_id=790000019]
+offset_left = 290.0
+offset_top = 56.0
+offset_right = 316.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V4" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaIzq" unique_id=790000020]
+offset_left = 360.0
+offset_top = 56.0
+offset_right = 386.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V5" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaIzq" unique_id=790000021]
+offset_left = 430.0
+offset_top = 56.0
+offset_right = 456.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="VentanasAlaDer" type="Node2D" parent="FondoTracen/EdificioAcademia" unique_id=790000022]
+
+[node name="V6" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaDer" unique_id=790000023]
+offset_left = 696.0
+offset_top = 56.0
+offset_right = 722.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V7" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaDer" unique_id=790000024]
+offset_left = 766.0
+offset_top = 56.0
+offset_right = 792.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V8" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaDer" unique_id=790000025]
+offset_left = 836.0
+offset_top = 56.0
+offset_right = 862.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V9" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaDer" unique_id=790000026]
+offset_left = 906.0
+offset_top = 56.0
+offset_right = 932.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="V10" type="ColorRect" parent="FondoTracen/EdificioAcademia/VentanasAlaDer" unique_id=790000027]
+offset_left = 976.0
+offset_top = 56.0
+offset_right = 1002.0
+offset_bottom = 88.0
+color = Color(0.25, 0.38, 0.52, 1)
+
+[node name="TorreReloj" type="Node2D" parent="FondoTracen/EdificioAcademia" unique_id=790000030]
+
+[node name="BaseTorre" type="ColorRect" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000031]
+offset_left = 516.0
+offset_top = 18.0
+offset_right = 636.0
+offset_bottom = 150.0
+color = Color(0.68, 0.34, 0.28, 1)
+
+[node name="PilastraIzq" type="ColorRect" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000032]
+offset_left = 516.0
+offset_top = 18.0
+offset_right = 524.0
+offset_bottom = 150.0
+color = Color(0.9, 0.88, 0.82, 1)
+
+[node name="PilastraDer" type="ColorRect" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000033]
+offset_left = 628.0
+offset_top = 18.0
+offset_right = 636.0
+offset_bottom = 150.0
+color = Color(0.9, 0.88, 0.82, 1)
+
+[node name="TechoTorre" type="Polygon2D" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000034]
+color = Color(0.2, 0.38, 0.32, 1)
+polygon = PackedVector2Array(506, 18, 576, -18, 646, 18)
+
+[node name="AgujaTorre" type="Line2D" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000035]
+points = PackedVector2Array(576, -18, 576, -34)
+width = 3.0
+default_color = Color(0.95, 0.8, 0.25, 1)
+
+[node name="BordeReloj" type="Line2D" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000036]
+position = Vector2(576, 52)
+points = PackedVector2Array(22, 0, 19, 11, 11, 19, 0, 22, -11, 19, -19, 11, -22, 0, -19, -11, -11, -19, 0, -22, 11, -19, 19, -11, 22, 0)
+width = 3.0
+default_color = Color(0.95, 0.8, 0.25, 1)
+
+[node name="EsferaReloj" type="Polygon2D" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000037]
+position = Vector2(576, 52)
+color = Color(0.96, 0.94, 0.88, 1)
+polygon = PackedVector2Array(20, 0, 17, 10, 10, 17, 0, 20, -10, 17, -17, 10, -20, 0, -17, -10, -10, -17, 0, -20, 10, -17, 17, -10)
+
+[node name="ManecillasReloj" type="Line2D" parent="FondoTracen/EdificioAcademia/TorreReloj" unique_id=790000038]
+position = Vector2(576, 52)
+points = PackedVector2Array(0, 0, 0, -11, 0, 0, 7, 3)
+width = 2.0
+default_color = Color(0.2, 0.15, 0.25, 1)
+
+[node name="ArbolesCerezo" type="Node2D" parent="FondoTracen" unique_id=790000040]
+
+[node name="TroncoIzq" type="Line2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000041]
+points = PackedVector2Array(45, 160, 48, 110, 35, 75)
+width = 10.0
+default_color = Color(0.38, 0.24, 0.18, 1)
+
+[node name="CopaIzq1" type="Polygon2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000042]
+color = Color(0.98, 0.72, 0.8, 0.95)
+polygon = PackedVector2Array(5, 70, 35, 30, 85, 35, 115, 70, 95, 110, 35, 115, 0, 95)
+
+[node name="CopaIzq2" type="Polygon2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000043]
+color = Color(1, 0.82, 0.88, 0.95)
+polygon = PackedVector2Array(25, 60, 50, 40, 85, 45, 95, 75, 75, 95, 35, 90)
+
+[node name="TroncoDer" type="Line2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000044]
+points = PackedVector2Array(1105, 160, 1102, 110, 1115, 75)
+width = 10.0
+default_color = Color(0.38, 0.24, 0.18, 1)
+
+[node name="CopaDer1" type="Polygon2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000045]
+color = Color(0.98, 0.72, 0.8, 0.95)
+polygon = PackedVector2Array(1035, 70, 1065, 35, 1115, 30, 1145, 70, 1145, 100, 1110, 115, 1055, 110)
+
+[node name="CopaDer2" type="Polygon2D" parent="FondoTracen/ArbolesCerezo" unique_id=790000046]
+color = Color(1, 0.82, 0.88, 0.95)
+polygon = PackedVector2Array(1055, 60, 1075, 45, 1110, 40, 1125, 70, 1115, 95, 1075, 90)
+
+[node name="PaseoSuperior" type="Node2D" parent="FondoTracen" unique_id=790000050]
+
+[node name="SueloPromenade" type="ColorRect" parent="FondoTracen/PaseoSuperior" unique_id=790000051]
+offset_top = 148.0
+offset_right = 1152.0
+offset_bottom = 180.0
+color = Color(0.84, 0.81, 0.76, 1)
+
+[node name="FranjaAdoquinPaseo" type="ColorRect" parent="FondoTracen/PaseoSuperior" unique_id=790000052]
+offset_top = 148.0
+offset_right = 1152.0
+offset_bottom = 154.0
+color = Color(0.76, 0.72, 0.66, 1)
+
+[node name="Balaustrada" type="Node2D" parent="FondoTracen/PaseoSuperior" unique_id=790000053]
+
+[node name="Pasamanos" type="ColorRect" parent="FondoTracen/PaseoSuperior/Balaustrada" unique_id=790000054]
+offset_left = 165.0
+offset_top = 172.0
+offset_right = 987.0
+offset_bottom = 178.0
+color = Color(0.92, 0.9, 0.86, 1)
+
+[node name="PostesBalcon" type="Line2D" parent="FondoTracen/PaseoSuperior/Balaustrada" unique_id=790000055]
+points = PackedVector2Array(175, 175, 175, 180, 255, 175, 255, 180, 335, 175, 335, 180, 415, 175, 415, 180, 495, 175, 495, 180, 575, 175, 575, 180, 655, 175, 655, 180, 735, 175, 735, 180, 815, 175, 815, 180, 895, 175, 895, 180, 977, 175, 977, 180)
+width = 4.0
+default_color = Color(0.85, 0.83, 0.78, 1)
+
+[node name="ZonaNPCsFondo" type="Node2D" parent="FondoTracen" unique_id=790000059]
+
+[node name="ZonaLateralIzq" type="Node2D" parent="FondoTracen" unique_id=790000060]
+
+[node name="CespedIzq" type="ColorRect" parent="FondoTracen/ZonaLateralIzq" unique_id=790000061]
+offset_top = 180.0
+offset_right = 175.0
+offset_bottom = 648.0
+color = Color(0.44, 0.65, 0.36, 1)
+
+[node name="SenderoLadrilloIzq" type="ColorRect" parent="FondoTracen/ZonaLateralIzq" unique_id=790000062]
+offset_left = 32.0
+offset_top = 180.0
+offset_right = 142.0
+offset_bottom = 648.0
+color = Color(0.72, 0.5, 0.42, 1)
+
+[node name="BordeSenderoIzq1" type="Line2D" parent="FondoTracen/ZonaLateralIzq" unique_id=790000063]
+points = PackedVector2Array(32, 180, 32, 648)
+width = 3.0
+default_color = Color(0.86, 0.82, 0.76, 1)
+
+[node name="BordeSenderoIzq2" type="Line2D" parent="FondoTracen/ZonaLateralIzq" unique_id=790000064]
+points = PackedVector2Array(142, 180, 142, 648)
+width = 3.0
+default_color = Color(0.86, 0.82, 0.76, 1)
+
+[node name="FarolaCampusIzq" type="Node2D" parent="FondoTracen/ZonaLateralIzq" unique_id=790000065]
+position = Vector2(87, 240)
+
+[node name="PosteFarola" type="Line2D" parent="FondoTracen/ZonaLateralIzq/FarolaCampusIzq" unique_id=790000066]
+points = PackedVector2Array(0, 0, 0, -42)
+width = 3.0
+default_color = Color(0.22, 0.2, 0.26, 1)
+
+[node name="FarolLuz" type="Polygon2D" parent="FondoTracen/ZonaLateralIzq/FarolaCampusIzq" unique_id=790000067]
+position = Vector2(0, -42)
+color = Color(1, 0.92, 0.5, 0.9)
+polygon = PackedVector2Array(-5, -3, 0, -8, 5, -3, 3, 4, -3, 4)
+
+[node name="BancoJardinIzq" type="ColorRect" parent="FondoTracen/ZonaLateralIzq" unique_id=790000068]
+offset_left = 62.0
+offset_top = 470.0
+offset_right = 112.0
+offset_bottom = 494.0
+color = Color(0.48, 0.32, 0.22, 1)
+
+[node name="ZonaNPCsLateralIzq" type="Node2D" parent="FondoTracen" unique_id=790000069]
+
+[node name="ZonaLateralDer" type="Node2D" parent="FondoTracen" unique_id=790000070]
+
+[node name="CespedDer" type="ColorRect" parent="FondoTracen/ZonaLateralDer" unique_id=790000071]
+offset_left = 977.0
+offset_top = 180.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.44, 0.65, 0.36, 1)
+
+[node name="SenderoLadrilloDer" type="ColorRect" parent="FondoTracen/ZonaLateralDer" unique_id=790000072]
+offset_left = 1010.0
+offset_top = 180.0
+offset_right = 1120.0
+offset_bottom = 648.0
+color = Color(0.72, 0.5, 0.42, 1)
+
+[node name="BordeSenderoDer1" type="Line2D" parent="FondoTracen/ZonaLateralDer" unique_id=790000073]
+points = PackedVector2Array(1010, 180, 1010, 648)
+width = 3.0
+default_color = Color(0.86, 0.82, 0.76, 1)
+
+[node name="BordeSenderoDer2" type="Line2D" parent="FondoTracen/ZonaLateralDer" unique_id=790000074]
+points = PackedVector2Array(1120, 180, 1120, 648)
+width = 3.0
+default_color = Color(0.86, 0.82, 0.76, 1)
+
+[node name="FarolaCampusDer" type="Node2D" parent="FondoTracen/ZonaLateralDer" unique_id=790000075]
+position = Vector2(1065, 240)
+
+[node name="PosteFarola" type="Line2D" parent="FondoTracen/ZonaLateralDer/FarolaCampusDer" unique_id=790000076]
+points = PackedVector2Array(0, 0, 0, -42)
+width = 3.0
+default_color = Color(0.22, 0.2, 0.26, 1)
+
+[node name="FarolLuz" type="Polygon2D" parent="FondoTracen/ZonaLateralDer/FarolaCampusDer" unique_id=790000077]
+position = Vector2(0, -42)
+color = Color(1, 0.92, 0.5, 0.9)
+polygon = PackedVector2Array(-5, -3, 0, -8, 5, -3, 3, 4, -3, 4)
+
+[node name="BancoJardinDer" type="ColorRect" parent="FondoTracen/ZonaLateralDer" unique_id=790000078]
+offset_left = 1040.0
+offset_top = 470.0
+offset_right = 1090.0
+offset_bottom = 494.0
+color = Color(0.48, 0.32, 0.22, 1)
+
+[node name="ZonaNPCsLateralDer" type="Node2D" parent="FondoTracen" unique_id=790000079]
+
+[node name="PatioCentral" type="Node2D" parent="FondoTracen" unique_id=790000080]
+
+[node name="PlazaSuelo" type="ColorRect" parent="FondoTracen/PatioCentral" unique_id=790000081]
+offset_left = 175.0
+offset_top = 180.0
+offset_right = 977.0
+offset_bottom = 585.0
+color = Color(0.88, 0.84, 0.79, 1)
+
+[node name="SombraCornisa" type="ColorRect" parent="FondoTracen/PatioCentral" unique_id=790000082]
+offset_left = 175.0
+offset_top = 180.0
+offset_right = 977.0
+offset_bottom = 194.0
+color = Color(0, 0, 0, 0.12)
+
+[node name="CaminosAdoquin" type="Node2D" parent="FondoTracen/PatioCentral" unique_id=790000083]
+
+[node name="CaminoDiagonal1" type="Line2D" parent="FondoTracen/PatioCentral/CaminosAdoquin" unique_id=790000084]
+points = PackedVector2Array(175, 180, 576, 380, 977, 585)
+width = 24.0
+default_color = Color(0.8, 0.73, 0.65, 0.55)
+
+[node name="CaminoDiagonal2" type="Line2D" parent="FondoTracen/PatioCentral/CaminosAdoquin" unique_id=790000085]
+points = PackedVector2Array(175, 585, 576, 380, 977, 180)
+width = 24.0
+default_color = Color(0.8, 0.73, 0.65, 0.55)
+
+[node name="CaminoTransversal" type="Line2D" parent="FondoTracen/PatioCentral/CaminosAdoquin" unique_id=790000086]
+points = PackedVector2Array(175, 380, 977, 380)
+width = 16.0
+default_color = Color(0.8, 0.73, 0.65, 0.5)
+
+[node name="EmblemaCentral" type="Node2D" parent="FondoTracen/PatioCentral" unique_id=790000087]
+position = Vector2(576, 380)
+
+[node name="CirculoExterior" type="Line2D" parent="FondoTracen/PatioCentral/EmblemaCentral" unique_id=790000088]
+points = PackedVector2Array(72, 0, 66, 28, 51, 51, 28, 66, 0, 72, -28, 66, -51, 51, -66, 28, -72, 0, -66, -28, -51, -51, -28, -66, 0, -72, 28, -66, 51, -51, 66, -28, 72, 0)
+width = 3.5
+default_color = Color(0.86, 0.7, 0.28, 0.75)
+
+[node name="CirculoInterior" type="Line2D" parent="FondoTracen/PatioCentral/EmblemaCentral" unique_id=790000089]
+points = PackedVector2Array(54, 0, 49, 21, 38, 38, 21, 49, 0, 54, -21, 49, -38, 38, -49, 21, -54, 0, -49, -21, -38, -38, -21, -49, 0, -54, 21, -49, 38, -38, 49, -21, 54, 0)
+width = 2.0
+default_color = Color(0.86, 0.7, 0.28, 0.5)
+
+[node name="HerraduraTracen" type="Line2D" parent="FondoTracen/PatioCentral/EmblemaCentral" unique_id=790000090]
+points = PackedVector2Array(-26, 32, -34, 15, -36, -6, -25, -26, 0, -35, 25, -26, 36, -6, 34, 15, 26, 32)
+width = 5.0
+default_color = Color(0.86, 0.7, 0.28, 0.85)
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="EstrellaTracen" type="Line2D" parent="FondoTracen/PatioCentral/EmblemaCentral" unique_id=790000091]
+points = PackedVector2Array(0, -18, 5, -5, 18, -4, 8, 5, 12, 18, 0, 10, -12, 18, -8, 5, -18, -4, -5, -5, 0, -18)
+width = 2.5
+default_color = Color(0.92, 0.78, 0.32, 0.95)
+
+[node name="VallaCampus" type="Node2D" parent="FondoTracen/PatioCentral" unique_id=790000092]
+
+[node name="VallaBlanca" type="Line2D" parent="FondoTracen/PatioCentral/VallaCampus" unique_id=790000093]
+points = PackedVector2Array(175, 180, 977, 180, 977, 585, 175, 585, 175, 180)
+width = 6.0
+default_color = Color(0.95, 0.93, 0.89, 1)
+
+[node name="BordeDoradoInterior" type="Line2D" parent="FondoTracen/PatioCentral/VallaCampus" unique_id=790000094]
+points = PackedVector2Array(180, 185, 972, 185, 972, 580, 180, 580, 180, 185)
+width = 2.0
+default_color = Color(0.85, 0.7, 0.25, 0.7)
+
+[node name="Jardineras" type="Node2D" parent="FondoTracen/PatioCentral" unique_id=790000095]
+
+[node name="JardineraSupIzq" type="ColorRect" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000096]
+offset_left = 182.0
+offset_top = 187.0
+offset_right = 230.0
+offset_bottom = 205.0
+color = Color(0.35, 0.58, 0.3, 1)
+
+[node name="FloresSupIzq" type="Line2D" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000097]
+points = PackedVector2Array(190, 196, 202, 196, 214, 196, 222, 196)
+width = 6.0
+default_color = Color(0.96, 0.45, 0.65, 1)
+
+[node name="JardineraSupDer" type="ColorRect" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000098]
+offset_left = 922.0
+offset_top = 187.0
+offset_right = 970.0
+offset_bottom = 205.0
+color = Color(0.35, 0.58, 0.3, 1)
+
+[node name="FloresSupDer" type="Line2D" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000099]
+points = PackedVector2Array(930, 196, 942, 196, 954, 196, 962, 196)
+width = 6.0
+default_color = Color(0.96, 0.45, 0.65, 1)
+
+[node name="JardineraInfIzq" type="ColorRect" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000100]
+offset_left = 182.0
+offset_top = 560.0
+offset_right = 230.0
+offset_bottom = 578.0
+color = Color(0.35, 0.58, 0.3, 1)
+
+[node name="FloresInfIzq" type="Line2D" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000101]
+points = PackedVector2Array(190, 569, 202, 569, 214, 569, 222, 569)
+width = 6.0
+default_color = Color(0.98, 0.8, 0.25, 1)
+
+[node name="JardineraInfDer" type="ColorRect" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000102]
+offset_left = 922.0
+offset_top = 560.0
+offset_right = 970.0
+offset_bottom = 578.0
+color = Color(0.35, 0.58, 0.3, 1)
+
+[node name="FloresInfDer" type="Line2D" parent="FondoTracen/PatioCentral/Jardineras" unique_id=790000103]
+points = PackedVector2Array(930, 569, 942, 569, 954, 569, 962, 569)
+width = 6.0
+default_color = Color(0.98, 0.8, 0.25, 1)
+
+[node name="LimitesArena" type="StaticBody2D" parent="." unique_id=790000110]
+collision_layer = 1
+collision_mask = 1
+
+[node name="ColArriba" type="CollisionShape2D" parent="LimitesArena" unique_id=790000111]
+position = Vector2(576, 172)
+shape = SubResource("RectangleShape2D_horiz")
+
+[node name="ColAbajo" type="CollisionShape2D" parent="LimitesArena" unique_id=790000112]
+position = Vector2(576, 593)
+shape = SubResource("RectangleShape2D_horiz")
+
+[node name="ColIzq" type="CollisionShape2D" parent="LimitesArena" unique_id=790000113]
+position = Vector2(167, 382)
+shape = SubResource("RectangleShape2D_vert")
+
+[node name="ColDer" type="CollisionShape2D" parent="LimitesArena" unique_id=790000114]
+position = Vector2(985, 382)
+shape = SubResource("RectangleShape2D_vert")
+
+[node name="Spawns" type="Node2D" parent="." unique_id=790000120]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=790000121]
+position = Vector2(260, 280)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=790000122]
+position = Vector2(260, 460)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=790000123]
+position = Vector2(892, 280)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=790000124]
+position = Vector2(892, 460)
+
+[node name="ContenedorGlobos" type="Node2D" parent="." unique_id=790000130]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=790000140]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=790000150]
+
+[node name="PanelEquipo0" type="PanelContainer" parent="HUD" unique_id=790000151]
+offset_left = 24.0
+offset_top = 18.0
+offset_right = 320.0
+offset_bottom = 86.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_equipo0")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelEquipo0" unique_id=790000152]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelEquipo0/Margen" unique_id=790000153]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelEquipo0/Margen/VBox" unique_id=790000154]
+layout_mode = 2
+
+[node name="LabelTitulo" type="Label" parent="HUD/PanelEquipo0/Margen/VBox/HBox" unique_id=790000155]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "★ EQUIPO ROJO"
+
+[node name="LabelRestantes" type="Label" parent="HUD/PanelEquipo0/Margen/VBox/HBox" unique_id=790000156]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.9, 1)
+theme_override_font_sizes/font_size = 15
+text = "20 / 20"
+
+[node name="BarraProgreso" type="ProgressBar" parent="HUD/PanelEquipo0/Margen/VBox" unique_id=790000157]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill_0")
+show_percentage = false
+
+[node name="PanelCentral" type="PanelContainer" parent="HUD" unique_id=790000160]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -115.0
+offset_top = 18.0
+offset_right = 115.0
+offset_bottom = 74.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_central")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelCentral" unique_id=790000161]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 4
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelCentral/Margen" unique_id=790000162]
+layout_mode = 2
+alignment = 1
+
+[node name="LabelReloj" type="Label" parent="HUD/PanelCentral/Margen/VBox" unique_id=790000163]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 20
+text = "00:00"
+horizontal_alignment = 1
+
+[node name="LabelSubtitulo" type="Label" parent="HUD/PanelCentral/Margen/VBox" unique_id=790000164]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.82, 0.28, 1)
+theme_override_font_sizes/font_size = 11
+text = "2 vs 2 • TRACEN BALLOONS"
+horizontal_alignment = 1
+
+[node name="PanelEquipo1" type="PanelContainer" parent="HUD" unique_id=790000170]
+offset_left = 832.0
+offset_top = 18.0
+offset_right = 1128.0
+offset_bottom = 86.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_equipo1")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelEquipo1" unique_id=790000171]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="VBox" type="VBoxContainer" parent="HUD/PanelEquipo1/Margen" unique_id=790000172]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelEquipo1/Margen/VBox" unique_id=790000173]
+layout_mode = 2
+
+[node name="LabelRestantes" type="Label" parent="HUD/PanelEquipo1/Margen/VBox/HBox" unique_id=790000174]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "20 / 20"
+
+[node name="LabelTitulo" type="Label" parent="HUD/PanelEquipo1/Margen/VBox/HBox" unique_id=790000175]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.35, 0.75, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "★ EQUIPO AZUL"
+horizontal_alignment = 2
+
+[node name="BarraProgreso" type="ProgressBar" parent="HUD/PanelEquipo1/Margen/VBox" unique_id=790000176]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill_1")
+fill_mode = 1
+show_percentage = false

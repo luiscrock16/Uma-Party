@@ -1,0 +1,513 @@
+[gd_scene format=3 uid="uid://cxqte871gwspo"]
+
+[ext_resource type="Script" uid="uid://ccv4c2g8wh5cq" path="res://scripts/minijuego_trivia.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://recursos/akikawa_frames.tres" id="2_akikawa"]
+[ext_resource type="Texture2D" uid="uid://d3ue6euwyk23k" path="res://assets/minijuego_trivia/bg_teatro_base.png" id="3_bg_base"]
+[ext_resource type="Texture2D" uid="uid://dn7vvue4dnl5e" path="res://assets/minijuego_trivia/bg_teatro_front.png" id="4_bg_front"]
+[ext_resource type="PackedScene" path="res://escenas/publico_teatro.tscn" id="5_publico"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pantalla_tv"]
+bg_color = Color(0.06, 0.04, 0.1, 0.96)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.95, 0.8, 0.25, 0.95)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_size = 10
+shadow_offset = Vector2(0, 6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_podio_akikawa"]
+bg_color = Color(0.22, 0.08, 0.12, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.8, 0.25, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_burbuja_akikawa"]
+bg_color = Color(0.98, 0.96, 0.92, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.72, 0.2, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel_tiempo"]
+bg_color = Color(0.1, 0.08, 0.14, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.78, 0.25, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(0.18, 0.16, 0.22, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(0.2, 0.8, 1, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_console_opciones"]
+bg_color = Color(0.08, 0.07, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9, 0.75, 0.25, 0.8)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_a"]
+bg_color = Color(0.75, 0.2, 0.25, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.55, 0.6, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_b"]
+bg_color = Color(0.16, 0.45, 0.75, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 0.8, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_c"]
+bg_color = Color(0.85, 0.55, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.4, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_d"]
+bg_color = Color(0.15, 0.65, 0.35, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.55, 1, 0.7, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_anuncio"]
+bg_color = Color(0.06, 0.05, 0.1, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 0.82, 0.2, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 10
+
+[node name="MinijuegoTrivia" type="Node2D" unique_id=794000001]
+script = ExtResource("1_script")
+metadata/_edit_horizontal_guides_ = [-141.0]
+
+[node name="Escenario" type="Node2D" parent="." unique_id=794000002]
+z_index = -10
+z_as_relative = false
+
+[node name="FondoTeatroBase" type="Sprite2D" parent="Escenario" unique_id=794000003]
+z_index = -20
+texture = ExtResource("3_bg_base")
+centered = false
+
+[node name="PublicoTeatro" parent="Escenario" unique_id=794000008 instance=ExtResource("5_publico")]
+z_index = -15
+
+[node name="FondoTeatroFront" type="Sprite2D" parent="Escenario" unique_id=794000006]
+z_index = -10
+texture = ExtResource("4_bg_front")
+centered = false
+
+[node name="PantallaGiganteTV" type="PanelContainer" parent="Escenario" unique_id=794000020]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 186.0
+offset_top = 46.0
+offset_right = 966.0
+offset_bottom = 226.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pantalla_tv")
+
+[node name="Margen" type="MarginContainer" parent="Escenario/PantallaGiganteTV" unique_id=794000021]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 12
+
+[node name="VBox" type="VBoxContainer" parent="Escenario/PantallaGiganteTV/Margen" unique_id=794000022]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="HBoxMeta" type="HBoxContainer" parent="Escenario/PantallaGiganteTV/Margen/VBox" unique_id=794000023]
+layout_mode = 2
+
+[node name="LabelNumeroPregunta" type="Label" parent="Escenario/PantallaGiganteTV/Margen/VBox/HBoxMeta" unique_id=794000024]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+text = "PREGUNTA #1"
+
+[node name="LabelCategoria" type="Label" parent="Escenario/PantallaGiganteTV/Margen/VBox/HBoxMeta" unique_id=794000025]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "CATEGORÍA: CULTURA GENERAL"
+horizontal_alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="Escenario/PantallaGiganteTV/Margen/VBox" unique_id=794000026]
+layout_mode = 2
+
+[node name="LabelPregunta" type="Label" parent="Escenario/PantallaGiganteTV/Margen/VBox" unique_id=794000027]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.98, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "Cargando pregunta de trivia..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ParticulasEstudio" type="CPUParticles2D" parent="Escenario" unique_id=794000030]
+position = Vector2(576, 120)
+amount = 25
+lifetime = 4.0
+emission_shape = 3
+emission_rect_extents = Vector2(550, 80)
+gravity = Vector2(0, 15)
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(1, 0.9, 0.5, 0.3)
+
+[node name="Spawns" type="Node2D" parent="." unique_id=794000099]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=794000100]
+position = Vector2(176, 375)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=794000101]
+position = Vector2(442, 375)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=794000102]
+position = Vector2(708, 375)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=794000103]
+position = Vector2(976, 375)
+
+[node name="EstacionesJugadores" type="Node2D" parent="." unique_id=794000040]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=794000050]
+position = Vector2(576, 324)
+
+[node name="ParticulasConfetiFin" type="CPUParticles2D" parent="." unique_id=794000060]
+position = Vector2(576, 200)
+emitting = false
+amount = 60
+lifetime = 2.5
+one_shot = true
+explosiveness = 0.85
+spread = 180.0
+gravity = Vector2(0, 350)
+initial_velocity_min = 200.0
+initial_velocity_max = 450.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color = Color(1, 0.85, 0.25, 1)
+
+[node name="StandDirectora" type="Node2D" parent="." unique_id=794000130]
+position = Vector2(95, 190)
+
+[node name="FocoLuz" type="Polygon2D" parent="StandDirectora" unique_id=794000131]
+z_index = -1
+color = Color(1, 0.92, 0.65, 0.25)
+polygon = PackedVector2Array(-25, -170, 25, -170, 65, 45, -65, 45)
+
+[node name="BackdropOro" type="Polygon2D" parent="StandDirectora" unique_id=794000132]
+z_index = -1
+color = Color(0.22, 0.07, 0.12, 0.9)
+polygon = PackedVector2Array(-42, -20, -42, -125, 42, -125, 42, -20)
+
+[node name="BackdropBorde" type="Line2D" parent="StandDirectora" unique_id=794000133]
+z_index = -1
+points = PackedVector2Array(-42, -20, -42, -125, 42, -125, 42, -20)
+width = 2.5
+default_color = Color(0.95, 0.8, 0.25, 0.95)
+
+[node name="CapaFront" type="Node2D" parent="StandDirectora" unique_id=794000134]
+z_index = 2
+
+[node name="PodioCuerpo" type="Polygon2D" parent="StandDirectora/CapaFront" unique_id=794000135]
+color = Color(0.24, 0.11, 0.08, 0.98)
+polygon = PackedVector2Array(-46, -10, 46, -10, 36, 35, -36, 35)
+
+[node name="PodioBorde" type="Line2D" parent="StandDirectora/CapaFront" unique_id=794000136]
+points = PackedVector2Array(-46, -10, 46, -10, 36, 35, -36, 35, -46, -10)
+width = 2.5
+default_color = Color(0.95, 0.8, 0.25, 0.95)
+
+[node name="PodioMesa" type="Polygon2D" parent="StandDirectora/CapaFront" unique_id=794000137]
+color = Color(0.35, 0.16, 0.11, 1)
+polygon = PackedVector2Array(-52, -22, 52, -22, 46, -10, -46, -10)
+
+[node name="PodioMesaBorde" type="Line2D" parent="StandDirectora/CapaFront" unique_id=794000138]
+points = PackedVector2Array(-52, -22, 52, -22, 46, -10, -46, -10, -52, -22)
+width = 2.0
+default_color = Color(0.95, 0.8, 0.25, 0.95)
+
+[node name="Microfono" type="Line2D" parent="StandDirectora/CapaFront" unique_id=794000139]
+points = PackedVector2Array(-22, -22, -16, -34, -12, -42)
+width = 2.0
+default_color = Color(0.8, 0.75, 0.6, 1)
+
+[node name="MicroCabeza" type="Polygon2D" parent="StandDirectora/CapaFront/Microfono" unique_id=794000140]
+position = Vector2(-12, -42)
+color = Color(0.9, 0.85, 0.4, 1)
+polygon = PackedVector2Array(-3, -3, 3, -3, 3, 3, -3, 3)
+
+[node name="PlacaDirectora" type="PanelContainer" parent="StandDirectora/CapaFront" unique_id=794000141]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = 37.0
+offset_right = 44.0
+offset_bottom = 57.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_podio_akikawa")
+
+[node name="Label" type="Label" parent="StandDirectora/CapaFront/PlacaDirectora" unique_id=794000142]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 10
+text = "★ DIRECTORA ★"
+horizontal_alignment = 1
+
+[node name="PresentadoraAkikawa" type="Node2D" parent="." unique_id=794000120]
+z_index = 1
+position = Vector2(-90, 480)
+
+[node name="FocoLuzCentro" type="Polygon2D" parent="PresentadoraAkikawa" unique_id=794000121]
+z_index = -1
+color = Color(1, 0.95, 0.75, 0)
+polygon = PackedVector2Array(-30, -320, 30, -320, 85, 45, -85, 45)
+
+[node name="SpriteAkikawa" type="AnimatedSprite2D" parent="PresentadoraAkikawa" unique_id=794000122]
+scale = Vector2(2, 2)
+sprite_frames = ExtResource("2_akikawa")
+animation = &"presentar"
+
+[node name="BurbujaDialogo" type="PanelContainer" parent="PresentadoraAkikawa" unique_id=794000125]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_left = 50.0
+offset_top = -80.0
+offset_right = 260.0
+offset_bottom = -15.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_burbuja_akikawa")
+
+[node name="Margen" type="MarginContainer" parent="PresentadoraAkikawa/BurbujaDialogo" unique_id=794000126]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="LabelTexto" type="Label" parent="PresentadoraAkikawa/BurbujaDialogo/Margen" unique_id=794000127]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.1, 0.18, 1)
+theme_override_font_sizes/font_size = 12
+text = "¡Bienvenidos al Trivia Show de Tracen!"
+autowrap_mode = 3
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=794000070]
+
+[node name="PanelTiempo" type="PanelContainer" parent="HUD" unique_id=794000071]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 8.0
+offset_right = 110.0
+offset_bottom = 50.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel_tiempo")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelTiempo" unique_id=794000072]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 3
+
+[node name="HBox" type="HBoxContainer" parent="HUD/PanelTiempo/Margen" unique_id=794000073]
+layout_mode = 2
+alignment = 1
+
+[node name="Icono" type="Label" parent="HUD/PanelTiempo/Margen/HBox" unique_id=794000074]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "⏱️"
+
+[node name="LabelReloj" type="Label" parent="HUD/PanelTiempo/Margen/HBox" unique_id=794000075]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "10"
+horizontal_alignment = 1
+
+[node name="Segs" type="Label" parent="HUD/PanelTiempo/Margen/HBox" unique_id=794000076]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 11
+text = "segundos"
+
+[node name="BarraTiempo" type="ProgressBar" parent="HUD/PanelTiempo" unique_id=794000077]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+value = 100.0
+show_percentage = false
+
+[node name="PanelOpciones" type="PanelContainer" parent="HUD" unique_id=794000090]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = -140.0
+offset_right = 460.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_console_opciones")
+
+[node name="Margen" type="MarginContainer" parent="HUD/PanelOpciones" unique_id=794000091]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+
+[node name="Grid" type="GridContainer" parent="HUD/PanelOpciones/Margen" unique_id=794000092]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="BtnA" type="Button" parent="HUD/PanelOpciones/Margen/Grid" unique_id=794000093]
+custom_minimum_size = Vector2(435, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_a")
+text = "A) Opción 1"
+alignment = 0
+
+[node name="BtnB" type="Button" parent="HUD/PanelOpciones/Margen/Grid" unique_id=794000094]
+custom_minimum_size = Vector2(435, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_b")
+text = "B) Opción 2"
+alignment = 0
+
+[node name="BtnC" type="Button" parent="HUD/PanelOpciones/Margen/Grid" unique_id=794000095]
+custom_minimum_size = Vector2(435, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_c")
+text = "C) Opción 3"
+alignment = 0
+
+[node name="BtnD" type="Button" parent="HUD/PanelOpciones/Margen/Grid" unique_id=794000096]
+custom_minimum_size = Vector2(435, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_d")
+text = "D) Opción 4"
+alignment = 0
+
+[node name="PanelAnuncio" type="PanelContainer" parent="HUD" unique_id=1885705879]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -45.0
+offset_right = 260.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(260, 45)
+theme_override_styles/panel = SubResource("StyleBoxFlat_anuncio")
+
+[node name="LabelAnuncio" type="Label" parent="HUD/PanelAnuncio" unique_id=2008561255]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.8, 1)
+theme_override_font_sizes/font_size = 22
+text = "¡TIEMPO AGOTADO!"
+horizontal_alignment = 1
+vertical_alignment = 1

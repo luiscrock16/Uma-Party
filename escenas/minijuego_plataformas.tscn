@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://df72bvke285lo"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_plataformas.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_plataformas/bg_estadio_plataformas.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_plataformas/pantalla_jumbotron.png" id="3_jumbotron"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_plataformas/simbolo_0_zanahoria.png" id="4_simbolo"]
+[ext_resource type="Texture2D" path="res://assets/minijuego_plataformas/podio_victoria.png" id="5_podio"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_arriba"]
+size = Vector2(620, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_abajo"]
+size = Vector2(620, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lateral"]
+size = Vector2(24, 460)
+
+[node name="MinijuegoPlataformas" type="Node2D" unique_id=300000001]
+script = ExtResource("1_script")
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=300000002]
+z_index = -10
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+
+[node name="BordesMapa" type="StaticBody2D" parent="." unique_id=300000013]
+
+[node name="ParedArriba" type="CollisionShape2D" parent="BordesMapa" unique_id=300000014]
+position = Vector2(576, 186)
+shape = SubResource("RectangleShape2D_arriba")
+
+[node name="ParedAbajo" type="CollisionShape2D" parent="BordesMapa" unique_id=300000015]
+position = Vector2(576, 624)
+shape = SubResource("RectangleShape2D_abajo")
+
+[node name="ParedIzquierda" type="CollisionShape2D" parent="BordesMapa" unique_id=300000016]
+position = Vector2(288, 405)
+shape = SubResource("RectangleShape2D_lateral")
+
+[node name="ParedDerecha" type="CollisionShape2D" parent="BordesMapa" unique_id=300000017]
+position = Vector2(864, 405)
+shape = SubResource("RectangleShape2D_lateral")
+
+[node name="ContenedorPlataformas" type="Node2D" parent="." unique_id=300000003]
+z_index = 0
+
+[node name="PodioVictoria" type="Sprite2D" parent="." unique_id=300000018]
+visible = false
+z_index = 5
+position = Vector2(576, 850)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_podio")
+
+[node name="Jumbotron" type="Node2D" parent="." unique_id=300000004]
+z_index = 10
+position = Vector2(576, 95)
+
+[node name="SpritePantalla" type="TextureRect" parent="Jumbotron" unique_id=300000005]
+offset_left = -180.0
+offset_top = -85.0
+offset_right = 180.0
+offset_bottom = 85.0
+mouse_filter = 2
+texture = ExtResource("3_jumbotron")
+expand_mode = 1
+
+[node name="SpriteSimbolo" type="Sprite2D" parent="Jumbotron" unique_id=300000006]
+position = Vector2(0, 10)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("4_simbolo")
+
+[node name="LabelEstado" type="Label" parent="Jumbotron" unique_id=300000007]
+offset_left = -150.0
+offset_top = 45.0
+offset_right = 150.0
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(1, 0.9, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 15
+text = "¡PREPARADAS!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spawns" type="Node2D" parent="." unique_id=300000008]
+
+[node name="0" type="Marker2D" parent="Spawns" unique_id=300000009]
+position = Vector2(401, 300)
+
+[node name="1" type="Marker2D" parent="Spawns" unique_id=300000010]
+position = Vector2(751, 300)
+
+[node name="2" type="Marker2D" parent="Spawns" unique_id=300000011]
+position = Vector2(401, 510)
+
+[node name="3" type="Marker2D" parent="Spawns" unique_id=300000012]
+position = Vector2(751, 510)

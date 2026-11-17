@@ -1,0 +1,522 @@
+[gd_scene format=3 uid="uid://remo716000001"]
+
+[ext_resource type="Script" path="res://scripts/minijuego_remo.gd" id="1_remo_script"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/textura_mar_playa.png" id="2_mar_playa"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/bote_equipo_rojo.png" id="3_bote_rojo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/bote_equipo_azul.png" id="4_bote_azul"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/remo_pala.png" id="5_remo"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/palmera_tropical.png" id="6_palmera"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/sombrilla_playa.png" id="7_sombrilla"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/boya_marina.png" id="8_boya"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/roca_marina.png" id="9_roca"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/indicador_remo_giro.png" id="10_indicador"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/ola_marina_espuma.png" id="11_ola"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/boya_meta_flotante.png" id="12_boya_meta"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/podio_playa_tropical.png" id="13_podio"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/arco_victoria_playa.png" id="14_arco"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/remo/banderines_meta_marina.png" id="15_banderines"]
+[ext_resource type="Texture2D" path="res://assets/minijuegos/snowboard/cp_star.png" id="16_star"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bote"]
+radius = 24.0
+height = 108.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_limite_izq"]
+size = Vector2(24, 5400)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_limite_der"]
+size = Vector2(24, 5400)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.06, 0.18, 0.28, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.3, 0.82, 0.96, 0.95)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.18, 0.62, 0.78, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chip_rojo"]
+bg_color = Color(0.85, 0.2, 0.2, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.85, 0.4, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chip_azul"]
+bg_color = Color(0.15, 0.45, 0.85, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.9, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="MinijuegoRemo" type="Node2D" unique_id=716000001]
+script = ExtResource("1_remo_script")
+
+[node name="FondoCespedGlobal" type="ColorRect" parent="." unique_id=716000000]
+z_index = -35
+offset_left = -2000.0
+offset_top = -600.0
+offset_right = 2000.0
+offset_bottom = 6000.0
+color = Color(0.18, 0.45, 0.24, 1)
+
+[node name="FondoPlayaExtendida" type="ColorRect" parent="." unique_id=716000009]
+z_index = -25
+offset_left = -1600.0
+offset_top = -500.0
+offset_right = 230.0
+offset_bottom = 5800.0
+color = Color(0.957, 0.847, 0.596, 1)
+
+[node name="FondoMarPlaya" type="TextureRect" parent="." unique_id=716000002]
+z_index = -20
+offset_top = -300.0
+offset_right = 1152.0
+offset_bottom = 5600.0
+texture = ExtResource("2_mar_playa")
+stretch_mode = 1
+
+[node name="ContenedorOlas" type="Node2D" parent="." unique_id=716000003]
+z_index = -15
+
+[node name="DecoracionPlaya" type="Node2D" parent="." unique_id=716000004]
+z_index = -10
+
+[node name="Palmera_A1" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-280, 240)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla_A1" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-210, 360)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera1" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(70, 200)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla1" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(130, 360)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A2" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-320, 800)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera2" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(80, 680)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla2" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(125, 920)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A3" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-260, 1400)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera3" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(65, 1220)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla3" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(135, 1500)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A4" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-300, 2000)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera4" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(75, 1800)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla4" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(120, 2100)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A5" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-250, 2600)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera5" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(70, 2400)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla5" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(130, 2700)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A6" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-310, 3200)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera6" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(75, 3050)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla6" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(130, 3350)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A7" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-280, 3800)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera7" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(70, 3700)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla7" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(125, 4000)
+texture = ExtResource("7_sombrilla")
+
+[node name="Palmera_A8" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(-330, 4400)
+texture = ExtResource("6_palmera")
+
+[node name="Palmera8" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(80, 4350)
+texture = ExtResource("6_palmera")
+
+[node name="Sombrilla8" type="Sprite2D" parent="DecoracionPlaya"]
+position = Vector2(130, 4550)
+texture = ExtResource("7_sombrilla")
+
+[node name="ZonaCelebracion" type="Node2D" parent="DecoracionPlaya" unique_id=716000008]
+position = Vector2(-200, 4880)
+
+[node name="Podio" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(0, 30)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("13_podio")
+
+[node name="ArcoVictoria" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(0, -40)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("14_arco")
+
+[node name="PalmeraPodioIzq" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(-160, -20)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_palmera")
+
+[node name="PalmeraPodioDer" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(160, -20)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("6_palmera")
+
+[node name="SombrillaPodioIzq" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(-110, 40)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("7_sombrilla")
+
+[node name="SombrillaPodioDer" type="Sprite2D" parent="DecoracionPlaya/ZonaCelebracion"]
+position = Vector2(110, 40)
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("7_sombrilla")
+
+[node name="LabelCartelVictoria" type="Label" parent="DecoracionPlaya/ZonaCelebracion"]
+offset_left = -110.0
+offset_top = -45.0
+offset_right = 110.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(1, 0.95, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.4, 0.2, 0.05, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "★ CAMPEONAS DEL CAMPAMENTO ★"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LimitesMarinos" type="StaticBody2D" parent="." unique_id=716000005]
+collision_layer = 1
+collision_mask = 1
+
+[node name="ColIzq" type="CollisionShape2D" parent="LimitesMarinos"]
+position = Vector2(215, 2600)
+shape = SubResource("RectangleShape2D_limite_izq")
+
+[node name="ColDer" type="CollisionShape2D" parent="LimitesMarinos"]
+position = Vector2(1075, 2600)
+shape = SubResource("RectangleShape2D_limite_der")
+
+[node name="BoyasBordeDerecho" type="Node2D" parent="." unique_id=716000006]
+z_index = -5
+
+[node name="ContenedorObstaculos" type="Node2D" parent="." unique_id=716000010]
+z_index = -2
+
+[node name="BoteEquipo0" type="CharacterBody2D" parent="." unique_id=716000020]
+position = Vector2(480, 220)
+collision_layer = 1
+collision_mask = 1
+
+[node name="SpriteBote" type="Sprite2D" parent="BoteEquipo0" unique_id=716000021]
+texture = ExtResource("3_bote_rojo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoteEquipo0" unique_id=716000022]
+shape = SubResource("CapsuleShape2D_bote")
+
+[node name="AsientoIzq" type="Marker2D" parent="BoteEquipo0" unique_id=716000023]
+position = Vector2(0, -22)
+
+[node name="AsientoDer" type="Marker2D" parent="BoteEquipo0" unique_id=716000024]
+position = Vector2(0, 24)
+
+[node name="RemoIzq" type="Node2D" parent="BoteEquipo0" unique_id=716000025]
+position = Vector2(-24, -14)
+
+[node name="SpriteRemo" type="Sprite2D" parent="BoteEquipo0/RemoIzq"]
+position = Vector2(-12, 4)
+rotation = -0.436332
+texture = ExtResource("5_remo")
+
+[node name="RemoDer" type="Node2D" parent="BoteEquipo0" unique_id=716000026]
+position = Vector2(24, 32)
+
+[node name="SpriteRemo" type="Sprite2D" parent="BoteEquipo0/RemoDer"]
+position = Vector2(12, 4)
+rotation = 0.436332
+scale = Vector2(-1, 1)
+texture = ExtResource("5_remo")
+
+[node name="IndicadorGiroIzq" type="Sprite2D" parent="BoteEquipo0" unique_id=716000027]
+position = Vector2(-42, -24)
+rotation = 0.35
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("10_indicador")
+
+[node name="IndicadorGiroDer" type="Sprite2D" parent="BoteEquipo0" unique_id=716000028]
+position = Vector2(42, 22)
+rotation = -0.35
+scale = Vector2(-0.8, 0.8)
+texture = ExtResource("10_indicador")
+
+[node name="EstelaAgua" type="CPUParticles2D" parent="BoteEquipo0" unique_id=716000029]
+z_index = -1
+position = Vector2(0, 56)
+amount = 24
+lifetime = 0.8
+speed_scale = 1.2
+spread = 35.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 2.5
+scale_amount_max = 5.5
+color = Color(1, 1, 1, 0.75)
+
+[node name="SalpicaduraIzq" type="CPUParticles2D" parent="BoteEquipo0" unique_id=716000030]
+position = Vector2(-36, -8)
+emitting = false
+amount = 16
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.85
+spread = 60.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.85, 0.95, 1, 0.9)
+
+[node name="SalpicaduraDer" type="CPUParticles2D" parent="BoteEquipo0" unique_id=716000031]
+position = Vector2(36, 38)
+emitting = false
+amount = 16
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.85
+spread = 60.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.85, 0.95, 1, 0.9)
+
+[node name="BoteEquipo1" type="CharacterBody2D" parent="." unique_id=716000040]
+position = Vector2(780, 220)
+collision_layer = 1
+collision_mask = 1
+
+[node name="SpriteBote" type="Sprite2D" parent="BoteEquipo1" unique_id=716000041]
+texture = ExtResource("4_bote_azul")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoteEquipo1" unique_id=716000042]
+shape = SubResource("CapsuleShape2D_bote")
+
+[node name="AsientoIzq" type="Marker2D" parent="BoteEquipo1" unique_id=716000043]
+position = Vector2(0, -22)
+
+[node name="AsientoDer" type="Marker2D" parent="BoteEquipo1" unique_id=716000044]
+position = Vector2(0, 24)
+
+[node name="RemoIzq" type="Node2D" parent="BoteEquipo1" unique_id=716000045]
+position = Vector2(-24, -14)
+
+[node name="SpriteRemo" type="Sprite2D" parent="BoteEquipo1/RemoIzq"]
+position = Vector2(-12, 4)
+rotation = -0.436332
+texture = ExtResource("5_remo")
+
+[node name="RemoDer" type="Node2D" parent="BoteEquipo1" unique_id=716000046]
+position = Vector2(24, 32)
+
+[node name="SpriteRemo" type="Sprite2D" parent="BoteEquipo1/RemoDer"]
+position = Vector2(12, 4)
+rotation = 0.436332
+scale = Vector2(-1, 1)
+texture = ExtResource("5_remo")
+
+[node name="IndicadorGiroIzq" type="Sprite2D" parent="BoteEquipo1" unique_id=716000047]
+position = Vector2(-42, -24)
+rotation = 0.35
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("10_indicador")
+
+[node name="IndicadorGiroDer" type="Sprite2D" parent="BoteEquipo1" unique_id=716000048]
+position = Vector2(42, 22)
+rotation = -0.35
+scale = Vector2(-0.8, 0.8)
+texture = ExtResource("10_indicador")
+
+[node name="EstelaAgua" type="CPUParticles2D" parent="BoteEquipo1" unique_id=716000049]
+z_index = -1
+position = Vector2(0, 56)
+amount = 24
+lifetime = 0.8
+speed_scale = 1.2
+spread = 35.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 2.5
+scale_amount_max = 5.5
+color = Color(1, 1, 1, 0.75)
+
+[node name="SalpicaduraIzq" type="CPUParticles2D" parent="BoteEquipo1" unique_id=716000050]
+position = Vector2(-36, -8)
+emitting = false
+amount = 16
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.85
+spread = 60.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.85, 0.95, 1, 0.9)
+
+[node name="SalpicaduraDer" type="CPUParticles2D" parent="BoteEquipo1" unique_id=716000051]
+position = Vector2(36, 38)
+emitting = false
+amount = 16
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.85
+spread = 60.0
+gravity = Vector2(0, 40)
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.85, 0.95, 1, 0.9)
+
+[node name="MetaCampamento" type="Node2D" parent="." unique_id=716000060]
+position = Vector2(215, 4600)
+
+[node name="LineaAguaMeta" type="ColorRect" parent="MetaCampamento" unique_id=716000061]
+z_index = -3
+offset_left = 5.0
+offset_top = -6.0
+offset_right = 855.0
+offset_bottom = 20.0
+color = Color(1, 0.92, 0.35, 0.35)
+
+[node name="GuirnaldaBanderines" type="TextureRect" parent="MetaCampamento" unique_id=716000063]
+z_index = 3
+offset_left = 10.0
+offset_top = -24.0
+offset_right = 850.0
+offset_bottom = 4.0
+texture = ExtResource("15_banderines")
+stretch_mode = 1
+
+[node name="ContenedorBoyasMeta" type="Node2D" parent="MetaCampamento" unique_id=716000064]
+z_index = 4
+
+[node name="BannerMeta" type="Label" parent="MetaCampamento" unique_id=716000062]
+z_index = 5
+offset_left = 240.0
+offset_top = -58.0
+offset_right = 620.0
+offset_bottom = -26.0
+theme_override_colors/font_color = Color(1, 0.95, 0.35, 1)
+theme_override_colors/font_outline_color = Color(0.08, 0.22, 0.32, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "🏁 META • REGATA TROPICAL 🏁"
+horizontal_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=716000070]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=716000080]
+
+[node name="PanelProgreso" type="PanelContainer" parent="HUD" unique_id=716000081]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 14.0
+offset_right = 320.0
+offset_bottom = 52.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_progress_bg")
+
+[node name="Barra" type="ProgressBar" parent="HUD/PanelProgreso" unique_id=716000082]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+show_percentage = false
+
+[node name="ContenedorAvatares" type="Control" parent="HUD/PanelProgreso" unique_id=716000083]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="EstrellaMeta" type="TextureRect" parent="HUD/PanelProgreso" unique_id=716000084]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("16_star")
+expand_mode = 1
+stretch_mode = 5
