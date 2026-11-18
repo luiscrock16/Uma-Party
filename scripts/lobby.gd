@@ -16,8 +16,8 @@ extends CanvasLayer
 
 const PORT = 8080
 
-# URL del Servidor Central en Render (se actualizará con la URL asignada en dashboard.render.com)
-var url_servidor_render: String = "wss://uma-party-server.onrender.com"
+# URL del Servidor Central en Render
+var url_servidor_render: String = "wss://uma-party.onrender.com"
 var codigo_sala_local: String = ""
 
 func obtener_puerto_servidor() -> int:
@@ -438,8 +438,8 @@ func unirse_partida():
 		codigo_sala_local = texto_entrada.to_upper()
 		ip_destino = url_servidor_render
 		print("[LOBBY] Código de sala ingresado: ", codigo_sala_local, " -> Servidor: ", ip_destino)
-	elif ip_destino == "":
-		ip_destino = "127.0.0.1"
+	elif ip_destino == "" or (OS.has_feature("web") and (ip_destino == "127.0.0.1" or ip_destino == "localhost")):
+		ip_destino = url_servidor_render
 		
 	var mp = get_tree().get_multiplayer() if get_tree() else null
 	if mp and mp.multiplayer_peer:
