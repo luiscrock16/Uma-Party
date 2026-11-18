@@ -385,7 +385,10 @@ func crear_servidor():
 		mp.multiplayer_peer = null
 		
 	if OS.has_feature("web"):
-		mostrar_estado("El modo Host no está disponible directamente dentro del navegador.\nInicia el Host desde la versión PC o únete con un código de sala.", true)
+		# En Web nos conectamos al servidor central de Render como creador de sala
+		if codigo_sala_local == "":
+			codigo_sala_local = _generar_codigo_aleatorio()
+		unirse_partida()
 		return
 		
 	if codigo_sala_local == "":
@@ -654,6 +657,14 @@ func sincronizar_lobby_rpc(orden: Array, nombres: Dictionary, codigo_asignado: S
 			
 		if cuadro.has_method("set_nombre_usuario"):
 			cuadro.set_nombre_usuario(nombre_u)
+			
+	var es_lider = false
+	if multiplayer.is_server() and not OS.has_environment("GODOT_SERVER"):
+		es_lider = true
+	elif orden.size() > 0 and orden[0] == multiplayer.get_unique_id():
+		es_lider = true
+		
+	btn_iniciar.visible = es_lider
 
 # --- BOTÓN INICIAR / ABRIR MINIJUEGOS ---
 
@@ -715,7 +726,8 @@ func _on_mystery_tile_hovered(tile: Control):
 	bocadillo_titulo.global_position = Vector2(clamp(pos_x, 20.0, 1152.0 - bocadillo_titulo.size.x - 20.0), pos_y)
 
 func _on_btn_iniciar_pressed():
-	if not multiplayer.is_server(): return
+	var es_lider = (multiplayer.is_server() and not OS.has_environment("GODOT_SERVER")) or (orden_jugadores.size() > 0 and orden_jugadores[0] == multiplayer.get_unique_id())
+	if not es_lider: return
 	
 	var todos_listos = true
 	for cuadro in cuadrantes.get_children():
@@ -724,9 +736,17 @@ func _on_btn_iniciar_pressed():
 			break
 			
 	if todos_listos or cuadrantes.get_child_count() == 1:
-		abrir_pantalla_minijuegos_rpc.rpc()
+		if multiplayer.is_server():
+			abrir_pantalla_minijuegos_rpc.rpc()
+		else:
+			solicitar_abrir_minijuegos_al_servidor.rpc_id(1)
 	else:
 		print("Esperando a que todos confirmen ¡LISTO!...")
+
+@rpc("any_peer", "reliable")
+func solicitar_abrir_minijuegos_al_servidor():
+	if multiplayer.is_server():
+		abrir_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
 func abrir_pantalla_minijuegos_rpc():
@@ -766,6 +786,13 @@ func actualizar_balcon_personajes():
 func _on_btn_volver_lobby_pressed():
 	if multiplayer.is_server():
 		cerrar_pantalla_minijuegos_rpc.rpc()
+	else:
+		solicitar_cerrar_pantalla_minijuegos_rpc.rpc_id(1)
+
+@rpc("any_peer", "reliable")
+func solicitar_cerrar_pantalla_minijuegos_rpc():
+	if multiplayer.is_server():
+		cerrar_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
 func cerrar_pantalla_minijuegos_rpc():
@@ -778,12 +805,29 @@ func cerrar_pantalla_minijuegos_rpc():
 func _on_card_minijuego_selected(ruta_mapa: String):
 	if multiplayer.is_server() and not en_ruleta:
 		iniciar_mapa_rpc.rpc(ruta_mapa)
+	elif not en_ruleta:
+		solicitar_iniciar_mapa_rpc.rpc_id(1, ruta_mapa)
+
+@rpc("any_peer", "reliable")
+func solicitar_iniciar_mapa_rpc(ruta_mapa: String):
+	if multiplayer.is_server() and not en_ruleta:
+		iniciar_mapa_rpc.rpc(ruta_mapa)
 
 func _on_btn_ruleta_aleatoria_pressed():
-	if not multiplayer.is_server() or en_ruleta: return
-	var claves = catalogo_juegos.keys()
-	var clave_elegida = claves[randi() % claves.size()]
-	ejecutar_animacion_ruleta.rpc(clave_elegida)
+	if en_ruleta: return
+	if multiplayer.is_server():
+		var claves = catalogo_juegos.keys()
+		var clave_elegida = claves[randi() % claves.size()]
+		ejecutar_animacion_ruleta.rpc(clave_elegida)
+	else:
+		solicitar_ruleta_rpc.rpc_id(1)
+
+@rpc("any_peer", "reliable")
+func solicitar_ruleta_rpc():
+	if multiplayer.is_server() and not en_ruleta:
+		var claves = catalogo_juegos.keys()
+		var clave_elegida = claves[randi() % claves.size()]
+		ejecutar_animacion_ruleta.rpc(clave_elegida)
 
 @rpc("authority", "call_local", "reliable")
 func ejecutar_animacion_ruleta(clave_final: String):
