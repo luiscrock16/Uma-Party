@@ -746,9 +746,22 @@ func _on_mystery_tile_hovered(tile: Control):
 		pos_y = tile.global_position.y - bocadillo_titulo.size.y - 6.0
 	bocadillo_titulo.global_position = Vector2(clamp(pos_x, 20.0, 1152.0 - bocadillo_titulo.size.x - 20.0), pos_y)
 
+func es_anfitrion() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return true
+	if multiplayer.is_server() and not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
+		return true
+	if orden_jugadores.size() > 0 and orden_jugadores[0] == multiplayer.get_unique_id():
+		return true
+	return false
+
+func obtener_id_anfitrion() -> int:
+	if orden_jugadores.size() > 0:
+		return int(orden_jugadores[0])
+	return 1
+
 func _on_btn_iniciar_pressed():
-	var es_lider = (multiplayer.is_server() and not OS.has_environment("GODOT_SERVER")) or (orden_jugadores.size() > 0 and orden_jugadores[0] == multiplayer.get_unique_id())
-	if not es_lider: return
+	if not es_anfitrion(): return
 	
 	var cuadros = cuadrantes.get_children()
 	if cuadros.is_empty(): return
@@ -760,10 +773,7 @@ func _on_btn_iniciar_pressed():
 			break
 			
 	if todos_listos or cuadros.size() == 1:
-		if multiplayer.is_server():
-			abrir_pantalla_minijuegos_rpc.rpc()
-		else:
-			solicitar_abrir_minijuegos_al_servidor.rpc_id(1)
+		abrir_pantalla_minijuegos_rpc.rpc()
 	else:
 		var texto_orig = btn_iniciar.text
 		btn_iniciar.text = "¡FALTA QUE TODOS DEN LISTO!"
@@ -773,10 +783,9 @@ func _on_btn_iniciar_pressed():
 
 @rpc("any_peer", "reliable")
 func solicitar_abrir_minijuegos_al_servidor():
-	if multiplayer.is_server():
-		abrir_pantalla_minijuegos_rpc.rpc()
+	abrir_pantalla_minijuegos_rpc.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func abrir_pantalla_minijuegos_rpc():
 	en_ruleta = false
 	$VistaLobby.hide()
@@ -812,17 +821,13 @@ func actualizar_balcon_personajes():
 			sprite_balcon.visible = false
 
 func _on_btn_volver_lobby_pressed():
-	if multiplayer.is_server():
-		cerrar_pantalla_minijuegos_rpc.rpc()
-	else:
-		solicitar_cerrar_pantalla_minijuegos_rpc.rpc_id(1)
+	cerrar_pantalla_minijuegos_rpc.rpc()
 
 @rpc("any_peer", "reliable")
 func solicitar_cerrar_pantalla_minijuegos_rpc():
-	if multiplayer.is_server():
-		cerrar_pantalla_minijuegos_rpc.rpc()
+	cerrar_pantalla_minijuegos_rpc.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func cerrar_pantalla_minijuegos_rpc():
 	en_ruleta = false
 	panel_minijuegos.hide()
@@ -832,59 +837,49 @@ func cerrar_pantalla_minijuegos_rpc():
 
 func _on_card_minijuego_selected(ruta_mapa: String):
 	if en_ruleta: return
-	if multiplayer.is_server():
-		servidor_iniciar_minijuego(ruta_mapa)
-	else:
-		solicitar_iniciar_mapa_rpc.rpc_id(1, ruta_mapa)
+	if not es_anfitrion():
+		print("[LOBBY] Solo el Host de la sala puede elegir minijuego.")
+		return
+	lanzar_minijuego_como_anfitrion(ruta_mapa)
 
 @rpc("any_peer", "reliable")
 func solicitar_iniciar_mapa_rpc(ruta_mapa: String):
-	if multiplayer.is_server() and not en_ruleta:
-		servidor_iniciar_minijuego(ruta_mapa)
+	lanzar_minijuego_como_anfitrion(ruta_mapa)
 
-func servidor_iniciar_minijuego(ruta: String):
-	print("[SERVER] Iniciando minijuego en servidor: ", ruta)
+func lanzar_minijuego_como_anfitrion(ruta: String):
+	print("[LOBBY] Anfitrión lanzando minijuego: ", ruta)
 	var ids_jugadores = orden_jugadores.duplicate()
 	if ids_jugadores.is_empty():
-		for p_id in multiplayer.get_peers():
-			ids_jugadores.append(p_id)
-		if ids_jugadores.is_empty():
-			ids_jugadores = [multiplayer.get_unique_id()]
+		ids_jugadores = [multiplayer.get_unique_id()]
 		
-	var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
-	if mapa_anterior:
-		mapa_anterior.name = "MapaAnterior_Free"
-		mapa_anterior.queue_free()
+	var info_partida = {}
+	var ids_mezclados = ids_jugadores.duplicate()
+	ids_mezclados.shuffle()
+	for i in range(ids_mezclados.size()):
+		info_partida[ids_mezclados[i]] = {"equipo": i, "spawn": i, "es_jefe": (i == 0)}
 		
-	var mapa = load(ruta).instantiate()
-	mapa.name = "MapaActual"
-	get_tree().root.add_child(mapa)
-	
-	if mapa.has_method("preparar_partida"):
-		mapa.preparar_partida(ids_jugadores)
-		
-	var info_partida = mapa.jugadores_info.duplicate()
-	
-	# Difundir a todos los clientes (y ejecutar localmente gracias a call_local)
 	iniciar_mapa_rpc.rpc(ruta, info_partida)
+
+func servidor_iniciar_minijuego(ruta: String):
+	lanzar_minijuego_como_anfitrion(ruta)
 
 func _on_btn_ruleta_aleatoria_pressed():
 	if en_ruleta: return
-	if multiplayer.is_server():
-		var claves = catalogo_juegos.keys()
-		var clave_elegida = claves[randi() % claves.size()]
-		ejecutar_animacion_ruleta.rpc(clave_elegida)
-	else:
-		solicitar_ruleta_rpc.rpc_id(1)
+	if not es_anfitrion():
+		print("[LOBBY] Solo el Host de la sala puede girar la ruleta.")
+		return
+	var claves = catalogo_juegos.keys()
+	var clave_elegida = claves[randi() % claves.size()]
+	ejecutar_animacion_ruleta.rpc(clave_elegida)
 
 @rpc("any_peer", "reliable")
 func solicitar_ruleta_rpc():
-	if multiplayer.is_server() and not en_ruleta:
+	if not en_ruleta:
 		var claves = catalogo_juegos.keys()
 		var clave_elegida = claves[randi() % claves.size()]
 		ejecutar_animacion_ruleta.rpc(clave_elegida)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_animacion_ruleta(clave_final: String):
 	en_ruleta = true
 	if btn_al_azar:
@@ -916,25 +911,29 @@ func ejecutar_animacion_ruleta(clave_final: String):
 	if btn_al_azar:
 		btn_al_azar.disabled = false
 		
-	if multiplayer.is_server():
-		servidor_iniciar_minijuego(catalogo_juegos[clave_final]["ruta"])
+	if es_anfitrion():
+		lanzar_minijuego_como_anfitrion(catalogo_juegos[clave_final]["ruta"])
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func iniciar_mapa_rpc(ruta: String, dict_info: Dictionary = {}):
+	if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
+		return
+		
 	$VistaLobby.hide()
 	panel_minijuegos.hide()
 	$MenuPrincipal.hide()
 	
 	var mapa = get_tree().root.get_node_or_null("MapaActual")
-	if not multiplayer.is_server():
-		if mapa:
-			mapa.name = "MapaAnterior_Free"
-			mapa.queue_free()
-			
-		mapa = load(ruta).instantiate()
-		mapa.name = "MapaActual"
-		get_tree().root.add_child(mapa)
+	if mapa:
+		mapa.name = "MapaAnterior_Free"
+		mapa.queue_free()
 		
+	mapa = load(ruta).instantiate()
+	mapa.name = "MapaActual"
+	get_tree().root.add_child(mapa)
+	
+	mapa.set_multiplayer_authority(obtener_id_anfitrion(), true)
+	
 	# Crear y configurar los avatares en el mapa
 	ejecutar_spawns_en_mapa(dict_info)
 	
@@ -973,7 +972,7 @@ func ejecutar_spawns_en_mapa(dict_info):
 			var nombre_fall = jugadores_conectados.get(int(id), jugadores_conectados.get(str(id), "Jugador %s" % str(id)))
 			avatar.configurar_visual(0, nombre_fall)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func regresar_al_lobby_rpc():
 	Global.configurar_controles_tactiles(false, false)
 	var mapa = get_tree().root.get_node_or_null("MapaActual")

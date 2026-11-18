@@ -204,14 +204,14 @@ func iniciar_juego_post_cuenta_atras():
 			
 	partida_iniciada = true
 	
-	# Sincronización en red: El servidor coordina el inicio de la cinemática
-	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+	# Sincronización en red: El anfitrión coordina el inicio de la cinemática
+	if es_anfitrion_partida():
 		if multiplayer.has_multiplayer_peer():
 			sincronizar_inicio_duelo_rpc.rpc()
 		else:
 			sincronizar_inicio_duelo_rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_inicio_duelo_rpc():
 	_iniciar_secuencia_cinematica_completa()
 
@@ -431,20 +431,20 @@ func _iniciar_secuencia_cinematica_completa():
 	if partida_terminada: return
 	
 	# -------------------------------------------------------------------------
-	# FASE 6: SEÑAL AMBIENTAL AUTORITARIA (SÓLO EL SERVIDOR / HOST DECIDE EL TIMING)
+	# FASE 6: SEÑAL AMBIENTAL AUTORITARIA (SÓLO EL ANFITRIÓN DECIDE EL TIMING)
 	# -------------------------------------------------------------------------
-	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+	if es_anfitrion_partida():
 		var tiempo_suspense = randf_range(2.5, 4.0)
 		await get_tree().create_timer(tiempo_suspense).timeout
 		if partida_terminada or senal_disparo_dada: return
 		
-		# El servidor emite la señal a todos los clientes al mismo instante
+		# El anfitrión emite la señal a todos los clientes al mismo instante
 		if multiplayer.has_multiplayer_peer():
 			emitir_destello_senal_rpc.rpc()
 		else:
 			emitir_destello_senal_rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func emitir_destello_senal_rpc():
 	if partida_terminada or senal_disparo_dada: return
 	senal_disparo_dada = true
@@ -467,7 +467,7 @@ func emitir_destello_senal_rpc():
 	agitar_camara(5.0)
 	
 	# Si en local juega un bot en id_duelista_1, el host programa su disparo
-	if (not multiplayer.has_multiplayer_peer() or multiplayer.is_server()) and id_duelista_1 != -1:
+	if es_anfitrion_partida() and id_duelista_1 != -1:
 		# Solo si id_duelista_1 no es un peer humano conectado
 		var es_peer_humano = false
 		if multiplayer.has_multiplayer_peer():
@@ -508,17 +508,17 @@ func solicitar_disparo(id_tirador: int):
 	if partida_terminada or duelo_resuelto: return
 	
 	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
+		if es_anfitrion_partida():
 			recibir_intento_disparo_servidor(id_tirador)
 		else:
-			recibir_intento_disparo_servidor.rpc_id(1, id_tirador)
+			recibir_intento_disparo_servidor.rpc(id_tirador)
 	else:
 		recibir_intento_disparo_servidor(id_tirador)
 
 @rpc("any_peer", "call_local", "reliable")
 func recibir_intento_disparo_servidor(id_tirador: int):
-	# ESTA EVALUACIÓN ES 100% AUTORITARIA EN EL SERVIDOR / HOST
-	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+	# ESTA EVALUACIÓN ES 100% AUTORITARIA EN EL ANFITRIÓN DE LA PARTIDA
+	if multiplayer.has_multiplayer_peer() and not es_anfitrion_partida():
 		return
 		
 	if partida_terminada or duelo_resuelto:
@@ -545,13 +545,13 @@ func recibir_intento_disparo_servidor(id_tirador: int):
 		
 	id_ganador_duelo = id_ganador
 	
-	# El servidor difunde la resolución idéntica a todos los clientes
+	# El anfitrión difunde la resolución idéntica a todos los clientes
 	if multiplayer.has_multiplayer_peer():
 		ejecutar_resolucion_duelo_rpc.rpc(id_ganador, id_perdedor, fue_disparo_falso)
 	else:
 		ejecutar_resolucion_duelo_rpc(id_ganador, id_perdedor, fue_disparo_falso)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_resolucion_duelo_rpc(id_ganador: int, id_perdedor: int, fue_disparo_falso: bool):
 	partida_terminada = true
 	duelo_resuelto = true

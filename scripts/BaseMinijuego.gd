@@ -68,7 +68,25 @@ func solicitar_info_minijuego_al_servidor():
 		if jugadores_info.size() > 0:
 			solicitar_spawns_a_todos.rpc_id(remitente, jugadores_info)
 
-@rpc("authority", "call_local", "reliable")
+func es_anfitrion_partida() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return true
+	if multiplayer.is_server() and not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
+		return true
+	if get_tree().root.has_node("Lobby"):
+		var lobby = get_tree().root.get_node("Lobby")
+		if lobby.orden_jugadores.size() > 0 and lobby.orden_jugadores[0] == multiplayer.get_unique_id():
+			return true
+	return false
+
+func obtener_id_anfitrion_partida() -> int:
+	if get_tree().root.has_node("Lobby"):
+		var lobby = get_tree().root.get_node("Lobby")
+		if lobby.orden_jugadores.size() > 0:
+			return int(lobby.orden_jugadores[0])
+	return 1
+
+@rpc("any_peer", "call_local", "reliable")
 func solicitar_spawns_a_todos(dict_info):
 	if jugadores_info.size() > 0 and dict_info == jugadores_info and instrucciones_mostradas:
 		return
@@ -359,7 +377,7 @@ func ejecutar_secuencia_victoria(ids_ganadores: Array, centro_celebracion: Vecto
 	# 7. Tiempo de celebración antes de retornar al lobby
 	await get_tree().create_timer(4.5).timeout
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_anfitrion_partida()
 	if es_autoridad:
 		if get_tree().root.has_node("Lobby"):
 			var lobby = get_tree().root.get_node("Lobby")
