@@ -841,7 +841,7 @@ func cerrar_pantalla_minijuegos_rpc():
 
 func _on_card_minijuego_selected(ruta_mapa: String):
 	if multiplayer.is_server() and not en_ruleta:
-		iniciar_mapa_rpc.rpc(ruta_mapa)
+		servidor_iniciar_minijuego(ruta_mapa)
 	elif not en_ruleta:
 		solicitar_iniciar_mapa_rpc.rpc_id(1, ruta_mapa)
 
@@ -853,7 +853,41 @@ func solicitar_iniciar_mapa_rpc(ruta_mapa: String):
 			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
 				print("[SERVER] Rechazada solicitud de iniciar mapa: peer no líder (ID %d)" % remitente)
 				return
-		iniciar_mapa_rpc.rpc(ruta_mapa)
+		servidor_iniciar_minijuego(ruta_mapa)
+
+func servidor_iniciar_minijuego(ruta: String):
+	var ids_jugadores = orden_jugadores.duplicate()
+	if ids_jugadores.is_empty():
+		ids_jugadores = [multiplayer.get_unique_id()]
+		
+	var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
+	if mapa_anterior:
+		mapa_anterior.name = "MapaAnterior_Free"
+		mapa_anterior.queue_free()
+		
+	var mapa = load(ruta).instantiate()
+	mapa.name = "MapaActual"
+	get_tree().root.add_child(mapa)
+	
+	if mapa.has_method("preparar_partida"):
+		mapa.preparar_partida(ids_jugadores)
+		
+	var info_partida = mapa.jugadores_info.duplicate()
+	
+	# Si no es servidor dedicado (ej: host local de PC), instanciar los avatares locales
+	if not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
+		$VistaLobby.hide()
+		panel_minijuegos.hide()
+		$MenuPrincipal.hide()
+		ejecutar_spawns_en_mapa(info_partida)
+		if mapa.has_method("solicitar_spawns_a_todos"):
+			mapa.solicitar_spawns_a_todos(info_partida)
+		elif mapa.has_method("aplicar_roles_locales"):
+			mapa.jugadores_info = info_partida
+			mapa.aplicar_roles_locales()
+			
+	# Difundir a todos los clientes la orden de carga con el diccionario de roles/spawns ya calculado
+	iniciar_mapa_rpc.rpc(ruta, info_partida)
 
 func _on_btn_ruleta_aleatoria_pressed():
 	if en_ruleta: return
@@ -908,26 +942,34 @@ func ejecutar_animacion_ruleta(clave_final: String):
 		btn_al_azar.disabled = false
 		
 	if multiplayer.is_server():
-		iniciar_mapa_rpc.rpc(catalogo_juegos[clave_final]["ruta"])
+		servidor_iniciar_minijuego(catalogo_juegos[clave_final]["ruta"])
 
 @rpc("authority", "call_local", "reliable")
-func iniciar_mapa_rpc(ruta):
+func iniciar_mapa_rpc(ruta: String, dict_info: Dictionary = {}):
 	$VistaLobby.hide()
 	panel_minijuegos.hide()
 	$MenuPrincipal.hide()
 	
-	var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
-	if mapa_anterior:
-		mapa_anterior.name = "MapaAnterior_Free"
-		mapa_anterior.queue_free()
+	var mapa = get_tree().root.get_node_or_null("MapaActual")
+	if not mapa:
+		var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
+		if mapa_anterior:
+			mapa_anterior.name = "MapaAnterior_Free"
+			mapa_anterior.queue_free()
+			
+		mapa = load(ruta).instantiate()
+		mapa.name = "MapaActual"
+		get_tree().root.add_child(mapa)
+		
+	# Crear y configurar los avatares en el mapa
+	ejecutar_spawns_en_mapa(dict_info)
 	
-	var mapa = load(ruta).instantiate()
-	mapa.name = "MapaActual"
-	get_tree().root.add_child(mapa)
-	
-	if multiplayer.is_server():
-		var ids_jugadores = orden_jugadores.duplicate()
-		mapa.preparar_partida(ids_jugadores)
+	# Inicializar roles y pantalla de instrucciones
+	if mapa.has_method("solicitar_spawns_a_todos"):
+		mapa.solicitar_spawns_a_todos(dict_info)
+	elif mapa.has_method("aplicar_roles_locales"):
+		mapa.jugadores_info = dict_info
+		mapa.aplicar_roles_locales()
 
 func ejecutar_spawns_en_mapa(dict_info):
 	var mapa = get_tree().root.get_node_or_null("MapaActual")
@@ -941,13 +983,21 @@ func ejecutar_spawns_en_mapa(dict_info):
 		avatar.name = str(id)
 		mapa.add_child(avatar)
 		
+		# Buscar punto de spawn por nombre "0", "1", o por índice de hijo en Spawns
 		var punto_spawn = mapa.get_node_or_null("Spawns/" + str(datos.spawn))
+		if not punto_spawn and mapa.has_node("Spawns"):
+			var contenedor_spawns = mapa.get_node("Spawns")
+			if datos.spawn >= 0 and datos.spawn < contenedor_spawns.get_child_count():
+				punto_spawn = contenedor_spawns.get_child(datos.spawn)
 		if punto_spawn:
 			avatar.global_position = punto_spawn.global_position
 		
 		if cuadrantes.has_node(str(id)):
 			var cuadro = cuadrantes.get_node(str(id))
 			avatar.configurar_visual(cuadro.indice_actual, cuadro.label_usuario.text)
+		else:
+			var nombre_fall = jugadores_conectados.get(int(id), jugadores_conectados.get(str(id), "Jugador %s" % str(id)))
+			avatar.configurar_visual(0, nombre_fall)
 
 @rpc("authority", "call_local", "reliable")
 func regresar_al_lobby_rpc():

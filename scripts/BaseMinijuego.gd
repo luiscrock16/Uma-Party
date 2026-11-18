@@ -137,7 +137,7 @@ func detectar_clave_minijuego() -> String:
 	var ruta = scene_file_path.to_lower()
 	if "garra" in ruta: return "garra"
 	if "plataforma" in ruta: return "plataformas"
-	if "cinta" in ruta or "test_1" in ruta: return "plataformas"
+	if "cinta" in ruta or "test_1" in ruta: return "cinta"
 	if "explosion" in ruta or "ruleta" in ruta: return "explosion"
 	if "canon" in ruta: return "canones"
 	if "pista" in ruta: return "pista"
@@ -147,6 +147,14 @@ func detectar_clave_minijuego() -> String:
 	if "trivia" in ruta: return "trivia"
 	if "atrapa" in ruta or "cola" in ruta: return "atrapa_colas"
 	if "snowboard" in ruta or "carrito" in ruta: return "snowboard"
+	if "laberinto" in ruta: return "laberinto"
+	if "paraguas" in ruta: return "paraguas"
+	if "cojines" in ruta: return "cojines"
+	if "martillo" in ruta: return "martillo"
+	if "canaduz" in ruta: return "canaduz"
+	if "remo" in ruta: return "remo"
+	if "duelo" in ruta: return "duelo"
+	if "guillotina" in ruta: return "guillotina"
 	
 	return name.to_lower()
 

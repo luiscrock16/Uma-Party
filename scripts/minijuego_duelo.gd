@@ -111,7 +111,14 @@ func aplicar_roles_locales():
 			lista_espectadores.append(ids[i])
 	elif ids.size() == 1:
 		id_duelista_0 = ids[0]
-		id_duelista_1 = -1
+		id_duelista_1 = 9999
+		if not has_node("9999"):
+			var av_bot = preload("res://escenas/personaje_jugable.tscn").instantiate()
+			av_bot.name = "9999"
+			add_child(av_bot)
+			av_bot.configurar_visual(1, "Gold Ship (Bot)")
+		if not ids.has(9999):
+			ids.append(9999)
 		
 	for id in ids:
 		var av = get_node_or_null(str(id))
