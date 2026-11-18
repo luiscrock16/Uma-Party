@@ -368,7 +368,7 @@ func _physics_process(delta: float):
 		_actualizar_fisica_bote(eq, delta)
 		
 	# Sincronización en red periódica para mantener ambos botes exactamente sincronizados
-	if multiplayer.has_multiplayer_peer() and multiplayer.is_server():
+	if es_autoridad_de_partida():
 		timer_sync_red -= delta
 		if timer_sync_red <= 0.0:
 			timer_sync_red = 0.12
@@ -575,7 +575,7 @@ func _iniciar_cinematica_llegada_playa():
 	else:
 		ejecutar_cinematica_playa_rpc(eq_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_cinematica_playa_rpc(eq_ganador: int):
 	cinematica_playa_activa = true
 	partida_terminada = true
@@ -711,7 +711,7 @@ func _actualizar_camara():
 	camera.position.y = lerp(camera.position.y, target_y, 0.12)
 	camera.position.x = 576.0
 
-@rpc("authority", "call_remote", "unreliable")
+@rpc("any_peer", "call_remote", "unreliable")
 func sincronizar_botes_rpc(p0: Vector2, r0: float, v0: Vector2, p1: Vector2, r1: float, v1: Vector2):
 	if not cinematica_playa_activa:
 		bote_eq0.position = bote_eq0.position.lerp(p0, 0.45)

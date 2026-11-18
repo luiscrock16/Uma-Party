@@ -229,7 +229,7 @@ func _physics_process(delta: float):
 	_actualizar_orientacion_cojines()
 	
 	# Gestión de reducción de espacio progresiva en servidor/autoridad
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		_gestionar_etapas_reduccion()
 		_verificar_caidas_fuera_ring()
@@ -303,7 +303,7 @@ func ejecutar_golpe_cojin_rpc(id_atacante: int):
 		)
 		
 	# Detección de impacto en el cono frontal de barrido
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	for id_rival in jugadores_vivos:
 		if id_rival == id_atacante: continue
 		var av_rival = avatares_jugadores.get(id_rival)
@@ -396,7 +396,7 @@ func aplicar_nueva_escala_ring(nuevo_radio: float):
 	else:
 		sincronizar_escala_ring_rpc(nueva_escala)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_escala_ring_rpc(nueva_escala: float):
 	agitar_camara(5.0)
 	var tw = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -428,13 +428,13 @@ func eliminar_jugador(id: int):
 	else:
 		sincronizar_eliminacion_rpc(id)
 		
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	# Solo un ganador: termina si queda 1 o 0
 	if es_autoridad and jugadores_vivos.size() <= 1 and not partida_terminada:
 		partida_terminada = true
 		declarar_victoria(jugadores_vivos)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_eliminacion_rpc(id: int):
 	var av = avatares_jugadores.get(id)
 	if av and is_instance_valid(av):
@@ -486,7 +486,7 @@ func declarar_victoria(ids_ganadores: Array):
 	else:
 		sincronizar_victoria_rpc(ids_ganadores)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_victoria_rpc(ids_ganadores: Array):
 	partida_terminada = true
 	bloquear_jugadores(true)

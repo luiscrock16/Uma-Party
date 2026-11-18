@@ -97,7 +97,7 @@ func _process(delta):
 				nube.position.x = -150.0
 
 	# Sincronización continua de rotaciones desde el servidor para evitar cualquier desfase
-	if multiplayer.has_multiplayer_peer() and multiplayer.is_server() and partida_iniciada and not partida_terminada:
+	if es_autoridad_de_partida() and partida_iniciada and not partida_terminada:
 		timer_sync_rot -= delta
 		if timer_sync_rot <= 0.0:
 			timer_sync_rot = 0.4
@@ -113,7 +113,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("espacio") or Input.is_action_just_pressed("ui_accept"):
 			intentar_disparar_local()
 			
-		var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+		var es_autoridad = es_autoridad_de_partida()
 		if es_autoridad:
 			tiempo_partida += delta
 			if tiempo_partida >= 60.0 and fase_escalacion == 2:
@@ -255,7 +255,7 @@ func iniciar_juego_post_cuenta_atras():
 
 # --- SISTEMA DE ESCALACIÓN Y MUERTE SÚBITA ---
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func activar_fase_escalacion_rpc(nueva_fase: int):
 	fase_escalacion = nueva_fase
 	if plataforma_directora and is_instance_valid(plataforma_directora) and plataforma_directora.has_method("ejecutar_secuencia_fase"):
@@ -358,7 +358,7 @@ func ejecutar_temblor_camara(duracion: float, intensidad: float):
 
 @rpc("any_peer", "call_local", "reliable")
 func solicitar_disparo_rpc(id_jugador: int, angulo_rot: float):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	if not partida_iniciada or partida_terminada: return
 	if not (id_jugador in dict_jugador_plataforma): return
 	
@@ -366,7 +366,7 @@ func solicitar_disparo_rpc(id_jugador: int, angulo_rot: float):
 	if plat.puede_disparar():
 		rpc("ejecutar_disparo_rpc", id_jugador, angulo_rot)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_disparo_rpc(id_jugador: int, angulo_rot: float):
 	if id_jugador in dict_jugador_plataforma:
 		dict_jugador_plataforma[id_jugador].disparar(angulo_rot)
@@ -377,9 +377,9 @@ func _on_plataforma_disparo(id_dueno: int, pos_global: Vector2, rot_global: floa
 	contenedor_proyectiles.add_child(proyectil)
 	proyectil.inicializar(id_dueno, pos_global, rot_global)
 
-@rpc("authority", "unreliable")
+@rpc("any_peer", "unreliable")
 func sincronizar_rotaciones_rpc(rot_dict: Dictionary):
-	if multiplayer.is_server(): return
+	if es_autoridad_de_partida(): return
 	for id in rot_dict:
 		if id in dict_jugador_plataforma:
 			var plat = dict_jugador_plataforma[id]
@@ -390,7 +390,7 @@ func sincronizar_rotaciones_rpc(rot_dict: Dictionary):
 
 func _on_plataforma_golpeada(id_jugador: int, vidas_restantes: int):
 	# Se ejecuta en el servidor cuando el proyectil impacta directamente al personaje
-	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	if not (id_jugador in dict_jugador_plataforma): return
 	
 	var eliminado = (vidas_restantes <= 0)
@@ -404,7 +404,7 @@ func _on_plataforma_golpeada(id_jugador: int, vidas_restantes: int):
 		jugadores_vivos.erase(id_jugador)
 		verificar_fin_partida()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_impacto_rpc(id_jugador: int, vidas_restantes: int, eliminado: bool):
 	if id_jugador in dict_jugador_plataforma:
 		var plat = dict_jugador_plataforma[id_jugador]
@@ -434,7 +434,7 @@ func verificar_fin_partida():
 		else:
 			declarar_ganador_canones_rpc(id_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_ganador_canones_rpc(id_ganador: int):
 	partida_terminada = true
 	if panel_alerta:

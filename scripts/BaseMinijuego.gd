@@ -68,16 +68,19 @@ func solicitar_info_minijuego_al_servidor():
 		if jugadores_info.size() > 0:
 			solicitar_spawns_a_todos.rpc_id(remitente, jugadores_info)
 
-func es_anfitrion_partida() -> bool:
+func es_autoridad_de_partida() -> bool:
 	if not multiplayer.has_multiplayer_peer():
 		return true
 	if multiplayer.is_server() and not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
 		return true
 	if get_tree().root.has_node("Lobby"):
 		var lobby = get_tree().root.get_node("Lobby")
-		if lobby.orden_jugadores.size() > 0 and lobby.orden_jugadores[0] == multiplayer.get_unique_id():
+		if lobby.orden_jugadores.size() > 0 and int(lobby.orden_jugadores[0]) == multiplayer.get_unique_id():
 			return true
 	return false
+
+func es_anfitrion_partida() -> bool:
+	return es_autoridad_de_partida()
 
 func obtener_id_anfitrion_partida() -> int:
 	if get_tree().root.has_node("Lobby"):

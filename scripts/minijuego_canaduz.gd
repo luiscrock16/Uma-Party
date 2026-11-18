@@ -408,11 +408,11 @@ func _gestionar_fases_internas(delta: float):
 
 func _iniciar_transicion_fase_2():
 	en_transicion_fase = true
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		sincronizar_transicion_fase_2_rpc.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_transicion_fase_2_rpc():
 	en_transicion_fase = true
 	_efecto_polvo_en(plataforma_jefe.global_position)
@@ -445,11 +445,11 @@ func sincronizar_transicion_fase_2_rpc():
 
 func _iniciar_transicion_fase_3():
 	en_transicion_fase = true
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		sincronizar_transicion_fase_3_rpc.rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_transicion_fase_3_rpc():
 	en_transicion_fase = true
 	_efecto_polvo_en(plataforma_jefe.global_position)
@@ -512,12 +512,12 @@ func _procesar_fase_3_centinela_y_emboscadas(delta: float):
 	timer_emboscada_jefe -= delta
 	if timer_emboscada_jefe <= 0.0 and not en_transicion_fase:
 		timer_emboscada_jefe = 4.5
-		var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+		var es_autoridad = es_autoridad_de_partida()
 		if es_autoridad:
 			indice_emboscada = (indice_emboscada + 1) % PUNTOS_EMBOSCADA.size()
 			sincronizar_emboscada_jefe_rpc.rpc(indice_emboscada)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_emboscada_jefe_rpc(nuevo_idx: int):
 	if cinematica_final_activa: return
 	en_transicion_fase = true
@@ -575,7 +575,7 @@ func _gestionar_barricadas_dinamicas(delta: float):
 	timer_ciclo_barricadas -= delta
 	if timer_ciclo_barricadas <= 0.0:
 		timer_ciclo_barricadas = randf_range(6.0, 7.5)
-		var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+		var es_autoridad = es_autoridad_de_partida()
 		if es_autoridad:
 			var activas = []
 			var inactivas = []
@@ -591,7 +591,7 @@ func _gestionar_barricadas_dinamicas(delta: float):
 			
 			sincronizar_alerta_barricadas_rpc.rpc(a_colapsar, a_emerger)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_alerta_barricadas_rpc(indices_colapsar: Array, indices_emerger: Array):
 	if cinematica_final_activa: return
 	for idx in indices_colapsar:
@@ -644,7 +644,7 @@ func sincronizar_alerta_barricadas_rpc(indices_colapsar: Array, indices_emerger:
 
 func _disparar_proyectil(pos: Vector2, dir: Vector2, vel: float = 460.0, con_rebote: bool = false, es_destructor: bool = false):
 	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
+		if es_autoridad_de_partida():
 			spawn_proyectil_canaduz_rpc.rpc(pos, dir, vel, con_rebote, es_destructor)
 		else:
 			pedir_disparo_al_servidor_rpc.rpc_id(1, pos, dir, vel, con_rebote, es_destructor)
@@ -653,12 +653,12 @@ func _disparar_proyectil(pos: Vector2, dir: Vector2, vel: float = 460.0, con_reb
 
 @rpc("any_peer", "call_remote", "reliable")
 func pedir_disparo_al_servidor_rpc(pos: Vector2, dir: Vector2, vel: float, con_rebote: bool, es_destructor: bool):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	var sender_id = multiplayer.get_remote_sender_id()
 	if sender_id != id_jefe: return
 	spawn_proyectil_canaduz_rpc.rpc(pos, dir, vel, con_rebote, es_destructor)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_proyectil_canaduz_rpc(pos: Vector2, dir: Vector2, vel: float, con_rebote: bool, es_destructor: bool):
 	var p = Node2D.new()
 	p.position = pos
@@ -880,7 +880,7 @@ func declarar_fin_canaduz(ganaron_supervivientes: bool):
 # CINEMÁTICAS DE VICTORIA Y SECUENCIA FINAL
 # ==============================================================================
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_rpc(ganaron_supervivientes: bool):
 	partida_terminada = true
 	cinematica_final_activa = true

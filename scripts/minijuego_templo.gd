@@ -124,7 +124,7 @@ func _process(delta):
 	tiempo_partida += delta
 	actualizar_hud()
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		# Temporizador de caída de bolas por el pinball
 		timer_spawn_bola -= delta
@@ -169,7 +169,7 @@ func lanzar_bola_templo():
 	else:
 		spawn_bola_rpc(pos, impulso_x, tipo_elegido)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_bola_rpc(pos_inicio: Vector2, impulso_x: float, tipo_bola: int = 0):
 	var bola = escena_bola.instantiate()
 	bola.global_position = pos_inicio
@@ -195,7 +195,7 @@ func conmutar_pivotes_aleatorios():
 	else:
 		aplicar_conmutacion_pivotes_rpc(indices_cambiados)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func aplicar_conmutacion_pivotes_rpc(indices: Array):
 	for idx in indices:
 		if idx >= 0 and idx < pivotes_dinamicos.size():
@@ -208,7 +208,7 @@ func _on_jugador_alcanzado(id_jugador: int):
 	if jugadores_invulnerables.get(id_jugador, false): return
 	
 	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
+		if es_autoridad_de_partida():
 			eliminar_jugador_templo_rpc.rpc(id_jugador)
 		else:
 			if id_jugador == multiplayer.get_unique_id():
@@ -218,13 +218,13 @@ func _on_jugador_alcanzado(id_jugador: int):
 
 @rpc("any_peer", "call_local", "reliable")
 func reportar_impacto_templo_rpc(id_jugador: int):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	var remitente = multiplayer.get_remote_sender_id()
 	if remitente != 0 and remitente != id_jugador: return
 	if jugadores_invulnerables.get(id_jugador, false): return
 	eliminar_jugador_templo_rpc.rpc(id_jugador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func eliminar_jugador_templo_rpc(id_jugador: int):
 	var avatar = get_node_or_null(str(id_jugador))
 	if not avatar: return
@@ -258,7 +258,7 @@ func eliminar_jugador_templo_rpc(id_jugador: int):
 	
 	actualizar_hud()
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad and not partida_terminada:
 		if jugadores_vivos.size() <= 1:
 			declarar_fin_templo(jugadores_vivos)
@@ -272,7 +272,7 @@ func declarar_fin_templo(ganadores: Array):
 	else:
 		declarar_victoria_templo_rpc(ganadores)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_templo_rpc(ganadores: Array):
 	partida_terminada = true
 	bloquear_jugadores(true)

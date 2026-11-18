@@ -117,7 +117,7 @@ func iniciar_juego_post_cuenta_atras():
 	bloquear_jugadores(false)
 	
 	# En el servidor o local, generar obstáculos a lo largo del pasillo
-	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+	if es_autoridad_de_partida():
 		generar_obstaculos_pista()
 
 func generar_obstaculos_pista():
@@ -138,7 +138,7 @@ func generar_obstaculos_pista():
 			else:
 				spawn_obstaculo_carritos_rpc(pos, tipo)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_obstaculo_carritos_rpc(pos: Vector2, tipo: int):
 	var area = Area2D.new()
 	area.position = pos
@@ -231,7 +231,7 @@ func declarar_ganador(id_ganador: int):
 	else:
 		declarar_victoria_rpc(id_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_rpc(id_ganador: int):
 	partida_terminada = true
 	bloquear_jugadores(true)

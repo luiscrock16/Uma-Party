@@ -285,7 +285,7 @@ func _physics_process(delta: float):
 		
 		if tiempo_restante_ronda <= 0.0:
 			tiempo_restante_ronda = 0.0
-			var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+			var es_autoridad = es_autoridad_de_partida()
 			if es_autoridad:
 				ejecutar_revelacion_y_golpe()
 
@@ -429,7 +429,7 @@ func ejecutar_revelacion_y_golpe():
 	else:
 		sincronizar_revelacion_y_golpe_rpc(eleccion_martillo, elecciones_topos)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_revelacion_y_golpe_rpc(c_martillo: int, datos_topos: Dictionary):
 	estado_ronda = EstadoRonda.REVELACION_GOLPE
 	actualizar_visibilidad_pantalla_local()
@@ -554,7 +554,7 @@ func sincronizar_revelacion_y_golpe_rpc(c_martillo: int, datos_topos: Dictionary
 	_evaluar_fin_o_siguiente_ronda()
 
 func _evaluar_fin_o_siguiente_ronda():
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if not es_autoridad: return
 	
 	# Condición A: Todos los topos fueron eliminados -> Gana el Martillo
@@ -593,7 +593,7 @@ func _aplicar_dificultad_bloqueo_casillas():
 		if not casillas_bloqueadas.has(candidata):
 			casillas_bloqueadas.append(candidata)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_siguiente_ronda_rpc(nueva_ronda: int, activas: Array, bloqueadas: Array):
 	ronda_actual = nueva_ronda
 	var lista_act: Array = []
@@ -632,7 +632,7 @@ func declarar_fin_martillo(ganaron_topos: bool):
 	else:
 		declarar_victoria_rpc(ganaron_topos)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_rpc(ganaron_topos: bool):
 	partida_terminada = true
 	bloquear_jugadores(true)

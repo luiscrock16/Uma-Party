@@ -340,7 +340,7 @@ func aplicar_roles_locales():
 		i += 1
 		
 	# --- SINCRONIZACIÓN GARANTIZADA DE LA PISTA Y CUENTA ATRÁS ---
-	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+	if es_autoridad_de_partida():
 		seed_pista = randi()
 		pista_generada = true
 		if multiplayer.has_multiplayer_peer():
@@ -360,17 +360,17 @@ func aplicar_roles_locales():
 
 @rpc("any_peer", "call_remote", "reliable")
 func solicitar_seed_pista_rpc():
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		var remitente = multiplayer.get_remote_sender_id()
 		sincronizar_pista_rpc.rpc_id(remitente, seed_pista)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_pista_rpc(p_seed: int):
 	seed_pista = p_seed
 	generar_pista_nevada(p_seed)
 	pista_generada = true
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func iniciar_cuenta_atras_sincronizada_rpc():
 	iniciar_minijuego_salida()
 
@@ -942,7 +942,7 @@ func registrar_calidad_salida_rpc(id: int, calidad: int):
 	if st:
 		st["calidad_salida"] = calidad
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func lanzar_carrera_sincronizada_rpc():
 	finalizar_minijuego_salida_y_lanzar()
 
@@ -1090,7 +1090,7 @@ func _physics_process(delta):
 		if tiempo_minijuego_salida >= DURACION_MINIJUEGO_SALIDA:
 			if not aguja_salida_detenida:
 				detener_aguja_salida(mi_id)
-			if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+			if es_autoridad_de_partida():
 				if multiplayer.has_multiplayer_peer():
 					lanzar_carrera_sincronizada_rpc.rpc()
 				else:
@@ -1282,7 +1282,7 @@ func _physics_process(delta):
 						orden_llegada_meta.append(id)
 						estado_corredores[id]["ha_cruzado_meta"] = true
 						
-				if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+				if es_autoridad_de_partida():
 					if multiplayer.has_multiplayer_peer():
 						sincronizar_celebracion_podio_rpc.rpc(orden_llegada_meta)
 					else:
@@ -1703,7 +1703,7 @@ func actualizar_hud_carrera(id_lider: int):
 
 # --- CELEBRACIÓN DE PODIO EN NIEVE (GANADOR EN MONTÍCULO Y DEMÁS ENTERRADOS) ---
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_celebracion_podio_rpc(ranking: Array):
 	ejecutar_celebracion_podio_nieve(ranking)
 
@@ -1929,7 +1929,7 @@ func ejecutar_celebracion_podio_nieve(ranking: Array):
 	# 10. Tiempo de celebración y retorno al lobby
 	await get_tree().create_timer(5.0).timeout
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		if get_tree().root.has_node("Lobby"):
 			var lobby = get_tree().root.get_node("Lobby")

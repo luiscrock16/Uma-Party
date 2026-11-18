@@ -156,7 +156,7 @@ func _process(delta):
 	tiempo_partida += delta
 	actualizar_marcador_reloj()
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		# Escalación exponencial en 4 fases progresivas
 		var umbral_fase_2 = 12.0 if es_modo_f6 else 20.0
@@ -229,7 +229,7 @@ func _process(delta):
 					3: timer_barrera = randf_range(9.0, 12.0)
 					4: timer_barrera = randf_range(6.5, 9.0)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func cambiar_fase_rpc(nueva_fase: int):
 	fase_actual = nueva_fase
 	if marcador_reloj:
@@ -272,7 +272,7 @@ func lanzar_platano_suelo():
 	else:
 		spawn_platano_suelo_rpc(origen, dest)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_platano_suelo_rpc(origen: Vector2, destino: Vector2):
 	var area = Area2D.new()
 	area.name = "PlatanoPista_" + str(Time.get_ticks_usec())
@@ -371,7 +371,7 @@ func lanzar_proyectil_balon():
 	else:
 		spawn_balon_rpc(pos_inicio, dir, vel, tipo_balon)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_balon_rpc(pos_inicio: Vector2, dir: Vector2, vel: float, tipo_balon: int):
 	var balon = escena_balon.instantiate()
 	contenedor_obstaculos.add_child(balon)
@@ -406,7 +406,7 @@ func lanzar_oleada_caida():
 		else:
 			spawn_caida_rpc(tipo_idx, pos, aviso)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_caida_rpc(tipo_idx: int, pos: Vector2, aviso: float):
 	var obj = escena_caida.instantiate()
 	contenedor_obstaculos.add_child(obj)
@@ -447,7 +447,7 @@ func lanzar_ataque_directora():
 	else:
 		ejecutar_ataque_directora_rpc(pos_spawn, id_target, vel_disparo)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_ataque_directora_rpc(pos_spawn: Vector2, id_target: int, vel_disparo: float):
 	if not nodo_directora: return
 	var av_target = get_node_or_null(str(id_target))
@@ -495,7 +495,7 @@ func lanzar_barrera_divisoria():
 					spawn_barrera_rpc(Vector2(380, 410), duracion, false, 350.0)
 					spawn_barrera_rpc(Vector2(772, 410), duracion, false, 350.0)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func spawn_barrera_rpc(pos: Vector2, duracion: float, es_horizontal: bool = false, longitud: float = 350.0):
 	# Evitar sobrecargar si hay demasiadas barreras en pantalla simultáneas
 	if contenedor_barrera.get_child_count() >= 3: return
@@ -512,7 +512,7 @@ func _on_jugador_alcanzado(id_jugador: int):
 	if jugadores_invulnerables.get(id_jugador, false): return
 	
 	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
+		if es_autoridad_de_partida():
 			procesar_impacto_jugador_rpc.rpc(id_jugador)
 		else:
 			# Si soy el cliente local que recibió el impacto en mi pantalla, lo reporto al servidor
@@ -523,13 +523,13 @@ func _on_jugador_alcanzado(id_jugador: int):
 
 @rpc("any_peer", "call_local", "reliable")
 func reportar_impacto_al_servidor_rpc(id_jugador: int):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	var remitente = multiplayer.get_remote_sender_id()
 	if remitente != 0 and remitente != id_jugador: return
 	if jugadores_invulnerables.get(id_jugador, false): return
 	procesar_impacto_jugador_rpc.rpc(id_jugador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func procesar_impacto_jugador_rpc(id_jugador: int):
 	var avatar = get_node_or_null(str(id_jugador))
 	if not avatar: return
@@ -573,7 +573,7 @@ func procesar_impacto_jugador_rpc(id_jugador: int):
 	actualizar_hud_equipos()
 	
 	# Verificar si un equipo completo fue eliminado
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad and not partida_terminada:
 		var eq0_vivos = jugadores_vivos_por_equipo[0].size()
 		var eq1_vivos = jugadores_vivos_por_equipo[1].size()
@@ -613,7 +613,7 @@ func declarar_fin_por_equipos(equipo_ganador: int):
 	else:
 		declarar_victoria_2v2_rpc(equipo_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_2v2_rpc(equipo_ganador: int):
 	partida_terminada = true
 	bloquear_jugadores(true)

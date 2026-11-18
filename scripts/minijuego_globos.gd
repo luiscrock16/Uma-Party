@@ -136,7 +136,7 @@ func reventar_globo_local(id_globo: int, id_jugador: int):
 		if is_instance_valid(globo) and not globo.reventado:
 			globo.reventar(id_jugador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func reventar_globo_rpc(id_globo: int, id_jugador: int):
 	reventar_globo_local(id_globo, id_jugador)
 
@@ -146,7 +146,7 @@ func _on_globo_reventado_signal(equipo: int, id_globo: int, _id_jugador: int):
 	actualizar_hud()
 	
 	# Verificar si un equipo ha reventado todos sus globos
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad and not partida_terminada:
 		if globos_restantes[equipo] <= 0:
 			declarar_fin_globos(equipo)
@@ -182,7 +182,7 @@ func declarar_fin_globos(equipo_ganador: int):
 	else:
 		declarar_victoria_globos_rpc(equipo_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_victoria_globos_rpc(equipo_ganador: int):
 	partida_terminada = true
 	bloquear_jugadores(true)

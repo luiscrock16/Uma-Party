@@ -137,7 +137,7 @@ func iniciar_juego_post_cuenta_atras():
 			avatar.set_movimiento_actual = PersonajeJugable.TipoMovimiento.CAMINAR_Y_EMPUJAR
 	bloquear_jugadores(false)
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		ronda_actual = 0
 		iniciar_secuencia_inicio_partida_servidor()
 
@@ -278,7 +278,7 @@ func chequear_eliminaciones_caida_servidor():
 
 func _process(_delta):
 	# Si una jugadora camina o es empujada a un hueco donde no hay plataforma
-	if multiplayer.is_server() and juego_iniciado and not partida_concluida:
+	if es_autoridad_de_partida() and juego_iniciado and not partida_concluida:
 		if en_fase_desplome:
 			return
 			
@@ -302,13 +302,13 @@ func _process(_delta):
 # -------------------------------------------------------------------------
 # RPCS DE SINCRONIZACIÓN VISUAL (PANTALLA JUMBOTRON Y PLATAFORMAS)
 # -------------------------------------------------------------------------
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func mostrar_mensaje_jumbotron_rpc(texto: String, color: Color):
 	if jumbotron_label:
 		jumbotron_label.text = texto
 		jumbotron_label.modulate = color
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_inicio_ronda_rpc(num_ronda: int, mapa_simbolos: Dictionary, simbolo_objetivo: int):
 	ronda_actual = num_ronda
 	simbolo_ganador_actual = simbolo_objetivo
@@ -351,7 +351,7 @@ func animar_barajado_pausado(mapa_simbolos: Dictionary):
 			tw_pop.tween_property(p["spr_sym"], "scale", Vector2(0.55, 0.55), 0.15)
 	)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func revelar_simbolo_pantalla_rpc(simbolo_ganador: int):
 	simbolo_ganador_actual = simbolo_ganador
 	if jumbotron_simbolo:
@@ -364,7 +364,7 @@ func revelar_simbolo_pantalla_rpc(simbolo_ganador: int):
 		jumbotron_label.text = "¡BUSCAD LA FIGURA!"
 		jumbotron_label.modulate = Color(0.3, 1.0, 0.5)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func iniciar_alerta_peligro_rpc():
 	if jumbotron_label:
 		jumbotron_label.text = "¡PELIGRO!"
@@ -384,7 +384,7 @@ func iniciar_alerta_peligro_rpc():
 			else:
 				p["spr_base"].texture = tex_tile_safe
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_desplome_rpc():
 	en_fase_desplome = true
 	if jumbotron_label:
@@ -405,7 +405,7 @@ func ejecutar_desplome_rpc():
 				tw_caida.tween_property(p["nodo"], "scale", Vector2(0.2, 0.2), 0.6)
 				tw_caida.tween_property(p["nodo"], "modulate:a", 0.0, 0.6)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func subir_plataformas_rpc(indices_que_suben: Array):
 	en_fase_desplome = false
 	if jumbotron_label:
@@ -426,7 +426,7 @@ func subir_plataformas_rpc(indices_que_suben: Array):
 		tw_subir.tween_property(p["nodo"], "scale", Vector2(1.0, 1.0), 0.6).set_delay(delay)
 		tw_subir.tween_property(p["nodo"], "modulate:a", 1.0, 0.4).set_delay(delay)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func eliminar_jugador_por_vacio_rpc(id_jugador: int):
 	var avatar = get_node_or_null(str(id_jugador))
 	if not avatar: return
@@ -477,7 +477,7 @@ func evaluar_ganador_final():
 		# y posterior elevación triunfal en el podio dorado en el centro.
 		rpc("ejecutar_secuencia_victoria_podio_rpc", ganadores)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_secuencia_sin_ganadores_rpc():
 	partida_concluida = true
 	bloquear_jugadores(true)
@@ -490,7 +490,7 @@ func ejecutar_secuencia_sin_ganadores_rpc():
 	await get_tree().create_timer(2.0).timeout
 	ejecutar_secuencia_victoria([], Vector2(576.0, 405.0))
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_secuencia_victoria_podio_rpc(ids_ganadores: Array):
 	partida_concluida = true
 	bloquear_jugadores(true)

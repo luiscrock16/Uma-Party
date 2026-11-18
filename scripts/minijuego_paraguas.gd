@@ -267,7 +267,7 @@ func _process(delta: float):
 		return
 		
 	# Gestión de dificultad progresiva continua y fases internas
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		_gestionar_fases_internas()
 		_gestionar_temporizador_rayos(delta)
@@ -401,7 +401,7 @@ func disparar_rayo_repentino_servidor():
 	else:
 		crear_rayo_repentino_rpc(target_pos)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func crear_rayo_repentino_rpc(pos: Vector2):
 	ejecutar_impacto_rayo(pos)
 
@@ -426,7 +426,7 @@ func _calcular_posicion_impacto_rayo() -> Vector2:
 			target_pos.y = clamp(target_pos.y, ARENA_MIN_Y + 40.0, ARENA_MAX_Y - 40.0)
 	return target_pos
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func crear_telegrafo_rayo_rpc(pos: Vector2, tiempo_aviso: float = 1.25):
 	var reticula = Sprite2D.new()
 	reticula.texture = tex_rayo_reticula
@@ -489,7 +489,7 @@ func ejecutar_impacto_rayo(pos: Vector2):
 	sparks.emitting = true
 	get_tree().create_timer(0.6).timeout.connect(func(): if is_instance_valid(sparks): sparks.queue_free())
 	
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		for id in jugadores_vivos:
 			if jugadores_atrapados.has(id): continue
@@ -508,7 +508,7 @@ func impactar_jugador_por_rayo(id: int, pos_impacto: Vector2):
 	else:
 		sincronizar_impacto_rayo_rpc(id, pos_impacto, expulsar)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_impacto_rayo_rpc(id: int, pos_impacto: Vector2, expulsar: bool):
 	var av = avatares_jugadores.get(id)
 	if not av or not is_instance_valid(av): return
@@ -540,7 +540,7 @@ func crear_tornado_servidor(pos: Vector2, dir_inicial: Vector2, idx: int):
 	else:
 		instanciar_tornado_rpc(pos, dir_inicial, idx)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func instanciar_tornado_rpc(pos: Vector2, dir_inicial: Vector2, idx: int):
 	var t = Node2D.new()
 	t.name = "Tornado_" + str(idx)
@@ -621,7 +621,7 @@ func _actualizar_tornados(delta: float):
 		if spr_funnel:
 			spr_funnel.rotation = sin(tiempo_anim_viento * (6.0 + progreso_dificultad * 4.0)) * 0.06
 			
-		var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+		var es_autoridad = es_autoridad_de_partida()
 		for id in jugadores_vivos:
 			if jugadores_atrapados.has(id): continue
 			var av = avatares_jugadores.get(id)
@@ -644,7 +644,7 @@ func engullir_jugador_en_tornado(id: int, tornado_nombre: String):
 	else:
 		sincronizar_captura_tornado_rpc(id, tornado_nombre)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_captura_tornado_rpc(id: int, tornado_nombre: String):
 	var av = avatares_jugadores.get(id)
 	if not av or not is_instance_valid(av): return
@@ -664,7 +664,7 @@ func sincronizar_captura_tornado_rpc(id: int, tornado_nombre: String):
 
 func _actualizar_jugadores_atrapados(delta: float):
 	var lista_ids = jugadores_atrapados.keys()
-	var es_local_o_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_local_o_autoridad = es_autoridad_de_partida()
 	var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
 	
 	for id in lista_ids:
@@ -702,7 +702,7 @@ func _actualizar_jugadores_atrapados(delta: float):
 
 @rpc("any_peer", "call_local", "reliable")
 func reportar_mashing_rpc(id: int):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	verificar_liberacion_mashing(id)
 
 func verificar_liberacion_mashing(id: int):
@@ -715,7 +715,7 @@ func verificar_liberacion_mashing(id: int):
 		else:
 			liberar_jugador_tornado_rpc(id)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func liberar_jugador_tornado_rpc(id: int):
 	if not jugadores_atrapados.has(id): return
 	var datos = jugadores_atrapados[id]
@@ -742,7 +742,7 @@ func liberar_jugador_tornado_rpc(id: int):
 		if is_instance_valid(av) and id in jugadores_vivos:
 			av.bloquear_controles(false)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func expulsar_jugador_rpc(id: int):
 	jugadores_atrapados.erase(id)
 	var av = avatares_jugadores.get(id)
@@ -765,7 +765,7 @@ func eliminar_jugador(id: int):
 	actualizar_hud_supervivientes()
 	
 	# Solo finaliza prematuramente si TODOS los jugadores han sido eliminados (0 supervivientes)
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad and jugadores_vivos.is_empty() and not partida_terminada:
 		partida_terminada = true
 		declarar_victoria([])
@@ -791,7 +791,7 @@ func declarar_victoria(ids_ganadores: Array):
 	else:
 		sincronizar_victoria_rpc(ids_ganadores)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_victoria_rpc(ids_ganadores: Array):
 	partida_terminada = true
 	bloquear_jugadores(true)

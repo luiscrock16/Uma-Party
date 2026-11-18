@@ -85,7 +85,7 @@ func _ready():
 func es_servidor_o_solo() -> bool:
 	if not multiplayer.has_multiplayer_peer():
 		return true
-	return multiplayer.is_server()
+	return es_autoridad_de_partida()
 
 func conectar_botones():
 	if btn_opcion_a: btn_opcion_a.pressed.connect(func(): _on_opcion_humana_pulsada(0))
@@ -238,7 +238,7 @@ func iniciar_siguiente_pregunta():
 	else:
 		sincronizar_pregunta_rpc(datos, indice_pregunta)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_pregunta_rpc(datos: Dictionary, num_preg: int):
 	pregunta_actual = datos
 	indice_pregunta = num_preg
@@ -357,7 +357,7 @@ func _unhandled_input(event: InputEvent):
 # SECUENCIA DE REVELACIÓN SINCRONIZADA
 # ==============================================================================
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func finalizar_tiempo_respuestas_rpc():
 	estado_actual_trivia = EstadoTrivia.ELIMINANDO_OPCIONES
 	habilitar_botones(false)
@@ -441,7 +441,7 @@ func evaluar_jugadores_y_vidas_servidor():
 	else:
 		sincronizar_evaluacion_rpc(dict_vidas, recien_eliminados, nuevos_vivos, correcta)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_evaluacion_rpc(dict_vidas: Dictionary, eliminados: Array, vivos: Array, correcta: int):
 	estado_actual_trivia = EstadoTrivia.MOSTRANDO_RESULTADO
 	
@@ -490,7 +490,7 @@ func verificar_fin_partida():
 	else:
 		iniciar_siguiente_pregunta()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_ganador_rpc(id_campeon: int):
 	estado_actual_trivia = EstadoTrivia.VICTORIA
 	panel_tiempo.visible = false
@@ -513,7 +513,7 @@ func declarar_ganador_rpc(id_campeon: int):
 	await get_tree().create_timer(2.0).timeout
 	ejecutar_secuencia_victoria([id_campeon], pos_centro)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_empate_o_revivir_rpc():
 	mostrar_anuncio("¡MUERTE SÚBITA! 1 VIDA EXTRA PARA TODOS", 2.0)
 	decir_akikawa("¡Muerte súbita! ¡Una última oportunidad!", "sorpresa", 2.5)

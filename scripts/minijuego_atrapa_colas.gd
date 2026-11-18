@@ -75,7 +75,7 @@ func conectar_controles_tactiles():
 func es_servidor_o_solo() -> bool:
 	if not multiplayer.has_multiplayer_peer():
 		return true
-	return multiplayer.is_server()
+	return es_autoridad_de_partida()
 
 func obtener_mi_id_local() -> int:
 	if multiplayer.has_multiplayer_peer():

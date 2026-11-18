@@ -182,7 +182,7 @@ func aplicar_roles_locales():
 				av.set_movimiento_actual = PersonajeJugable.TipoMovimiento.CON_SPRINT
 		i += 1
 		
-	var es_autoridad = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_autoridad = es_autoridad_de_partida()
 	if es_autoridad:
 		var rng_seed = randi()
 		var rng_arch = randi() % 3
@@ -191,7 +191,7 @@ func aplicar_roles_locales():
 		else:
 			sincronizar_laberinto_rpc(rng_seed, rng_arch)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_laberinto_rpc(p_seed: int, p_arch: int):
 	seed_laberinto = p_seed
 	arquetipo_actual = p_arch
@@ -666,12 +666,12 @@ func intentar_recoger_llave(id_jugador: int, color: String):
 
 @rpc("any_peer", "call_local", "reliable")
 func reclamar_llave_rpc(id_jugador: int, color: String):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	if llaves_jugadores.get(id_jugador, "") != "": return
 	if not nodos_llaves.has(color) or not is_instance_valid(nodos_llaves[color]): return
 	sincronizar_recogida_llave_rpc.rpc(id_jugador, color)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_recogida_llave_rpc(id_jugador: int, color: String):
 	llaves_jugadores[id_jugador] = color
 	
@@ -727,12 +727,12 @@ func intentar_abrir_puerta(id_jugador: int, color: String):
 
 @rpc("any_peer", "call_local", "reliable")
 func reclamar_apertura_puerta_rpc(id_jugador: int, color: String):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	if llaves_jugadores.get(id_jugador, "") != color: return
 	if puertas_abiertas.get(color, false): return
 	sincronizar_apertura_puerta_rpc.rpc(id_jugador, color)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_apertura_puerta_rpc(id_jugador: int, color: String):
 	puertas_abiertas[color] = true
 	
@@ -972,7 +972,7 @@ func declarar_fin_laberinto(id_ganador: int):
 	partida_terminada = true
 	
 	if multiplayer.has_multiplayer_peer():
-		if multiplayer.is_server():
+		if es_autoridad_de_partida():
 			sincronizar_victoria_laberinto_rpc.rpc(id_ganador)
 		else:
 			reclamar_campana_al_servidor_rpc.rpc_id(1, id_ganador)
@@ -981,10 +981,10 @@ func declarar_fin_laberinto(id_ganador: int):
 
 @rpc("any_peer", "call_remote", "reliable")
 func reclamar_campana_al_servidor_rpc(id_ganador: int):
-	if not multiplayer.is_server() or partida_terminada: return
+	if not es_autoridad_de_partida() or partida_terminada: return
 	sincronizar_victoria_laberinto_rpc.rpc(id_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_victoria_laberinto_rpc(id_ganador: int):
 	partida_terminada = true
 	bloquear_jugadores(true)

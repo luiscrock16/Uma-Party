@@ -132,7 +132,7 @@ func _ready():
 func es_servidor_o_solo() -> bool:
 	if not multiplayer.has_multiplayer_peer():
 		return true
-	return multiplayer.is_server()
+	return es_autoridad_de_partida()
 
 func obtener_mi_id_local() -> int:
 	if multiplayer.has_multiplayer_peer():
@@ -922,7 +922,7 @@ func coronar_campeon_rpc(id_campeon: int):
 	# 6. Celebración y retorno al lobby coordinado por el servidor
 	await get_tree().create_timer(4.5).timeout
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		if get_tree().root.has_node("Lobby"):
 			get_tree().root.get_node("Lobby").regresar_al_lobby_rpc.rpc()
 

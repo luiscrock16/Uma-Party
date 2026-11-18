@@ -187,7 +187,7 @@ func aplicar_roles_locales():
 func iniciar_juego_post_cuenta_atras():
 	bloquear_jugadores(true)
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		cola_jugadores.clear()
 		for id in jugadores_info.keys():
 			cola_jugadores.append(id)
@@ -201,11 +201,11 @@ func iniciar_juego_post_cuenta_atras():
 		avanzar_siguiente_turno()
 
 func sincronizar_cola_servidor():
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		rpc("sincronizar_cola_clientes", cola_jugadores)
 	reordenar_avatares_en_cola()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_cola_clientes(nueva_cola: Array):
 	cola_jugadores = nueva_cola
 	reordenar_avatares_en_cola()
@@ -252,7 +252,7 @@ func generar_palancas_servidor(cantidad: int):
 		
 	rpc("aplicar_palancas_clientes", cantidad, config_palancas)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func aplicar_palancas_clientes(cantidad: int, config: Array):
 	for child in contenedor_palancas.get_children():
 		contenedor_palancas.remove_child(child)
@@ -347,10 +347,10 @@ func avanzar_siguiente_turno():
 	
 	turno_actual_id = cola_jugadores[0]
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		rpc("iniciar_turno_jugador_rpc", turno_actual_id)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func iniciar_turno_jugador_rpc(id_jugador: int):
 	turno_actual_id = id_jugador
 	estado_juego = EstadoJuego.INICIO_TURNO
@@ -398,7 +398,7 @@ func _process(delta):
 				label_timer.add_theme_color_override("font_color", Color(1, 0.9, 0.2))
 				
 		if tiempo_turno <= 0.0:
-			if multiplayer.is_server():
+			if es_autoridad_de_partida():
 				auto_seleccionar_palanca_expirada()
 			return
 			
@@ -460,14 +460,14 @@ func confirmar_palanca_actual():
 
 @rpc("any_peer", "call_local", "reliable")
 func solicitar_presionar_palanca_rpc(id_jugador: int, idx: int):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	if estado_juego == EstadoJuego.FIN_PARTIDA: return
 	if id_jugador != turno_actual_id: return
 	
 	var duracion_suspenso = randf_range(3.0, 4.5)
 	rpc("ejecutar_presion_palanca_rpc", id_jugador, idx, duracion_suspenso)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_presion_palanca_rpc(id_jugador: int, idx: int, tiempo_suspenso: float):
 	estado_juego = EstadoJuego.ACCION_PALANCA
 	var palanca = palancas_instanciadas[idx]
@@ -565,7 +565,7 @@ func resolver_acierto_seguro(id_jugador: int):
 	var pos_cola_destino = puntos_cola.get_node(str(idx_final)).global_position
 	await caminar_hacia_cola(avatar, pos_cola_destino)
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		sincronizar_cola_servidor()
 		seguras_restantes_en_set -= 1
 		
@@ -584,7 +584,7 @@ func resolver_acierto_seguro(id_jugador: int):
 
 func detonar_bomba_jugador(id_jugador: int):
 	# El servidor elige aleatoriamente entre los 5 métodos cómicos de eliminación
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		var metodo = randi() % 5
 		rpc("ejecutar_eliminacion_variada_rpc", id_jugador, metodo)
 
@@ -601,7 +601,7 @@ func mostrar_emoticono_sudor(pos: Vector2):
 	tw.tween_property(sp, "modulate:a", 0.0, 0.55)
 	tw.finished.connect(sp.queue_free)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_eliminacion_variada_rpc(id_jugador: int, metodo: int):
 	var avatar = get_node_or_null(str(id_jugador))
 	if not avatar: return
@@ -630,7 +630,7 @@ func ejecutar_eliminacion_variada_rpc(id_jugador: int, metodo: int):
 	
 	cola_jugadores.erase(id_jugador)
 	
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		sincronizar_cola_servidor()
 		if cola_jugadores.size() <= 1:
 			var id_ganador = cola_jugadores[0] if cola_jugadores.size() > 0 else 1
@@ -915,7 +915,7 @@ func _animar_elim_mano_magica(avatar: Node2D):
 	nodo_mano.queue_free()
 	await get_tree().create_timer(0.5).timeout
 func reiniciar_palancas_siguiente_ciclo():
-	if not multiplayer.is_server():
+	if not es_autoridad_de_partida():
 		return
 		
 	estado_juego = EstadoJuego.RESET_PALANCAS
@@ -928,13 +928,13 @@ func reiniciar_palancas_siguiente_ciclo():
 	await get_tree().create_timer(0.5).timeout
 	avanzar_siguiente_turno()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ocultar_palancas_rpc():
 	for p in palancas_instanciadas:
 		if is_instance_valid(p):
 			p.animar_ocultar()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func declarar_ganador_final_rpc(id_ganador: int):
 	estado_juego = EstadoJuego.FIN_PARTIDA
 	if panel_turno:

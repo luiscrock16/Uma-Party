@@ -298,7 +298,7 @@ func _process(delta: float):
 	_actualizar_dificultad_dinamica(delta)
 	_actualizar_platos_y_manos(delta)
 	
-	var es_server = not multiplayer.has_multiplayer_peer() or multiplayer.is_server()
+	var es_server = es_autoridad_de_partida()
 	if es_server:
 		_procesar_spawns_servidor(delta)
 		_comprobar_entregas_servidor()
@@ -390,7 +390,7 @@ func _despachar_robot_limpiador_servidor():
 	else:
 		crear_robot_limpiador_rpc(origen, destino, duracion)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func crear_robot_limpiador_rpc(origen: Vector2, destino: Vector2, duracion: float):
 	if not contenedor_robots: return
 	
@@ -464,7 +464,7 @@ func _efecto_limpieza_charco(pos: Vector2):
 # EVENTOS ESPECIALES DE REPARTO: TAZUNA (+3) Y DIRECTORA (INSTA 100%)
 # ==============================================================================
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func despachar_evento_tazuna_rpc():
 	if not contenedor_carritos: return
 	
@@ -486,7 +486,7 @@ func despachar_evento_tazuna_rpc():
 	
 	tw.tween_callback(func():
 		if not is_instance_valid(carrito): return
-		if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+		if es_autoridad_de_partida():
 			crear_ingrediente_rpc(6, Vector2(576, 380))
 	)
 	
@@ -497,7 +497,7 @@ func despachar_evento_tazuna_rpc():
 			carrito.queue_free()
 	)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func despachar_evento_directora_rpc():
 	if not contenedor_carritos: return
 	
@@ -523,7 +523,7 @@ func despachar_evento_directora_rpc():
 	
 	tw.tween_callback(func():
 		if not is_instance_valid(carrito): return
-		if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+		if es_autoridad_de_partida():
 			crear_ingrediente_rpc(7, Vector2(576, 530))
 	)
 	
@@ -559,7 +559,7 @@ func _expulsar_ingrediente_servidor():
 	else:
 		crear_ingrediente_rpc(tipo, destino)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func crear_ingrediente_rpc(tipo: int, destino: Vector2):
 	var item = Area2D.new()
 	item.name = "Item_" + str(Time.get_ticks_msec()) + "_" + str(randi() % 1000)
@@ -603,7 +603,7 @@ func crear_ingrediente_rpc(tipo: int, destino: Vector2):
 			tw_idle.tween_property(spr, "position:y", 0.0, 0.5)
 	)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func eliminar_item_suelo_rpc(nombre_item: String):
 	if not contenedor_items: return
 	var nodo = contenedor_items.get_node_or_null(nombre_item)
@@ -635,7 +635,7 @@ func _expulsar_peligro_servidor():
 	else:
 		lanzar_peligro_rpc(tipo_peligro, destino)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func lanzar_peligro_rpc(tipo_peligro: int, destino: Vector2):
 	var sombra = Sprite2D.new()
 	sombra.texture = tex_sombra
@@ -791,14 +791,14 @@ func _calcular_direccion_jugador(id: int) -> Vector2:
 func solicitar_accion_jugador(id_jugador: int, dir: Vector2):
 	if not multiplayer.has_multiplayer_peer():
 		_ejecutar_accion_servidor(id_jugador, dir)
-	elif multiplayer.is_server():
+	elif es_autoridad_de_partida():
 		_ejecutar_accion_servidor(id_jugador, dir)
 	else:
 		solicitar_interaccion_servidor_rpc.rpc_id(1, id_jugador, dir)
 
 @rpc("any_peer", "call_remote", "reliable")
 func solicitar_interaccion_servidor_rpc(id_jugador: int, dir: Vector2):
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	_ejecutar_accion_servidor(id_jugador, dir)
 
 func _ejecutar_accion_servidor(id_jugador: int, dir: Vector2):
@@ -879,7 +879,7 @@ func _sincronizar_estado_jugador(id_jugador: int):
 	else:
 		sincronizar_estado_jugador_rpc(id_jugador, d.llevando_plato, d.item_en_mano, d.capas, pos_plato)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_estado_jugador_rpc(id_jugador: int, llevando_plato: bool, item_en_mano: int, capas: int, pos_plato: Vector2):
 	var d = datos_jugadores.get(id_jugador)
 	if not d: return
@@ -910,7 +910,7 @@ func _disparar_proyectil_ingrediente(id_lanzador: int, tipo: int, pos_inicio: Ve
 	else:
 		lanzar_proyectil_ingrediente_rpc(id_lanzador, tipo, pos_inicio, dir)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func lanzar_proyectil_ingrediente_rpc(id_lanzador: int, tipo: int, pos_inicio: Vector2, dir: Vector2):
 	var proj = Area2D.new()
 	proj.name = "Proyectil_" + str(Time.get_ticks_msec())
@@ -957,7 +957,7 @@ func lanzar_proyectil_ingrediente_rpc(id_lanzador: int, tipo: int, pos_inicio: V
 	await tw.finished
 	if is_instance_valid(proj) and not impactado:
 		proj.queue_free()
-		if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+		if es_autoridad_de_partida():
 			if multiplayer.has_multiplayer_peer():
 				crear_ingrediente_rpc.rpc(tipo, pos_final)
 			else:
@@ -1094,14 +1094,14 @@ func _verificar_y_solicitar_entrega(id_jugador: int):
 	
 	if not multiplayer.has_multiplayer_peer():
 		_entregar_pastel_ganador(id_jugador)
-	elif multiplayer.is_server():
+	elif es_autoridad_de_partida():
 		_entregar_pastel_ganador(id_jugador)
 	else:
 		solicitar_entrega_al_servidor_rpc.rpc_id(1, id_jugador)
 
 @rpc("any_peer", "call_remote", "reliable")
 func solicitar_entrega_al_servidor_rpc(id_jugador: int):
-	if not multiplayer.is_server() or partida_terminada: return
+	if not es_autoridad_de_partida() or partida_terminada: return
 	var d = datos_jugadores.get(id_jugador)
 	if d and d.llevando_plato and d.capas >= 5:
 		_entregar_pastel_ganador(id_jugador)
@@ -1117,7 +1117,7 @@ func _entregar_pastel_ganador(id_ganador: int):
 	else:
 		ejecutar_victoria_entrega_rpc(id_ganador)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func ejecutar_victoria_entrega_rpc(id_ganador: int):
 	partida_terminada = true
 	id_ganador_partida = id_ganador

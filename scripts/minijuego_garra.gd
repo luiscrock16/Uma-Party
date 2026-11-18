@@ -111,7 +111,7 @@ func iniciar_juego_post_cuenta_atras():
 	partida_finalizada = false
 
 func spawnear_peluche_en_piscina():
-	if not multiplayer.is_server(): return
+	if not es_autoridad_de_partida(): return
 	var nuevo_peluche = escena_peluche.instantiate()
 	nuevo_peluche.tipo_peluche = randi() % 3
 	nuevo_peluche.name = "Peluche_" + str(randi())
@@ -136,20 +136,20 @@ func _process(delta):
 			destino_objetivo_y += direccion_y * VELOCIDAD_VERTICAL_MIRA * delta
 			destino_objetivo_y = clamp(destino_objetivo_y, LIMITE_SUP_Y, LIMITE_INF_Y)
 			
-			if multiplayer.is_server():
+			if es_autoridad_de_partida():
 				solicitar_movimiento_servidor(garra_pos_x, destino_objetivo_y)
 			else:
 				rpc_id(1, "solicitar_movimiento_servidor", garra_pos_x, destino_objetivo_y)
 		
 		if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio"):
-			if multiplayer.is_server():
+			if es_autoridad_de_partida():
 				solicitar_accion_servidor()
 			else:
 				rpc_id(1, "solicitar_accion_servidor")
 
 func _physics_process(delta):
 	# 2. EL SERVIDOR PROCESA LA FÍSICA, REGLAS Y SINCRONIZACIÓN
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		if juego_activo and not partida_finalizada:
 			# Descontar tiempo
 			tiempo_restante -= delta
@@ -244,13 +244,13 @@ func evaluar_condiciones_victoria():
 		juego_activo = false
 		rpc("finalizar_partida_rpc", true)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func sincronizar_tiempo_rpc(t_restante: float, cant_supervivientes: int):
 	tiempo_restante = t_restante
 	if label_supervivientes:
 		label_supervivientes.text = "Supervivientes restantes: " + str(cant_supervivientes)
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func finalizar_partida_rpc(ganaron_supervivientes: bool):
 	juego_activo = false
 	partida_finalizada = true
@@ -276,13 +276,13 @@ func finalizar_partida_rpc(ganaron_supervivientes: bool):
 
 @rpc("any_peer", "call_local", "unreliable")
 func solicitar_movimiento_servidor(nueva_x: float, nueva_y: float):
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		garra_pos_x = nueva_x
 		destino_objetivo_y = nueva_y
 
 @rpc("any_peer", "call_local", "reliable")
 func solicitar_accion_servidor():
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		if estado_garra == "LIBRE":
 			objeto_candidato = null
 			estado_garra = "BAJANDO"
@@ -291,7 +291,7 @@ func solicitar_accion_servidor():
 
 @rpc("any_peer", "call_local", "unreliable")
 func sincronizar_garra_total(pos_x: float, dest_y: float, pinza_y: float, estado: String):
-	if multiplayer.is_server(): return
+	if es_autoridad_de_partida(): return
 	if multiplayer.get_unique_id() != id_jefe_autorizado:
 		garra_pos_x = pos_x
 		destino_objetivo_y = dest_y
@@ -422,7 +422,7 @@ func actualizar_componentes_visuales(delta: float):
 
 @rpc("any_peer", "call_local", "reliable")
 func notificar_objeto_atrapado_clientes(ruta_nodo: NodePath):
-	if multiplayer.is_server(): return
+	if es_autoridad_de_partida(): return
 	if ruta_nodo == NodePath(""):
 		objeto_atrapado = null
 	else:
