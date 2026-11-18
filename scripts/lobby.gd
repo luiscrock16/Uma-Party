@@ -420,16 +420,22 @@ func crear_servidor():
 	$MenuPrincipal.hide()
 	$VistaLobby.show()
 	
-	var mi_nombre = edit_nombre.text.strip_edges()
-	if mi_nombre == "": mi_nombre = "Host"
-	Global.nombre_jugador_local = mi_nombre
-	Global.guardar_configuracion()
-	
-	orden_jugadores = [1]
-	jugadores_conectados = {1: mi_nombre}
-	sincronizar_lobby_rpc(orden_jugadores, jugadores_conectados)
-	btn_iniciar.visible = true
-	actualizar_panel_ip_host()
+	var es_dedicado = OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args() or "--server" in OS.get_cmdline_user_args()
+	if es_dedicado:
+		orden_jugadores = []
+		jugadores_conectados = {}
+		print("[SERVER] Servidor dedicado iniciado. Esperando jugadores (máx 4)...")
+	else:
+		var mi_nombre = edit_nombre.text.strip_edges()
+		if mi_nombre == "": mi_nombre = "Host"
+		Global.nombre_jugador_local = mi_nombre
+		Global.guardar_configuracion()
+		
+		orden_jugadores = [1]
+		jugadores_conectados = {1: mi_nombre}
+		sincronizar_lobby_rpc(orden_jugadores, jugadores_conectados)
+		btn_iniciar.visible = true
+		actualizar_panel_ip_host()
 
 func unirse_partida():
 	limpiar_estado()
@@ -606,10 +612,19 @@ func _on_connected_ok():
 	pedir_registro_al_servidor.rpc_id(1, mi_id, mi_nombre, codigo_sala_local)
 
 @rpc("any_peer", "reliable")
-func pedir_registro_al_servidor(id, nombre_enviado, _codigo: String = ""):
+func pedir_registro_al_servidor(id, nombre_enviado, codigo_solicitado: String = ""):
 	if multiplayer.is_server():
+		var es_dedicado = OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args() or "--server" in OS.get_cmdline_user_args()
+		if es_dedicado and orden_jugadores.is_empty():
+			if codigo_solicitado != "":
+				codigo_sala_local = codigo_solicitado
+		
 		if not orden_jugadores.has(id):
+			if orden_jugadores.size() >= 4:
+				print("[SERVER] Sala llena (máx 4 jugadores). Rechazando ID: ", id)
+				return
 			orden_jugadores.append(id)
+			
 		jugadores_conectados[id] = nombre_enviado
 		sincronizar_lobby_rpc.rpc(orden_jugadores, jugadores_conectados, codigo_sala_local)
 
@@ -620,7 +635,13 @@ func _on_player_disconnected(id):
 	if multiplayer.is_server():
 		orden_jugadores.erase(id)
 		jugadores_conectados.erase(id)
-		sincronizar_lobby_rpc.rpc(orden_jugadores, jugadores_conectados, codigo_sala_local)
+		if orden_jugadores.is_empty():
+			var es_dedicado = OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args() or "--server" in OS.get_cmdline_user_args()
+			if es_dedicado:
+				codigo_sala_local = _generar_codigo_aleatorio()
+				print("[SERVER] Todos los jugadores salieron. Sala reseteada. Nuevo código: ", codigo_sala_local)
+		else:
+			sincronizar_lobby_rpc.rpc(orden_jugadores, jugadores_conectados, codigo_sala_local)
 
 @rpc("authority", "call_local", "reliable")
 func sincronizar_lobby_rpc(orden: Array, nombres: Dictionary, codigo_asignado: String = ""):
@@ -729,23 +750,35 @@ func _on_btn_iniciar_pressed():
 	var es_lider = (multiplayer.is_server() and not OS.has_environment("GODOT_SERVER")) or (orden_jugadores.size() > 0 and orden_jugadores[0] == multiplayer.get_unique_id())
 	if not es_lider: return
 	
+	var cuadros = cuadrantes.get_children()
+	if cuadros.is_empty(): return
+	
 	var todos_listos = true
-	for cuadro in cuadrantes.get_children():
+	for cuadro in cuadros:
 		if cuadro.has_method("esta_listo_para_jugar") and not cuadro.esta_listo_para_jugar():
 			todos_listos = false
 			break
 			
-	if todos_listos or cuadrantes.get_child_count() == 1:
+	if todos_listos or cuadros.size() == 1:
 		if multiplayer.is_server():
 			abrir_pantalla_minijuegos_rpc.rpc()
 		else:
 			solicitar_abrir_minijuegos_al_servidor.rpc_id(1)
 	else:
-		print("Esperando a que todos confirmen ¡LISTO!...")
+		var texto_orig = btn_iniciar.text
+		btn_iniciar.text = "¡FALTA QUE TODOS DEN LISTO!"
+		await get_tree().create_timer(1.5).timeout
+		if is_instance_valid(btn_iniciar):
+			btn_iniciar.text = texto_orig
 
 @rpc("any_peer", "reliable")
 func solicitar_abrir_minijuegos_al_servidor():
 	if multiplayer.is_server():
+		var remitente = multiplayer.get_remote_sender_id()
+		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
+			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
+				print("[SERVER] Rechazado abrir minijuegos: no es líder (ID %d)" % remitente)
+				return
 		abrir_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
@@ -792,6 +825,10 @@ func _on_btn_volver_lobby_pressed():
 @rpc("any_peer", "reliable")
 func solicitar_cerrar_pantalla_minijuegos_rpc():
 	if multiplayer.is_server():
+		var remitente = multiplayer.get_remote_sender_id()
+		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
+			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
+				return
 		cerrar_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
@@ -811,6 +848,11 @@ func _on_card_minijuego_selected(ruta_mapa: String):
 @rpc("any_peer", "reliable")
 func solicitar_iniciar_mapa_rpc(ruta_mapa: String):
 	if multiplayer.is_server() and not en_ruleta:
+		var remitente = multiplayer.get_remote_sender_id()
+		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
+			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
+				print("[SERVER] Rechazada solicitud de iniciar mapa: peer no líder (ID %d)" % remitente)
+				return
 		iniciar_mapa_rpc.rpc(ruta_mapa)
 
 func _on_btn_ruleta_aleatoria_pressed():
@@ -825,6 +867,10 @@ func _on_btn_ruleta_aleatoria_pressed():
 @rpc("any_peer", "reliable")
 func solicitar_ruleta_rpc():
 	if multiplayer.is_server() and not en_ruleta:
+		var remitente = multiplayer.get_remote_sender_id()
+		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
+			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
+				return
 		var claves = catalogo_juegos.keys()
 		var clave_elegida = claves[randi() % claves.size()]
 		ejecutar_animacion_ruleta.rpc(clave_elegida)
@@ -880,9 +926,7 @@ func iniciar_mapa_rpc(ruta):
 	get_tree().root.add_child(mapa)
 	
 	if multiplayer.is_server():
-		var ids_jugadores = []
-		for cuadro in cuadrantes.get_children():
-			ids_jugadores.append(int(cuadro.name))
+		var ids_jugadores = orden_jugadores.duplicate()
 		mapa.preparar_partida(ids_jugadores)
 
 func ejecutar_spawns_en_mapa(dict_info):
@@ -923,5 +967,22 @@ func regresar_al_lobby_rpc():
 	$VistaLobby.show()
 	$MenuPrincipal.hide()
 	panel_minijuegos.hide()
-	if multiplayer.is_server():
-		btn_iniciar.visible = true
+	
+	# Resetear estado de confirmación ("LISTO") de los cuadros para la siguiente partida
+	for cuadro in cuadrantes.get_children():
+		if cuadro.has_method("confirmar_personaje_rpc"):
+			cuadro.esta_confirmado = false
+			if cuadro.badge_listo:
+				cuadro.badge_listo.visible = false
+			if cuadro.btn_confirmar and cuadro.is_multiplayer_authority():
+				cuadro.btn_confirmar.text = "¡LISTO!"
+				if cuadro.btn_derecha: cuadro.btn_derecha.visible = true
+				if cuadro.btn_izquierda: cuadro.btn_izquierda.visible = true
+			cuadro.actualizar_vista()
+			
+	var es_lider = false
+	if multiplayer.is_server() and not OS.has_environment("GODOT_SERVER"):
+		es_lider = true
+	elif orden_jugadores.size() > 0 and orden_jugadores[0] == multiplayer.get_unique_id():
+		es_lider = true
+	btn_iniciar.visible = es_lider
