@@ -179,24 +179,20 @@ func _ready():
 				input_ip.text = sanitizar_url_sala(sala_link)
 				mostrar_estado("Sala cargada automáticamente desde el enlace.", false)
 	else:
-		var ip_mi_dispositivo = Global.obtener_ip_local_recomendada()
-		var label_sub = $MenuPrincipal/PanelCentral/VBox.get_node_or_null("LabelSubtitulo")
-		if label_sub:
-			label_sub.text = "Lobby Multijugador • Tu IP: %s" % ip_mi_dispositivo
-		if input_ip and input_ip.text == "127.0.0.1":
+		if input_ip and (input_ip.text == "127.0.0.1" or input_ip.text == ""):
 			input_ip.text = ""
-			input_ip.placeholder_text = "Código (ej: UMA4) o IP"
 			
 		var btn_proto = Button.new()
 		btn_proto.name = "BtnProtocoloRed"
-		btn_proto.custom_minimum_size = Vector2(0, 36)
-		btn_proto.text = "Modo Red: Web & Online (WebSocket) 🌐"
+		btn_proto.custom_minimum_size = Vector2(0, 38)
 		btn_proto.add_theme_font_size_override("font_size", 13)
 		btn_proto.pressed.connect(_on_btn_protocolo_pressed)
 		if btn_host and btn_host.get_parent():
 			var idx = btn_host.get_index()
 			btn_host.get_parent().add_child(btn_proto)
 			btn_host.get_parent().move_child(btn_proto, idx)
+		
+		_actualizar_interfaz_modo_red()
 			
 	# Botón Pegar URL / IP (permite pegar cómodamente en Web y móviles donde Ctrl+V está restringido)
 	var btn_pegar = Button.new()
@@ -314,14 +310,40 @@ func limpiar_estado():
 		label_estado.text = ""
 		label_estado.visible = false
 
-func _on_btn_protocolo_pressed():
-	es_modo_websocket = not es_modo_websocket
+func _actualizar_interfaz_modo_red():
 	var btn = $MenuPrincipal/PanelCentral/VBox.get_node_or_null("BtnProtocoloRed")
-	if btn:
-		if es_modo_websocket:
-			btn.text = "Modo Red: Web & Online (WebSocket) 🌐"
-		else:
-			btn.text = "Modo Red: LAN Directo (ENet UDP) ⚡"
+	var label_sub = $MenuPrincipal/PanelCentral/VBox.get_node_or_null("LabelSubtitulo")
+	
+	if es_modo_websocket or OS.has_feature("web"):
+		if btn:
+			btn.text = "🌐 Modo: INTERNET (Global / Web) [Toca para cambiar a LAN]"
+			btn.modulate = Color(0.45, 0.9, 1.0)
+		if label_sub:
+			label_sub.text = "Servidor Global Render • Juega con Web, PC y Móviles"
+		if input_ip:
+			input_ip.placeholder_text = "Código de Sala (ej: UMA4) o URL"
+		if btn_host:
+			btn_host.text = "CREAR SALA ONLINE 🌐"
+		if btn_unirse:
+			btn_unirse.text = "UNIRSE POR INTERNET 🚀"
+	else:
+		var ip_mi_dispositivo = Global.obtener_ip_local_recomendada()
+		if btn:
+			btn.text = "⚡ Modo: RED LOCAL (LAN ENet UDP) [Toca para cambiar a Online]"
+			btn.modulate = Color(1.0, 0.85, 0.35)
+		if label_sub:
+			label_sub.text = "Red Local (WiFi/LAN) • Tu IP: %s" % ip_mi_dispositivo
+		if input_ip:
+			input_ip.placeholder_text = "IP del Host (ej: 192.168.1.50)"
+		if btn_host:
+			btn_host.text = "CREAR SALA LOCAL (LAN) ⚡"
+		if btn_unirse:
+			btn_unirse.text = "UNIRSE POR IP LOCAL 🔌"
+
+func _on_btn_protocolo_pressed():
+	if OS.has_feature("web"): return
+	es_modo_websocket = not es_modo_websocket
+	_actualizar_interfaz_modo_red()
 
 func sanitizar_url_sala(texto: String) -> String:
 	var s = texto.strip_edges()
@@ -384,19 +406,18 @@ func crear_servidor():
 		mp.multiplayer_peer.close()
 		mp.multiplayer_peer = null
 		
-	if OS.has_feature("web"):
-		# En Web nos conectamos al servidor central de Render como creador de sala
+	var es_dedicado = OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args() or "--server" in OS.get_cmdline_user_args()
+	
+	if not es_dedicado and (OS.has_feature("web") or es_modo_websocket):
+		# En Web o Modo Online nos conectamos al servidor central de Render como creador de sala
 		if codigo_sala_local == "":
 			codigo_sala_local = _generar_codigo_aleatorio()
 		unirse_partida()
 		return
 		
-	if codigo_sala_local == "":
-		codigo_sala_local = _generar_codigo_aleatorio()
-		
 	var error = OK
 	var puerto = obtener_puerto_servidor()
-	if es_modo_websocket:
+	if es_dedicado:
 		var ws_peer = WebSocketMultiplayerPeer.new()
 		ws_peer.inbound_buffer_size = 2097152
 		ws_peer.outbound_buffer_size = 2097152
@@ -405,22 +426,22 @@ func crear_servidor():
 		error = ws_peer.create_server(puerto)
 		peer = ws_peer
 		if error == OK:
-			print("[SERVER] ¡Servidor WebSocket iniciado exitosamente en puerto %d! Sala inicial: %s" % [puerto, codigo_sala_local])
+			print("[SERVER] ¡Servidor WebSocket dedicado iniciado exitosamente en puerto %d!" % puerto)
 	else:
+		codigo_sala_local = ""
 		var enet_peer = ENetMultiplayerPeer.new()
 		error = enet_peer.create_server(puerto, 4)
 		peer = enet_peer
 		
 	if error != OK:
 		print("Error al crear servidor: ", error)
-		mostrar_estado("Error al abrir puerto %d (%s) (Código: %d).\nVerifica si el puerto está en uso o permisos del firewall." % [puerto, "WebSocket" if es_modo_websocket else "ENet", error], true)
+		mostrar_estado("Error al abrir puerto local %d (%s) (Código: %d).\nVerifica si el puerto está en uso o permisos del firewall." % [puerto, "WebSocket" if es_dedicado else "ENet", error], true)
 		return
 		
 	multiplayer.multiplayer_peer = peer
 	$MenuPrincipal.hide()
 	$VistaLobby.show()
 	
-	var es_dedicado = OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args() or "--server" in OS.get_cmdline_user_args()
 	if es_dedicado:
 		orden_jugadores = []
 		jugadores_conectados = {}
@@ -442,13 +463,19 @@ func unirse_partida():
 	var texto_entrada = sanitizar_url_sala(input_ip.text)
 	var ip_destino = texto_entrada
 	
-	# Si no contiene puntos, dos puntos ni barras y no está vacío, es un código de sala
-	if texto_entrada != "" and not ("." in texto_entrada or ":" in texto_entrada or "/" in texto_entrada or texto_entrada.to_lower().begins_with("localhost")):
-		codigo_sala_local = texto_entrada.to_upper()
-		ip_destino = url_servidor_render
-		print("[LOBBY] Código de sala ingresado: ", codigo_sala_local, " -> Servidor: ", ip_destino)
-	elif ip_destino == "" or (OS.has_feature("web") and (ip_destino == "127.0.0.1" or ip_destino == "localhost")):
-		ip_destino = url_servidor_render
+	if es_modo_websocket or OS.has_feature("web"):
+		# MODO INTERNET / WEBSOCKET: Si ingresó un código alfanumérico sin puntos o vacío, conecta a Render
+		if texto_entrada != "" and not ("." in texto_entrada or ":" in texto_entrada or "/" in texto_entrada or texto_entrada.to_lower().begins_with("localhost")):
+			codigo_sala_local = texto_entrada.to_upper()
+			ip_destino = url_servidor_render
+			print("[LOBBY] Código de sala ingresado: ", codigo_sala_local, " -> Servidor: ", ip_destino)
+		elif ip_destino == "" or ip_destino == "127.0.0.1" or ip_destino == "localhost":
+			ip_destino = url_servidor_render
+	else:
+		# MODO RED LOCAL (LAN DIRECTO ENET UDP)
+		codigo_sala_local = ""
+		if ip_destino == "":
+			ip_destino = "127.0.0.1"
 		
 	var mp = get_tree().get_multiplayer() if get_tree() else null
 	if mp and mp.multiplayer_peer:
@@ -529,12 +556,11 @@ func actualizar_panel_ip_host():
 	var label_ip = panel_ip.get_node_or_null("BadgeIP/MarginIP/LabelIP")
 	if label_ip:
 		if codigo_sala_local != "":
-			label_ip.text = "CÓDIGO DE SALA: %s" % codigo_sala_local
+			label_ip.text = "CÓDIGO DE SALA: %s (ONLINE 🌐)" % codigo_sala_local
 		else:
 			var ip_local = Global.obtener_ip_local_recomendada()
-			var tipo = "WebSocket" if es_modo_websocket else "ENet"
 			var puerto = obtener_puerto_servidor()
-			label_ip.text = "IP: %s (%s :%d)" % [ip_local, tipo, puerto]
+			label_ip.text = "IP LAN: %s:%d (ENet ⚡)" % [ip_local, puerto]
 
 func _on_btn_copiar_ip_pressed():
 	var texto = codigo_sala_local if codigo_sala_local != "" else Global.obtener_ip_local_recomendada()
@@ -578,7 +604,10 @@ func _on_connection_failed():
 		mp.multiplayer_peer = null
 	orden_jugadores.clear()
 	jugadores_conectados.clear()
-	mostrar_estado("No se pudo conectar al Host en %s.\nVerifica que la IP sea correcta y que ambos equipos estén en la misma red." % input_ip.text.strip_edges(), true)
+	if es_modo_websocket or OS.has_feature("web"):
+		mostrar_estado("No se pudo conectar a la sala online.\nVerifica tu conexión a internet o que el código de sala sea correcto.", true)
+	else:
+		mostrar_estado("No se pudo conectar al Host en %s.\nVerifica que la IP sea correcta y que ambos equipos estén en la misma red local (WiFi)." % input_ip.text.strip_edges(), true)
 	$VistaLobby.hide()
 	$MenuPrincipal.show()
 
