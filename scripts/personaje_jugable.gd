@@ -735,7 +735,8 @@ func iniciar_secuencia_lanzamiento_globo(pos_inicio: Vector2 = Vector2.ZERO):
 		destino_padre = get_tree().root.get_node_or_null("MapaActual")
 	if not destino_padre:
 		var p = get_parent()
-		while p and not (p is BaseMinijuego):
+		var script_base = load("res://scripts/BaseMinijuego.gd")
+		while p and not (p.has_method("preparar_partida") or (script_base and p.get_script() == script_base)):
 			p = p.get_parent()
 		destino_padre = p
 	if not destino_padre and get_tree():

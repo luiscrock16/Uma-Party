@@ -27,6 +27,9 @@ RUN wget -q https://github.com/godotengine/godot-builds/releases/download/4.3-st
 WORKDIR /app
 COPY . /app
 
+# Importar recursos y registrar clases de scripts para modo producción
+RUN godot --headless --editor --quit || true
+
 # Exponer puertos comunes (Render asigna dinámicamente $PORT)
 EXPOSE 8080 10000
 

@@ -137,7 +137,8 @@ var catalogo_juegos: Dictionary = {
 }
 
 func _ready():
-	Global.configurar_controles_tactiles(false, false)
+	if has_node("/root/Global"):
+		get_node("/root/Global").configurar_controles_tactiles(false, false)
 	$MenuPrincipal/PanelCentral/VBox/BotonHost.pressed.connect(crear_servidor)
 	$MenuPrincipal/PanelCentral/VBox/BotonUnirse.pressed.connect(unirse_partida)
 	btn_iniciar.pressed.connect(_on_btn_iniciar_pressed)
