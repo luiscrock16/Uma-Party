@@ -77,6 +77,9 @@ func _ready():
 		barra_cine_inf.position.y = 648.0
 		barra_cine_inf.rotation_degrees = 0.0
 		
+	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
+		solicitar_info_minijuego_al_servidor.rpc_id(1)
+		
 	if jugadores_info.size() > 0:
 		aplicar_roles_locales()
 	else:
@@ -101,7 +104,9 @@ func aplicar_roles_locales():
 	avatares_jugadores.clear()
 	lista_espectadores.clear()
 	
-	var ids = jugadores_info.keys()
+	var ids = []
+	for k in jugadores_info.keys():
+		ids.append(int(k))
 	ids.sort()
 	
 	if ids.size() >= 2:

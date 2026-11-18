@@ -774,11 +774,6 @@ func _on_btn_iniciar_pressed():
 @rpc("any_peer", "reliable")
 func solicitar_abrir_minijuegos_al_servidor():
 	if multiplayer.is_server():
-		var remitente = multiplayer.get_remote_sender_id()
-		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
-			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
-				print("[SERVER] Rechazado abrir minijuegos: no es líder (ID %d)" % remitente)
-				return
 		abrir_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
@@ -825,10 +820,6 @@ func _on_btn_volver_lobby_pressed():
 @rpc("any_peer", "reliable")
 func solicitar_cerrar_pantalla_minijuegos_rpc():
 	if multiplayer.is_server():
-		var remitente = multiplayer.get_remote_sender_id()
-		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
-			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
-				return
 		cerrar_pantalla_minijuegos_rpc.rpc()
 
 @rpc("authority", "call_local", "reliable")
@@ -840,25 +831,25 @@ func cerrar_pantalla_minijuegos_rpc():
 # --- SELECCIÓN Y LANZAMIENTO DE MINIJUEGOS ---
 
 func _on_card_minijuego_selected(ruta_mapa: String):
-	if multiplayer.is_server() and not en_ruleta:
+	if en_ruleta: return
+	if multiplayer.is_server():
 		servidor_iniciar_minijuego(ruta_mapa)
-	elif not en_ruleta:
+	else:
 		solicitar_iniciar_mapa_rpc.rpc_id(1, ruta_mapa)
 
 @rpc("any_peer", "reliable")
 func solicitar_iniciar_mapa_rpc(ruta_mapa: String):
 	if multiplayer.is_server() and not en_ruleta:
-		var remitente = multiplayer.get_remote_sender_id()
-		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
-			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
-				print("[SERVER] Rechazada solicitud de iniciar mapa: peer no líder (ID %d)" % remitente)
-				return
 		servidor_iniciar_minijuego(ruta_mapa)
 
 func servidor_iniciar_minijuego(ruta: String):
+	print("[SERVER] Iniciando minijuego en servidor: ", ruta)
 	var ids_jugadores = orden_jugadores.duplicate()
 	if ids_jugadores.is_empty():
-		ids_jugadores = [multiplayer.get_unique_id()]
+		for p_id in multiplayer.get_peers():
+			ids_jugadores.append(p_id)
+		if ids_jugadores.is_empty():
+			ids_jugadores = [multiplayer.get_unique_id()]
 		
 	var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
 	if mapa_anterior:
@@ -874,19 +865,7 @@ func servidor_iniciar_minijuego(ruta: String):
 		
 	var info_partida = mapa.jugadores_info.duplicate()
 	
-	# Si no es servidor dedicado (ej: host local de PC), instanciar los avatares locales
-	if not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
-		$VistaLobby.hide()
-		panel_minijuegos.hide()
-		$MenuPrincipal.hide()
-		ejecutar_spawns_en_mapa(info_partida)
-		if mapa.has_method("solicitar_spawns_a_todos"):
-			mapa.solicitar_spawns_a_todos(info_partida)
-		elif mapa.has_method("aplicar_roles_locales"):
-			mapa.jugadores_info = info_partida
-			mapa.aplicar_roles_locales()
-			
-	# Difundir a todos los clientes la orden de carga con el diccionario de roles/spawns ya calculado
+	# Difundir a todos los clientes (y ejecutar localmente gracias a call_local)
 	iniciar_mapa_rpc.rpc(ruta, info_partida)
 
 func _on_btn_ruleta_aleatoria_pressed():
@@ -901,10 +880,6 @@ func _on_btn_ruleta_aleatoria_pressed():
 @rpc("any_peer", "reliable")
 func solicitar_ruleta_rpc():
 	if multiplayer.is_server() and not en_ruleta:
-		var remitente = multiplayer.get_remote_sender_id()
-		if OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args():
-			if orden_jugadores.size() > 0 and remitente != orden_jugadores[0]:
-				return
 		var claves = catalogo_juegos.keys()
 		var clave_elegida = claves[randi() % claves.size()]
 		ejecutar_animacion_ruleta.rpc(clave_elegida)
@@ -951,11 +926,10 @@ func iniciar_mapa_rpc(ruta: String, dict_info: Dictionary = {}):
 	$MenuPrincipal.hide()
 	
 	var mapa = get_tree().root.get_node_or_null("MapaActual")
-	if not mapa:
-		var mapa_anterior = get_tree().root.get_node_or_null("MapaActual")
-		if mapa_anterior:
-			mapa_anterior.name = "MapaAnterior_Free"
-			mapa_anterior.queue_free()
+	if not multiplayer.is_server():
+		if mapa:
+			mapa.name = "MapaAnterior_Free"
+			mapa.queue_free()
 			
 		mapa = load(ruta).instantiate()
 		mapa.name = "MapaActual"
