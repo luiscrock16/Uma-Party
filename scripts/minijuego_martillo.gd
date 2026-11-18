@@ -281,6 +281,7 @@ func _physics_process(delta: float):
 	
 	if estado_ronda == EstadoRonda.SELECCION:
 		tiempo_restante_ronda -= delta
+		actualizar_hud()
 		_procesar_input_local()
 		
 		if tiempo_restante_ronda <= 0.0:
@@ -817,4 +818,7 @@ func agitar_camara(intensidad: float):
 
 func actualizar_hud():
 	if label_ronda:
-		label_ronda.text = "RONDA: %d / %d" % [ronda_actual, MAX_RONDAS]
+		if estado_ronda == EstadoRonda.SELECCION:
+			label_ronda.text = "RONDA: %d / %d  •  %.1fs" % [ronda_actual, MAX_RONDAS, max(0.0, tiempo_restante_ronda)]
+		else:
+			label_ronda.text = "RONDA: %d / %d" % [ronda_actual, MAX_RONDAS]

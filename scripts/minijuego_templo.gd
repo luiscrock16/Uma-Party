@@ -212,7 +212,7 @@ func _on_jugador_alcanzado(id_jugador: int):
 			eliminar_jugador_templo_rpc.rpc(id_jugador)
 		else:
 			if id_jugador == multiplayer.get_unique_id():
-				reportar_impacto_templo_rpc.rpc_id(1, id_jugador)
+				reportar_impacto_templo_rpc.rpc(id_jugador)
 	else:
 		eliminar_jugador_templo_rpc(id_jugador)
 

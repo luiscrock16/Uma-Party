@@ -660,7 +660,7 @@ func intentar_recoger_llave(id_jugador: int, color: String):
 	if not nodos_llaves.has(color) or not is_instance_valid(nodos_llaves[color]): return
 	
 	if multiplayer.has_multiplayer_peer():
-		reclamar_llave_rpc.rpc_id(1, id_jugador, color)
+		reclamar_llave_rpc.rpc(id_jugador, color)
 	else:
 		sincronizar_recogida_llave_rpc(id_jugador, color)
 
@@ -721,7 +721,7 @@ func intentar_abrir_puerta(id_jugador: int, color: String):
 	if puertas_abiertas.get(color, false): return
 	
 	if multiplayer.has_multiplayer_peer():
-		reclamar_apertura_puerta_rpc.rpc_id(1, id_jugador, color)
+		reclamar_apertura_puerta_rpc.rpc(id_jugador, color)
 	else:
 		sincronizar_apertura_puerta_rpc(id_jugador, color)
 
@@ -975,7 +975,7 @@ func declarar_fin_laberinto(id_ganador: int):
 		if es_autoridad_de_partida():
 			sincronizar_victoria_laberinto_rpc.rpc(id_ganador)
 		else:
-			reclamar_campana_al_servidor_rpc.rpc_id(1, id_ganador)
+			reclamar_campana_al_servidor_rpc.rpc(id_ganador)
 	else:
 		sincronizar_victoria_laberinto_rpc(id_ganador)
 

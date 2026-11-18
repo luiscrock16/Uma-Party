@@ -456,7 +456,7 @@ func confirmar_palanca_actual():
 	if indice_palanca_actual >= 0 and indice_palanca_actual < palancas_instanciadas.size():
 		if not palancas_instanciadas[indice_palanca_actual].activada:
 			estado_juego = EstadoJuego.ACCION_PALANCA
-			rpc_id(1, "solicitar_presionar_palanca_rpc", turno_actual_id, indice_palanca_actual)
+			solicitar_presionar_palanca_rpc.rpc(turno_actual_id, indice_palanca_actual)
 
 @rpc("any_peer", "call_local", "reliable")
 func solicitar_presionar_palanca_rpc(id_jugador: int, idx: int):

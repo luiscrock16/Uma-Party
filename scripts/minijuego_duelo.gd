@@ -77,8 +77,10 @@ func _ready():
 		barra_cine_inf.position.y = 648.0
 		barra_cine_inf.rotation_degrees = 0.0
 		
-	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
-		solicitar_info_minijuego_al_servidor.rpc_id(1)
+	if multiplayer.has_multiplayer_peer() and not es_autoridad_de_partida():
+		var id_host = obtener_id_anfitrion_partida()
+		if id_host > 0 and id_host != multiplayer.get_unique_id():
+			solicitar_info_minijuego_al_servidor.rpc_id(id_host)
 		
 	if jugadores_info.size() > 0:
 		aplicar_roles_locales()

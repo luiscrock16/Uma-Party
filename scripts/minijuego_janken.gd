@@ -152,7 +152,7 @@ func _on_boton_humano_pulsado(opcion: int):
 	resaltar_boton_seleccionado(opcion)
 	var mi_id = obtener_mi_id_local()
 	if multiplayer.has_multiplayer_peer():
-		enviar_eleccion_al_servidor_rpc.rpc_id(1, mi_id, opcion)
+		enviar_eleccion_al_servidor_rpc.rpc(mi_id, opcion)
 	else:
 		enviar_eleccion_al_servidor_rpc(mi_id, opcion)
 

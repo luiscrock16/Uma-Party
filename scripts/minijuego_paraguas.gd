@@ -693,7 +693,7 @@ func _actualizar_jugadores_atrapados(delta: float):
 		if id == mi_id and _es_boton_accion_presionado():
 			datos["mashing"] += 1
 			if multiplayer.has_multiplayer_peer():
-				reportar_mashing_rpc.rpc_id(1, id)
+				reportar_mashing_rpc.rpc(id)
 			else:
 				verificar_liberacion_mashing(id)
 				

@@ -57,12 +57,14 @@ func preparar_partida(lista_ids: Array):
 
 func _ready():
 	# Si somos un cliente conectado y entramos a un minijuego, solicitamos la info al Host
-	if multiplayer.has_multiplayer_peer() and not multiplayer.is_server():
-		solicitar_info_minijuego_al_servidor.rpc_id(1)
+	if multiplayer.has_multiplayer_peer() and not es_autoridad_de_partida():
+		var id_host = obtener_id_anfitrion_partida()
+		if id_host > 0 and id_host != multiplayer.get_unique_id():
+			solicitar_info_minijuego_al_servidor.rpc_id(id_host)
 
 @rpc("any_peer", "call_local", "reliable")
 func solicitar_info_minijuego_al_servidor():
-	if multiplayer.is_server():
+	if es_autoridad_de_partida():
 		var remitente = multiplayer.get_remote_sender_id()
 		if remitente == 0: remitente = multiplayer.get_unique_id()
 		if jugadores_info.size() > 0:

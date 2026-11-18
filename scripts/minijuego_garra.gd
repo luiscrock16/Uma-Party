@@ -139,13 +139,13 @@ func _process(delta):
 			if es_autoridad_de_partida():
 				solicitar_movimiento_servidor(garra_pos_x, destino_objetivo_y)
 			else:
-				rpc_id(1, "solicitar_movimiento_servidor", garra_pos_x, destino_objetivo_y)
+				solicitar_movimiento_servidor.rpc(garra_pos_x, destino_objetivo_y)
 		
 		if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio"):
 			if es_autoridad_de_partida():
 				solicitar_accion_servidor()
 			else:
-				rpc_id(1, "solicitar_accion_servidor")
+				solicitar_accion_servidor.rpc()
 
 func _physics_process(delta):
 	# 2. EL SERVIDOR PROCESA LA FÍSICA, REGLAS Y SINCRONIZACIÓN

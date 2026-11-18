@@ -475,7 +475,7 @@ func manejar_movimiento_por_set(delta):
 				if multiplayer.is_server():
 					soltar_bloque_solicitud(posicion_cursor)
 				else:
-					soltar_bloque_solicitud.rpc_id(1, posicion_cursor)
+					soltar_bloque_solicitud.rpc(posicion_cursor)
 		TipoMovimiento.JEFE_GARRA:
 			# El avatar del jefe permanece inmóvil; los controles de la garra los procesa la escena del minijuego
 			velocity = Vector2.ZERO
@@ -693,7 +693,7 @@ func sincronizar_cursor_rpc(_pos):
 
 @rpc("any_peer", "call_local", "reliable")
 func soltar_bloque_solicitud(_pos_cursor):
-	if multiplayer.is_server():
+	if true:
 		var mapa_actual = get_tree().root.get_node_or_null("MapaActual")
 		if mapa_actual and mapa_actual.has_method("registrar_solicitud_bloque"):
 			mapa_actual.registrar_solicitud_bloque(_pos_cursor)

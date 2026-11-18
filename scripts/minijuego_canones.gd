@@ -137,12 +137,12 @@ func intentar_disparar_local():
 		var mi_plat = dict_jugador_plataforma[mi_id]
 		if mi_plat.puede_disparar():
 			if multiplayer.has_multiplayer_peer():
-				rpc_id(1, "solicitar_disparo_rpc", mi_id, mi_plat.montura.rotation)
+				ejecutar_disparo_rpc.rpc(mi_id, mi_plat.montura.rotation)
 			else:
 				mi_plat.disparar()
 
 func _unhandled_input(event):
-	if event.is_action_pressed("espacio") or event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("espacio") or event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed):
 		intentar_disparar_local()
 
 # --- INICIALIZACIÓN Y ANIMACIÓN DE ENTRADA CON ZOOM ---

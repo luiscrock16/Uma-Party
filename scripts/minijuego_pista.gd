@@ -517,7 +517,7 @@ func _on_jugador_alcanzado(id_jugador: int):
 		else:
 			# Si soy el cliente local que recibió el impacto en mi pantalla, lo reporto al servidor
 			if id_jugador == multiplayer.get_unique_id():
-				reportar_impacto_al_servidor_rpc.rpc_id(1, id_jugador)
+				reportar_impacto_al_servidor_rpc.rpc(id_jugador)
 	else:
 		procesar_impacto_jugador_rpc(id_jugador)
 

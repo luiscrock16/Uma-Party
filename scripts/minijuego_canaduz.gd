@@ -647,7 +647,7 @@ func _disparar_proyectil(pos: Vector2, dir: Vector2, vel: float = 460.0, con_reb
 		if es_autoridad_de_partida():
 			spawn_proyectil_canaduz_rpc.rpc(pos, dir, vel, con_rebote, es_destructor)
 		else:
-			pedir_disparo_al_servidor_rpc.rpc_id(1, pos, dir, vel, con_rebote, es_destructor)
+			spawn_proyectil_canaduz_rpc.rpc(pos, dir, vel, con_rebote, es_destructor)
 	else:
 		spawn_proyectil_canaduz_rpc(pos, dir, vel, con_rebote, es_destructor)
 

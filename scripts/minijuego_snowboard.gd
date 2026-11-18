@@ -354,7 +354,7 @@ func aplicar_roles_locales():
 				iniciar_cuenta_atras_sincronizada_rpc()
 		)
 	else:
-		solicitar_seed_pista_rpc.rpc_id(1)
+		solicitar_seed_pista_rpc.rpc()
 			
 	configurar_zona_meta_y_espectadores()
 
@@ -362,7 +362,7 @@ func aplicar_roles_locales():
 func solicitar_seed_pista_rpc():
 	if es_autoridad_de_partida():
 		var remitente = multiplayer.get_remote_sender_id()
-		sincronizar_pista_rpc.rpc_id(remitente, seed_pista)
+		sincronizar_pista_rpc.rpc(seed_pista)
 
 @rpc("any_peer", "call_local", "reliable")
 func sincronizar_pista_rpc(p_seed: int):

@@ -794,7 +794,7 @@ func solicitar_accion_jugador(id_jugador: int, dir: Vector2):
 	elif es_autoridad_de_partida():
 		_ejecutar_accion_servidor(id_jugador, dir)
 	else:
-		solicitar_interaccion_servidor_rpc.rpc_id(1, id_jugador, dir)
+		solicitar_interaccion_servidor_rpc.rpc(id_jugador, dir)
 
 @rpc("any_peer", "call_remote", "reliable")
 func solicitar_interaccion_servidor_rpc(id_jugador: int, dir: Vector2):
@@ -1097,7 +1097,7 @@ func _verificar_y_solicitar_entrega(id_jugador: int):
 	elif es_autoridad_de_partida():
 		_entregar_pastel_ganador(id_jugador)
 	else:
-		solicitar_entrega_al_servidor_rpc.rpc_id(1, id_jugador)
+		solicitar_entrega_al_servidor_rpc.rpc(id_jugador)
 
 @rpc("any_peer", "call_remote", "reliable")
 func solicitar_entrega_al_servidor_rpc(id_jugador: int):
