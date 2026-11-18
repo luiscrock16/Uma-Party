@@ -64,11 +64,7 @@ func _on_area_entered(area: Area2D):
 		ya_impacto = true
 		var plataforma = area.get_meta("plataforma", null)
 		if plataforma and not plataforma.eliminada and not plataforma.en_invulnerabilidad:
-			if multiplayer.has_multiplayer_peer():
-				if multiplayer.is_server():
-					plataforma.recibir_impacto()
-			else:
-				plataforma.recibir_impacto()
+			plataforma.recibir_impacto()
 		destruir_proyectil(true, true)
 		return
 
@@ -81,11 +77,7 @@ func _on_area_entered(area: Area2D):
 		ya_impacto = true
 		var plataforma = area.get_meta("plataforma", null)
 		if plataforma and not plataforma.eliminada and not plataforma.en_invulnerabilidad:
-			if multiplayer.has_multiplayer_peer():
-				if multiplayer.is_server():
-					plataforma.recibir_impacto()
-			else:
-				plataforma.recibir_impacto()
+			plataforma.recibir_impacto()
 		destruir_proyectil(true, true)
 		return
 			

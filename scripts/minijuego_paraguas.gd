@@ -523,7 +523,10 @@ func sincronizar_impacto_rayo_rpc(id: int, pos_impacto: Vector2, expulsar: bool)
 		av.sprite.play(prefijo + "_aturdido")
 		
 	if expulsar:
-		expulsar_jugador_rpc(id)
+		if multiplayer.has_multiplayer_peer():
+			expulsar_jugador_rpc.rpc(id)
+		else:
+			expulsar_jugador_rpc(id)
 	else:
 		av.bloquear_controles(true)
 		await get_tree().create_timer(1.0).timeout
@@ -698,7 +701,10 @@ func _actualizar_jugadores_atrapados(delta: float):
 				verificar_liberacion_mashing(id)
 				
 		if es_local_o_autoridad and datos["tiempo"] >= TIEMPO_ASCENSO_TORNADO:
-			expulsar_jugador_rpc(id)
+			if multiplayer.has_multiplayer_peer():
+				expulsar_jugador_rpc.rpc(id)
+			else:
+				expulsar_jugador_rpc(id)
 
 @rpc("any_peer", "call_local", "reliable")
 func reportar_mashing_rpc(id: int):

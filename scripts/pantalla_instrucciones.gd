@@ -435,8 +435,8 @@ func configurar_pantalla(clave: String, dict_jugadores: Dictionary, mi_id: int):
 		if not multiplayer.peer_disconnected.is_connected(_on_peer_desconectado_instrucciones):
 			multiplayer.peer_disconnected.connect(_on_peer_desconectado_instrucciones)
 			
-	# Temporizador de seguridad en el servidor: si alguien no confirma en 12s, iniciar automáticamente
-	if multiplayer.has_multiplayer_peer() and multiplayer.is_server():
+	# Temporizador de seguridad en el anfitrión: si alguien no confirma en 12s, iniciar automáticamente
+	if multiplayer.has_multiplayer_peer() and es_anfitrion():
 		get_tree().create_timer(12.0).timeout.connect(func():
 			if not ya_iniciando and is_inside_tree():
 				print("[Instrucciones] Auto-iniciando por tiempo límite de espera...")

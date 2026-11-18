@@ -126,7 +126,8 @@ func _process(delta):
 		label_tiempo.text = "TIEMPO: %02d" % int(max(tiempo_restante, 0))
 	
 	# 1. ENTRADA DE INPUT: Solo la procesa el Jefe asignado si la partida está activa
-	if juego_activo and id_jefe_autorizado != -1 and id_jefe_autorizado == multiplayer.get_unique_id():
+	var mi_id_local = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+	if juego_activo and id_jefe_autorizado != -1 and id_jefe_autorizado == mi_id_local:
 		if estado_garra in ["LIBRE", "LIBRE_CON_CARGA"]:
 			var direccion_x = Input.get_axis("a", "d")
 			garra_pos_x += direccion_x * VELOCIDAD_HORIZONTAL * delta

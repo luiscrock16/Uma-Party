@@ -278,11 +278,13 @@ func chequear_eliminaciones_caida_servidor():
 
 func _process(_delta):
 	# Si una jugadora camina o es empujada a un hueco donde no hay plataforma
-	if es_autoridad_de_partida() and juego_iniciado and not partida_concluida:
+	if juego_iniciado and not partida_concluida:
 		if en_fase_desplome:
 			return
 			
-		for id in jugadores_info.keys():
+		var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+		var ids_a_revisar = jugadores_info.keys() if es_autoridad_de_partida() else [mi_id]
+		for id in ids_a_revisar:
 			var avatar = get_node_or_null(str(id))
 			if not avatar: continue
 			if "estado_actual" in avatar and avatar.estado_actual == avatar.Estado.ELIMINADO:
@@ -297,7 +299,10 @@ func _process(_delta):
 						break
 						
 			if not sobre_piso:
-				rpc("eliminar_jugador_por_vacio_rpc", id)
+				if multiplayer.has_multiplayer_peer():
+					eliminar_jugador_por_vacio_rpc.rpc(id)
+				else:
+					eliminar_jugador_por_vacio_rpc(id)
 
 # -------------------------------------------------------------------------
 # RPCS DE SINCRONIZACIÓN VISUAL (PANTALLA JUMBOTRON Y PLATAFORMAS)

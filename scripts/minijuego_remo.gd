@@ -397,8 +397,19 @@ func _procesar_input_local():
 		var mi_eq = datos.get("equipo", 0)
 		var es_remo_izq = (datos.get("spawn", 0) % 2 == 0)
 		
-		var quiere_remar = Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio") or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		var quiere_remar = Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio")
 		if quiere_remar and cooldown_remada_local <= 0.0:
+			cooldown_remada_local = 0.26
+			solicitar_remada(mi_eq, es_remo_izq)
+
+func _unhandled_input(event: InputEvent):
+	if cinematica_playa_activa: return
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed):
+		var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+		if mi_id in jugadores_info and cooldown_remada_local <= 0.0:
+			var datos = jugadores_info[mi_id]
+			var mi_eq = datos.get("equipo", 0)
+			var es_remo_izq = (datos.get("spawn", 0) % 2 == 0)
 			cooldown_remada_local = 0.26
 			solicitar_remada(mi_eq, es_remo_izq)
 

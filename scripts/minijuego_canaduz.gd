@@ -789,7 +789,10 @@ func _procesar_vida_proyectil(p: Node2D, spr: Sprite2D, dir_inicial: Vector2, ve
 			if av and is_instance_valid(av) and av.visible:
 				if av.global_position.distance_to(p.global_position) <= 28.0:
 					_efecto_explosion_proyectil(p.global_position)
-					eliminar_superviviente(id, vel.normalized())
+					if multiplayer.has_multiplayer_peer():
+						eliminar_superviviente_rpc.rpc(id, vel.normalized())
+					else:
+						eliminar_superviviente_rpc(id, vel.normalized())
 					impacto_jugador = true
 					break
 					
@@ -831,7 +834,9 @@ func _efecto_polvo_en(pos: Vector2):
 # ELIMINACIÓN (SUPERVIVIENTES SALEN VOLANDO FUERA DE LA PANTALLA)
 # ==============================================================================
 
-func eliminar_superviviente(id: int, dir_impacto: Vector2 = Vector2.ZERO):
+@rpc("any_peer", "call_local", "reliable")
+func eliminar_superviviente_rpc(id: int, dir_impacto: Vector2 = Vector2.ZERO):
+	if not ids_supervivientes.has(id): return
 	ids_supervivientes.erase(id)
 	var av = avatares_jugadores.get(id)
 	if not av or not is_instance_valid(av):

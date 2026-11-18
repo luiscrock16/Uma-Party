@@ -147,9 +147,16 @@ func _on_globo_reventado_signal(equipo: int, id_globo: int, _id_jugador: int):
 	
 	# Verificar si un equipo ha reventado todos sus globos
 	var es_autoridad = es_autoridad_de_partida()
-	if es_autoridad and not partida_terminada:
-		if globos_restantes[equipo] <= 0:
+	if not partida_terminada and globos_restantes[equipo] <= 0:
+		if es_autoridad:
 			declarar_fin_globos(equipo)
+		elif multiplayer.has_multiplayer_peer():
+			solicitar_fin_globos_rpc.rpc(equipo)
+
+@rpc("any_peer", "call_local", "reliable")
+func solicitar_fin_globos_rpc(equipo: int):
+	if es_autoridad_de_partida() and not partida_terminada:
+		declarar_fin_globos(equipo)
 
 func _process(delta):
 	if not partida_iniciada or partida_terminada: return

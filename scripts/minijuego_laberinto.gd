@@ -975,7 +975,11 @@ func declarar_fin_laberinto(id_ganador: int):
 		if es_autoridad_de_partida():
 			sincronizar_victoria_laberinto_rpc.rpc(id_ganador)
 		else:
-			reclamar_campana_al_servidor_rpc.rpc(id_ganador)
+			var id_host = obtener_id_anfitrion_partida()
+			if id_host > 0:
+				reclamar_campana_al_servidor_rpc.rpc_id(id_host, id_ganador)
+			else:
+				reclamar_campana_al_servidor_rpc.rpc(id_ganador)
 	else:
 		sincronizar_victoria_laberinto_rpc(id_ganador)
 

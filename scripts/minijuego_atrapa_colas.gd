@@ -350,7 +350,8 @@ func _process(delta):
 
 func _physics_process(_delta):
 	if estado_juego != EstadoJuego.JUGANDO: return
-	if not es_servidor_o_solo(): return
+	var mi_id = obtener_mi_id_local()
+	if not (es_servidor_o_solo() or mi_id == id_cazador): return
 	
 	# Verificacion de captura por contacto directo del Cazador
 	var av_cazador = get_node_or_null(str(id_cazador))
@@ -360,7 +361,7 @@ func _physics_process(_delta):
 		if fugitivos_atrapados.has(f_id): continue
 		var av_f = get_node_or_null(str(f_id))
 		if av_f:
-			if av_cazador.global_position.distance_to(av_f.global_position) < 44.0:
+			if av_cazador.global_position.distance_to(av_f.global_position) < 48.0:
 				capturar_fugitivo(f_id)
 
 func _unhandled_input(event: InputEvent):

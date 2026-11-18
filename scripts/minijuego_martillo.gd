@@ -19,6 +19,7 @@ var partida_terminada: bool = false
 var ronda_actual: int = 1
 var tiempo_limite_ronda: float = 5.0
 var tiempo_restante_ronda: float = 5.0
+var peticion_revelacion_enviada: bool = false
 
 # Roles y Jugadores
 var id_jefe: int = 1
@@ -231,6 +232,7 @@ func iniciar_juego_post_cuenta_atras():
 
 func iniciar_ronda_seleccion():
 	estado_ronda = EstadoRonda.SELECCION
+	peticion_revelacion_enviada = false
 	if contenedor_selectores: contenedor_selectores.visible = true
 	# Dificultad progresiva: Menos tiempo según avanza la partida
 	tiempo_limite_ronda = max(2.2, 5.0 - float(ronda_actual - 1) * 0.45)
@@ -242,7 +244,7 @@ func iniciar_ronda_seleccion():
 	# Asegurar que las elecciones actuales caigan en casillas activas
 	if not casillas_activas.is_empty():
 		for id in ids_topos:
-			var c_t = int(elecciones_topos.get(id, -1))
+			var c_t = _obtener_eleccion_topo(id)
 			if c_t not in casillas_activas:
 				elecciones_topos[id] = casillas_activas.pick_random()
 			elif not multiplayer.has_multiplayer_peer() and ronda_actual > 1:
@@ -262,7 +264,13 @@ func iniciar_ronda_seleccion():
 		var av = avatares_jugadores.get(id)
 		if av and is_instance_valid(av):
 			av.visible = false
-			av.global_position = POS_CASILLAS[int(elecciones_topos[id])] + Vector2(0, 30)
+			av.global_position = POS_CASILLAS[_obtener_eleccion_topo(id)] + Vector2(0, 30)
+
+func _obtener_eleccion_topo(id) -> int:
+	if elecciones_topos.has(id): return int(elecciones_topos[id])
+	if elecciones_topos.has(str(id)): return int(elecciones_topos[str(id)])
+	if elecciones_topos.has(int(id)): return int(elecciones_topos[int(id)])
+	return 0
 
 func _physics_process(delta: float):
 	if not partida_iniciada or partida_terminada: return
@@ -289,6 +297,18 @@ func _physics_process(delta: float):
 			var es_autoridad = es_autoridad_de_partida()
 			if es_autoridad:
 				ejecutar_revelacion_y_golpe()
+			elif multiplayer.has_multiplayer_peer() and not peticion_revelacion_enviada:
+				peticion_revelacion_enviada = true
+				var id_host = obtener_id_anfitrion_partida()
+				if id_host > 0:
+					solicitar_revelacion_servidor_rpc.rpc_id(id_host)
+				else:
+					solicitar_revelacion_servidor_rpc.rpc()
+				# Si tras 2s el anfitrión no respondió, forzar avance para no congelar
+				get_tree().create_timer(2.0).timeout.connect(func():
+					if estado_ronda == EstadoRonda.SELECCION and not partida_terminada:
+						ejecutar_revelacion_y_golpe()
+				)
 
 # ==============================================================================
 # ENTRADA DE USUARIO POR CASILLAS (DISCRETO 3x3 Y SOPORTE RATÓN/TÁCTIL)
@@ -416,7 +436,13 @@ func sincronizar_eleccion_martillo_rpc(c: int):
 @rpc("any_peer", "call_local", "reliable")
 func sincronizar_eleccion_topo_rpc(id: int, c: int):
 	elecciones_topos[id] = c
+	elecciones_topos[str(id)] = c
 	_actualizar_pos_selector_topo(id)
+
+@rpc("any_peer", "call_local", "reliable")
+func solicitar_revelacion_servidor_rpc():
+	if es_autoridad_de_partida() and estado_ronda == EstadoRonda.SELECCION:
+		ejecutar_revelacion_y_golpe()
 
 # ==============================================================================
 # FASE DE REVELACIÓN Y GOLPE: TOPOS ASOMANDO JUNTOS Y APLASTAMIENTO
@@ -440,7 +466,7 @@ func sincronizar_revelacion_y_golpe_rpc(c_martillo: int, datos_topos: Dictionary
 	# 1. Agrupar topos por hoyo
 	var mapa_hoyo_a_topos: Dictionary = {}
 	for id in ids_topos:
-		var c = int(elecciones_topos.get(id, 0))
+		var c = _obtener_eleccion_topo(id)
 		if not mapa_hoyo_a_topos.has(c):
 			mapa_hoyo_a_topos[c] = []
 		mapa_hoyo_a_topos[c].append(id)
@@ -556,7 +582,21 @@ func sincronizar_revelacion_y_golpe_rpc(c_martillo: int, datos_topos: Dictionary
 
 func _evaluar_fin_o_siguiente_ronda():
 	var es_autoridad = es_autoridad_de_partida()
-	if not es_autoridad: return
+	if not es_autoridad:
+		get_tree().create_timer(3.5).timeout.connect(func():
+			if estado_ronda == EstadoRonda.REVELACION_GOLPE and not partida_terminada:
+				var id_host = obtener_id_anfitrion_partida()
+				if id_host > 0:
+					solicitar_siguiente_ronda_servidor_rpc.rpc_id(id_host)
+				else:
+					solicitar_siguiente_ronda_servidor_rpc.rpc()
+		)
+		return
+
+@rpc("any_peer", "call_local", "reliable")
+func solicitar_siguiente_ronda_servidor_rpc():
+	if es_autoridad_de_partida() and estado_ronda == EstadoRonda.REVELACION_GOLPE:
+		_evaluar_fin_o_siguiente_ronda()
 	
 	# Condición A: Todos los topos fueron eliminados -> Gana el Martillo
 	if ids_topos.is_empty():

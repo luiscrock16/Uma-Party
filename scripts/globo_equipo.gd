@@ -111,8 +111,7 @@ func _on_body_entered(body: Node2D):
 		if equipo_jugador == equipo:
 			# El jugador tocó el globo de su propio equipo -> ¡Revienta!
 			if multiplayer.has_multiplayer_peer():
-				if multiplayer.is_server():
-					mapa.reventar_globo_rpc.rpc(id_globo, id_jugador)
+				mapa.reventar_globo_rpc.rpc(id_globo, id_jugador)
 			else:
 				if mapa and mapa.has_method("reventar_globo_local"):
 					mapa.reventar_globo_local(id_globo, id_jugador)

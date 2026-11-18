@@ -402,8 +402,25 @@ func _process(delta):
 				auto_seleccionar_palanca_expirada()
 			return
 			
-		if multiplayer.get_unique_id() == turno_actual_id:
+		var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+		if mi_id == turno_actual_id:
 			manejar_input_turno()
+
+func _unhandled_input(event: InputEvent):
+	if estado_juego != EstadoJuego.TURNO_ACTIVO: return
+	var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+	if mi_id != turno_actual_id: return
+	if (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT) or (event is InputEventScreenTouch and event.pressed):
+		for i in range(palancas_instanciadas.size()):
+			if not palancas_instanciadas[i].activada:
+				if event.position.distance_to(palancas_instanciadas[i].global_position) <= 55.0:
+					if indice_palanca_actual != i:
+						var dir = 1 if i > indice_palanca_actual else -1
+						rpc("sincronizar_seleccion_palanca_rpc", turno_actual_id, i, dir)
+					else:
+						confirmar_palanca_actual()
+					return
+		confirmar_palanca_actual()
 
 func auto_seleccionar_palanca_expirada():
 	var disponibles = []
@@ -431,7 +448,7 @@ func manejar_input_turno():
 				rpc("sincronizar_seleccion_palanca_rpc", turno_actual_id, nuevo_idx, cambio)
 				break
 				
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio") or Input.is_action_just_pressed("ui_select"):
 		confirmar_palanca_actual()
 
 @rpc("any_peer", "call_local", "reliable")

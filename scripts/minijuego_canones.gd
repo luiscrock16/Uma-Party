@@ -389,20 +389,15 @@ func sincronizar_rotaciones_rpc(rot_dict: Dictionary):
 # --- DAÑO, VIDAS Y ELIMINACIÓN ---
 
 func _on_plataforma_golpeada(id_jugador: int, vidas_restantes: int):
-	# Se ejecuta en el servidor cuando el proyectil impacta directamente al personaje
-	if not es_autoridad_de_partida(): return
 	if not (id_jugador in dict_jugador_plataforma): return
 	
-	var eliminado = (vidas_restantes <= 0)
-	
-	if multiplayer.has_multiplayer_peer():
-		rpc("sincronizar_impacto_rpc", id_jugador, vidas_restantes, eliminado)
-	else:
-		sincronizar_impacto_rpc(id_jugador, vidas_restantes, eliminado)
-	
-	if eliminado:
-		jugadores_vivos.erase(id_jugador)
-		verificar_fin_partida()
+	var mi_id = multiplayer.get_unique_id() if multiplayer.has_multiplayer_peer() else 1
+	if es_autoridad_de_partida() or id_jugador == mi_id:
+		var eliminado = (vidas_restantes <= 0)
+		if multiplayer.has_multiplayer_peer():
+			sincronizar_impacto_rpc.rpc(id_jugador, vidas_restantes, eliminado)
+		else:
+			sincronizar_impacto_rpc(id_jugador, vidas_restantes, eliminado)
 
 @rpc("any_peer", "call_local", "reliable")
 func sincronizar_impacto_rpc(id_jugador: int, vidas_restantes: int, eliminado: bool):
@@ -421,6 +416,11 @@ func sincronizar_impacto_rpc(id_jugador: int, vidas_restantes: int, eliminado: b
 		if id_jugador in jugadores_info:
 			var spawn_idx = jugadores_info[id_jugador]["spawn"]
 			actualizar_vidas_hud(spawn_idx, vidas_restantes)
+			
+	if es_autoridad_de_partida() and eliminado:
+		if id_jugador in jugadores_vivos:
+			jugadores_vivos.erase(id_jugador)
+			verificar_fin_partida()
 
 func verificar_fin_partida():
 	if partida_terminada: return
@@ -430,7 +430,7 @@ func verificar_fin_partida():
 		var id_ganador = jugadores_vivos[0] if jugadores_vivos.size() > 0 else 1
 		await get_tree().create_timer(1.0).timeout
 		if multiplayer.has_multiplayer_peer():
-			rpc("declarar_ganador_canones_rpc", id_ganador)
+			declarar_ganador_canones_rpc.rpc(id_ganador)
 		else:
 			declarar_ganador_canones_rpc(id_ganador)
 

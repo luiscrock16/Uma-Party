@@ -62,9 +62,10 @@ func aterrizar_peluche():
 		tw.tween_property(sprite, "scale", Vector2(1.1, 0.65), 0.08)
 		tw.tween_property(sprite, "scale", Vector2(0.85, 0.85), 0.14)
 
-	if multiplayer.is_server():
+	var mapa = get_tree().root.get_node_or_null("MapaActual")
+	var es_autoridad = not multiplayer.has_multiplayer_peer() or (mapa and mapa.has_method("es_autoridad_de_partida") and mapa.es_autoridad_de_partida())
+	if es_autoridad:
 		# Verificar si aterrizó en la zona de eliminación / premios
-		var mapa = get_tree().root.get_node_or_null("MapaActual")
 		if mapa and mapa.has_node("ZonaEliminacion"):
 			var zona = mapa.get_node("ZonaEliminacion")
 			# Si el peluche cayó dentro del área de eliminación

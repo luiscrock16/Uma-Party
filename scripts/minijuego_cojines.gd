@@ -233,6 +233,12 @@ func _physics_process(delta: float):
 	if es_autoridad:
 		_gestionar_etapas_reduccion()
 		_verificar_caidas_fuera_ring()
+	elif mi_id in jugadores_vivos:
+		var av_mi = avatares_jugadores.get(mi_id)
+		if av_mi and is_instance_valid(av_mi):
+			var dist = av_mi.global_position.distance_to(CENTRO_ARENA)
+			if dist > radio_seguro_actual + 18.0:
+				eliminar_jugador(mi_id)
 
 func _es_boton_ataque_presionado() -> bool:
 	if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio"):
@@ -436,6 +442,14 @@ func eliminar_jugador(id: int):
 
 @rpc("any_peer", "call_local", "reliable")
 func sincronizar_eliminacion_rpc(id: int):
+	if id in jugadores_vivos:
+		jugadores_vivos.erase(id)
+	
+	var es_autoridad = es_autoridad_de_partida()
+	if es_autoridad and jugadores_vivos.size() <= 1 and not partida_terminada:
+		partida_terminada = true
+		declarar_victoria(jugadores_vivos)
+		
 	var av = avatares_jugadores.get(id)
 	if av and is_instance_valid(av):
 		# 1. Quitar control total al jugador eliminado

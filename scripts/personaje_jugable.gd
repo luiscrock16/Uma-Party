@@ -79,8 +79,8 @@ const VELOCIDAD_ROTACION_CAIDA: float = 12.0 # Velocidad del giro al caer
 
 func establecer_atrapado_servidor(valor: bool):
 	esta_atrapado = valor
-	if multiplayer.is_server():
-		rpc("sincronizar_atrapado_cliente", valor)
+	if multiplayer.has_multiplayer_peer():
+		sincronizar_atrapado_cliente.rpc(valor)
 		
 
 func _process(delta):
@@ -206,11 +206,13 @@ func _physics_process(delta):
 
 	if en_caida_libre:
 		global_position.y += VELOCIDAD_CAIDA * delta
-		if multiplayer.is_server():
-			if global_position.y >= destino_y_caida:
-				global_position.y = destino_y_caida
-				en_caida_libre = false
-				rpc("aterrizar_jugador_rpc")
+		if global_position.y >= destino_y_caida:
+			global_position.y = destino_y_caida
+			en_caida_libre = false
+			if multiplayer.has_multiplayer_peer():
+				aterrizar_jugador_rpc.rpc()
+			else:
+				aterrizar_jugador_rpc()
 		return
 
 	# Si al jugador le toca ser el jefe de la garra, bloqueamos el movimiento de su cuerpo
@@ -472,10 +474,10 @@ func manejar_movimiento_por_set(delta):
 				sincronizar_cursor_rpc.rpc(posicion_cursor)
 			
 			if Input.is_action_just_pressed("ui_accept") or Input.is_action_just_pressed("espacio"):
-				if multiplayer.is_server():
-					soltar_bloque_solicitud(posicion_cursor)
-				else:
+				if multiplayer.has_multiplayer_peer():
 					soltar_bloque_solicitud.rpc(posicion_cursor)
+				else:
+					soltar_bloque_solicitud(posicion_cursor)
 		TipoMovimiento.JEFE_GARRA:
 			# El avatar del jefe permanece inmóvil; los controles de la garra los procesa la escena del minijuego
 			velocity = Vector2.ZERO
