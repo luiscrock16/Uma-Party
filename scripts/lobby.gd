@@ -856,7 +856,9 @@ func lanzar_minijuego_como_anfitrion(ruta: String):
 	var ids_mezclados = ids_jugadores.duplicate()
 	ids_mezclados.shuffle()
 	for i in range(ids_mezclados.size()):
-		info_partida[ids_mezclados[i]] = {"equipo": i, "spawn": i, "es_jefe": (i == 0)}
+		var id_p = ids_mezclados[i]
+		var nom_p = jugadores_conectados.get(int(id_p), jugadores_conectados.get(str(id_p), "Jugador %s" % str(id_p)))
+		info_partida[id_p] = {"equipo": i, "spawn": i, "es_jefe": (i == 0), "nombre": nom_p}
 		
 	iniciar_mapa_rpc.rpc(ruta, info_partida)
 

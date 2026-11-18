@@ -489,6 +489,17 @@ func configurar_pantalla(clave: String, dict_jugadores: Dictionary, mi_id: int):
 	
 	if not multiplayer.has_multiplayer_peer():
 		simular_confirmacion_bots_f6()
+		
+	# Timer de seguridad por si algún jugador tarda en presionar confirmar
+	if es_anfitrion():
+		get_tree().create_timer(12.0).timeout.connect(func():
+			if is_inside_tree() and not ya_iniciando:
+				ya_iniciando = true
+				if multiplayer.has_multiplayer_peer():
+					iniciar_transicion_partida_rpc.rpc()
+				else:
+					iniciar_transicion_partida_rpc()
+		)
 
 func actualizar_tarjetas_jugadores():
 	if not contenedor_jugadores: return
@@ -564,21 +575,36 @@ func simular_confirmacion_bots_f6():
 			jugadores_listos[id] = true
 	actualizar_tarjetas_jugadores()
 
+func es_anfitrion() -> bool:
+	if not multiplayer.has_multiplayer_peer():
+		return true
+	if multiplayer.is_server() and not (OS.has_environment("GODOT_SERVER") or "--server" in OS.get_cmdline_args()):
+		return true
+	if get_tree().root.has_node("Lobby"):
+		var lobby = get_tree().root.get_node("Lobby")
+		if lobby.orden_jugadores.size() > 0 and lobby.orden_jugadores[0] == multiplayer.get_unique_id():
+			return true
+	return false
+
 func _on_peer_desconectado_instrucciones(id_desconectado: int):
 	if jugadores_info.has(id_desconectado):
 		jugadores_info.erase(id_desconectado)
 	if jugadores_listos.has(id_desconectado):
 		jugadores_listos.erase(id_desconectado)
 	actualizar_tarjetas_jugadores()
-	if multiplayer.is_server() and not ya_iniciando:
+	if es_anfitrion() and not ya_iniciando:
 		var todos_listos = true
 		for id in jugadores_info.keys():
-			if not jugadores_listos.get(id, false):
+			var listo = jugadores_listos.get(id, jugadores_listos.get(int(id), jugadores_listos.get(str(id), false)))
+			if not listo:
 				todos_listos = false
 				break
 		if todos_listos and jugadores_info.size() > 0:
 			ya_iniciando = true
-			iniciar_transicion_partida_rpc.rpc()
+			if multiplayer.has_multiplayer_peer():
+				iniciar_transicion_partida_rpc.rpc()
+			else:
+				iniciar_transicion_partida_rpc()
 
 func _on_btn_listo_pulsado():
 	if listo_local or ya_iniciando: return
@@ -598,7 +624,7 @@ func confirmar_listo_rpc(id_jugador: int):
 	jugadores_listos[id_jugador] = true
 	actualizar_tarjetas_jugadores()
 	
-	if not multiplayer.has_multiplayer_peer() or multiplayer.is_server():
+	if es_anfitrion():
 		if not multiplayer.has_multiplayer_peer():
 			for id in jugadores_info.keys():
 				jugadores_listos[id] = true
@@ -606,7 +632,8 @@ func confirmar_listo_rpc(id_jugador: int):
 			
 		var todos_listos = true
 		for id in jugadores_info.keys():
-			if not jugadores_listos.get(id, false):
+			var listo = jugadores_listos.get(id, jugadores_listos.get(int(id), jugadores_listos.get(str(id), false)))
+			if not listo:
 				todos_listos = false
 				break
 				
@@ -617,7 +644,7 @@ func confirmar_listo_rpc(id_jugador: int):
 			else:
 				iniciar_transicion_partida_rpc()
 
-@rpc("authority", "call_local", "reliable")
+@rpc("any_peer", "call_local", "reliable")
 func iniciar_transicion_partida_rpc():
 	ya_iniciando = true
 	if banner_inicio:
